@@ -32,7 +32,7 @@ npm i powertoast
 Options
 =======
 
-- appID
+- **appID**
 
   Your [Application User Model ID](https://docs.microsoft.com/fr-fr/windows/desktop/shell/appids).
   
@@ -63,16 +63,16 @@ Options
   }).catch(err => console.error(err));
 
   ```
-  
-- title
+
+- **title**
   
   The title of your notification
 
-- message
+- **message**
 
-  the content message of your notification
+  The content message of your notification
 
-- attribution **//Anniversary Update**
+- **attribution** *//Anniversary Update*
 
   Reference the source of your content. This text is always displayed at the bottom of your notification, along with your app's identity or the notification's timestamp.
 
@@ -96,7 +96,7 @@ Options
 
   ```
 
-- icon
+- **icon**
 
 The URI of the image source, using one of these protocol handlers:
 
@@ -106,7 +106,7 @@ The URI of the image source, using one of these protocol handlers:
 - ms-appdata:///local/
 
 2. Win32 :
-- file:/// (eg: "D:\\Desktop\\test.jpg")
+- file:/// (*eg: `"D:\\Desktop\\test.jpg"`*)
 
 The Icon should be an absolute path to the icon (as the toast is invoked from a temporary path on the user's system, not the working directory).
 
@@ -114,12 +114,13 @@ Icon dimensions are 48x48 pixels at 100% scaling.
 
 .png and .jpeg 
 
-For http and https remote web images, there are limits on the file size of each individual image. 
-3 MB on normal connections and 1 MB on metered connections. Before Fall Creators Update, images were always limited to 200 KB.
+For http and https remote web images, there are limits on the file size of each individual image. <br/>
+3 MB on normal connections and 1 MB on metered connections. <br/>
+Before Fall Creators Update, images were always limited to 200 KB.<br/>
 
 If an image exceeds the file size, or fails to download, or times out, or is an unvalid format the image will be dropped and the rest of the notification will be displayed.
 
-- headerImg **//Anniversary Update**
+- **headerImg** *//Anniversary Update*
 
 <p align="center">
 <img src="https://github.com/xan105/node-powertoast/raw/master/screenshot/header.png">
@@ -130,7 +131,7 @@ If an image exceeds the file size, or fails to download, or times out, or is an 
   
   Otherwise same restriction as above.
 
-- footerImg (inline-image)
+- **footerImg** *(inline-image)*
 
 <p align="center">
 <img src="https://github.com/xan105/node-powertoast/raw/master/screenshot/footer.png">
@@ -141,26 +142,26 @@ If an image exceeds the file size, or fails to download, or times out, or is an 
   
   Otherwise same restriction as above.
 
-- silent
+- **silent**
 
   True to mute the sound; false to allow the toast notification sound to play.
   **Default** to false.
 
-- longTime
+- **longTime**
 
   Increase the time the toast should show up for.
   **Default** to false.
   
   Most of the time "short" is the most appropriate, and Microsoft recommend not using "long", but it can be useful for important dialogs.
 
-- onClick
+- **onClick**
 
-  Protocol to launch when the user click on the toast.
-  If none (**default**) click will just dismiss the notification.
+  Protocol to launch when the user click on the toast.<br />
+  If none (**default**) click will just dismiss the notification.<br />
 
   Only protocol type action buttons are supported as there's no way of receiving feedback from the user's choice.
   
-  Examples of protocol type action button to open up Windows 10's maps app with a pre-populated search field set to "sushi".
+  Example of protocol type action button to open up Windows 10's maps app with a pre-populated search field set to "sushi":
   
 ```js
 const toast = require("./toast.js");
@@ -171,7 +172,7 @@ toast({
 }).catch(err => console.error(err));
 ```
 
-  You can also redirect to an http/https resource
+  You can also redirect to an http/https resource :
   
  ```js
 const toast = require("./toast.js");
@@ -184,7 +185,7 @@ toast({
 
   See https://docs.microsoft.com/en-us/windows/uwp/design/shell/tiles-and-notifications/adaptive-interactive-toasts for more information.
 
-- button
+- **button**
 
   Array of buttons to add to your toast.
   ```
@@ -216,7 +217,7 @@ Common Issues
   
 - Where is my icon/image ?
 
-  Check your path (should be an absolute path as the toast is invoked from a temporary path on the user's system, not the working directory) or url.<br />
+  Check url or path (should be an absolute path as the toast is invoked from a temporary path on the user's system, not the working directory).<br />
   If an image exceeds the file size, or fails to download, or times out, or is an unvalid format the image will be dropped and the rest of the notification will be displayed.
   
 - Notifications when app is fullscreen aren't displayed
@@ -231,5 +232,5 @@ Common Issues
 
 - Notification don't stay in the Action center
 
-  Win32 app notification will remove itself from the Action center when the app gets focus.
-  UWP app will not.
+  A Win32 app notification will remove itself from the Action center when the app gets focus.<br/>
+  A UWP one will not.
