@@ -54,7 +54,7 @@ Options
 </p>
 
   ```js  
-  const toast = require("./toast.js");
+  const toast = require('powertoast');
 
   toast({
     appID: "D:\\dev\\hello_world\\node_modules\\electron\\dist\\electron.exe", //app.setAppUserModelId(process.execPath) 
@@ -84,7 +84,7 @@ Options
   
   ```js
     
-    const toast = require("./toast.js");
+    const toast = require('powertoast');
 
     toast({
       appID: "com.squirrel.GitHubDesktop.GitHubDesktop",
@@ -164,7 +164,7 @@ If an image exceeds the file size, or fails to download, or times out, or is an 
   Example of protocol type action button to open up Windows 10's maps app with a pre-populated search field set to "sushi":
   
 ```js
-const toast = require("./toast.js");
+const toast = require('powertoast');
 
 toast({
   message: "Sushi",
@@ -175,7 +175,7 @@ toast({
   You can also redirect to an http/https resource :
   
  ```js
-const toast = require("./toast.js");
+const toast = require('powertoast');
 
 toast({
   message: "Google It",
@@ -198,7 +198,7 @@ toast({
   
  ```js
   
-const toast = require("./toast.js");
+const toast = require('powertoast');
 
 toast({
   title: "Browser",
