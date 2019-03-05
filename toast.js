@@ -70,7 +70,7 @@ module.exports = async (option = {} ) => {
     await util.promisify(exec)(`powershell -ExecutionPolicy Bypass -File "${script}"`,{windowsHide: true});
 
   } catch (err) {
-    throw "Notification failed";
+    throw err;
   } finally {
     fs.unlink(script, ()=>{});
   }
