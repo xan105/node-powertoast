@@ -6,8 +6,9 @@ Inspired by go-toast https://github.com/go-toast/toast
 
 Example
 =======
-
-[screenshot]
+<p align="center">
+<img src="https://github.com/xan105/node-powertoast/raw/master/screenshot/example.png">
+</p>
 
 ```js 
 const toast = require('powertoast');
@@ -48,7 +49,9 @@ Options
   
   Example with a dev electron app (*Dont forget to add a non-pinned shortcut to your start menu.*)
 
-  [screenshot]
+<p align="center">
+<img src="https://github.com/xan105/node-powertoast/raw/master/screenshot/electron.png">
+</p>
 
   ```js  
   const toast = require("./toast.js");
@@ -75,7 +78,9 @@ Options
 
   On older versions of Windows that don't support attribution text, the text will simply be displayed as another text element (assuming you don't already have the maximum of three text elements).
   
-  [screenshot]
+ <p align="center">
+<img src="https://github.com/xan105/node-powertoast/raw/master/screenshot/attribution.png">
+</p>
   
   ```js
     
@@ -95,12 +100,13 @@ Options
 
 The URI of the image source, using one of these protocol handlers:
 
-   UWP : - http:// or https://
-         - ms-appx:///
-         - ms-appdata:///local/
+1. UWP :
+- http:// or https://
+- ms-appx:///
+- ms-appdata:///local/
 
-   Win32 - file:/// 
-           (eg: "D:\\Desktop\\test.jpg")
+2. Win32 :
+- file:/// (eg: "D:\\Desktop\\test.jpg")
 
 The Icon should be an absolute path to the icon (as the toast is invoked from a temporary path on the user's system, not the working directory).
 
@@ -115,14 +121,20 @@ If an image exceeds the file size, or fails to download, or times out, or is an 
 
 - headerImg **//Anniversary Update**
 
-  Display a prominently image within the toast banner and while inside the Action Center. 
+<p align="center">
+<img src="https://github.com/xan105/node-powertoast/raw/master/screenshot/header.png">
+</p>
+
+  Display a prominently image within the toast banner and while inside the Action Center. <br/>
   Image dimensions are 364x180 pixels at 100% scaling.
   
   Otherwise same restriction as above.
-  
-  [screenshot]
 
 - footerImg (inline-image)
+
+<p align="center">
+<img src="https://github.com/xan105/node-powertoast/raw/master/screenshot/footer.png">
+</p>
 
   A full-width inline-image that appears at the bottom of the toast.
   Image will be resized to fit inside the toast.
@@ -179,7 +191,9 @@ toast({
   [{text: "", onClick: ""}, ...]
   ```
   
-  [screenshot]
+<p align="center">
+<img src="https://github.com/xan105/node-powertoast/raw/master/screenshot/button.png">
+</p>
   
  ```js
   
