@@ -152,7 +152,7 @@ If an image exceeds the file size, or fails to download, or times out, or is an 
   Increase the time the toast should show up for.
   **Default** to false.
   
-  Most of the time "short" is the most appropriate, and Microsoft recommend not using "long", but it can be useful for important dialogs.
+  Most of the time "short" is the most appropriate, and Microsoft recommends not using "long", but it can be useful for important dialog.
 
 - **onClick**
 
