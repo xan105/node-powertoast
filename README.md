@@ -201,7 +201,7 @@ toast({
   app.on('second-instance', (event, argv, cwd) => {  
     
     console.log(argv);
-    //[...,"helloworld"]
+    //[...,"electron:helloworld"]
 
   }) 
   ```
