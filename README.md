@@ -183,7 +183,28 @@ toast({
 }).catch(err => console.error(err));
 ```
 
-  See https://docs.microsoft.com/en-us/windows/uwp/design/shell/tiles-and-notifications/adaptive-interactive-toasts for more information.
+  **Tip**: To send args back to your electron app just [create your own URI scheme](https://msdn.microsoft.com/en-us/windows/desktop/aa767914).<br/>
+  Then in electron make your app a single instance with `app.requestSingleInstanceLock()`.<br/>
+  Then use the second-instance event to parse the new args.
+  
+  Let's say we created an electron: URI scheme;
+  Let's send a notification:
+  ```js
+  toast({
+    message: "custom URI",
+    onClick: "electron:helloworld"
+  }).catch(err => console.error(err));
+  ```
+  In electron:
+  ```js
+  if (app.requestSingleInstanceLock() !== true) { app.quit(); }
+  app.on('second-instance', (event, argv, cwd) => {  
+    
+    console.log(argv);
+    //[...,"helloworld"]
+
+  }) 
+  ```
 
 - **button**
 
@@ -207,6 +228,10 @@ toast({
 }).catch(err => console.error(err));
 
   ```
+
+<hr/>
+
+See https://docs.microsoft.com/en-us/windows/uwp/design/shell/tiles-and-notifications/adaptive-interactive-toasts for more information.
 
 Common Issues
 =============
