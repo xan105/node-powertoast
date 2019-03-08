@@ -184,7 +184,7 @@ toast({
 ```
 
   **Tip**: To send args back to your electron app just [create your own URI scheme](https://msdn.microsoft.com/en-us/windows/desktop/aa767914).<br/>
-  Then in electron make your app a single instance with `app.requestSingleInstanceLock()`.<br/>
+  Then in electron make your app a single instance with `app.requestSingleInstanceLock()`<br/>
   Then use the second-instance event to parse the new args.
   
   Let's say we created an electron: URI scheme;
