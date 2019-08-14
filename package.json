@@ -1,6 +1,6 @@
 {
   "name": "powertoast",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "Windows 10 toast notifications using PowerShell for Node.js",
   "main": "toast.js",
   "scripts": {
@@ -11,12 +11,20 @@
     "url": "git+https://github.com/xan105/node-powertoast.git"
   },
   "keywords": [
-    "toast", "notification", "windows", "notification center", "action center", "powershell"
+    "toast",
+    "notification",
+    "windows",
+    "notification center",
+    "action center",
+    "powershell"
   ],
   "author": "Anthony Beaumont",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/xan105/node-powertoast/issues"
   },
-  "homepage": "https://github.com/xan105/node-powertoast#readme"
+  "homepage": "https://github.com/xan105/node-powertoast#readme",
+  "dependencies": {
+    "rwlock": "^5.0.0"
+  }
 }

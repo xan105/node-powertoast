@@ -4,11 +4,26 @@ const os = require('os');
 const path = require('path');
 const util = require('util'); 
 const { exec } = require('child_process');
+const lock = new (require("rwlock"))();
 
 const temp = os.tmpdir() || process.env.TEMP;
 const bom = "\ufeff";
 
-module.exports = async (option = {} ) => {
+module.exports = (option = {}) => {
+      return new Promise((resolve,reject) => {
+        lock.writeLock((release) => { //Prevent Powershell script generation failure when multiple invoke at the same time
+            toast(option).then(()=>{
+              release();
+              return resolve();
+            }).catch((err)=>{
+              release();
+              return reject(err);
+            });
+        });
+      });
+}
+
+async function toast(option = {}){
   
   let script = path.join(temp,`${Date.now()}.ps1`);
   
@@ -70,11 +85,12 @@ module.exports = async (option = {} ) => {
     
     await write(script,template);
     await util.promisify(exec)(`powershell -ExecutionPolicy Bypass -File "${script}"`,{windowsHide: true});
+    
+    fs.unlink(script, ()=>{});
 
   } catch (err) {
-    throw err;
-  } finally {
     fs.unlink(script, ()=>{});
+    throw err;
   }
 }
 
