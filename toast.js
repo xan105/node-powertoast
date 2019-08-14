@@ -6,13 +6,14 @@ const util = require('util');
 const { exec } = require('child_process');
 
 const temp = os.tmpdir() || process.env.TEMP;
-const epoch = Math.floor(Date.now() / 1000);
-const script = path.join(temp,`${epoch}.ps1`);
 const bom = "\ufeff";
 
 module.exports = async (option = {} ) => {
-  try {
   
+  let script = path.join(temp,`${Date.now()}.ps1`);
+  
+  try {
+
     let options = {
       appID: option.appID || "Microsoft.WindowsStore_8wekyb3d8bbwe!App",
       title: option.title || "",
