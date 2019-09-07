@@ -1,4 +1,4 @@
-Windows 10 toast notifications using PowerShell.<br />
+Windows toast notifications using PowerShell.<br />
 ✔️ No native module.<br />
 ✔️ Promise.<br />
 
@@ -22,12 +22,11 @@ toast({
 });
 ```
 
-Install
-=======
+Older Windows limitation
+======================== 
 
-```
-npm i powertoast
-```
+Windows 7 and before don't have toast notification.
+Windows 8/8.1 have very basic notification compared to Windows 10, some options will be ignored.
 
 Options
 =======
@@ -238,7 +237,9 @@ Common Issues
 
 - I dont see any notification
 
-  check your appID
+  1 Check your appID.
+  2 Check your focus assistant and notifcation settings. Don't forget 'Quiet hours' on Windows 8.1
+  3 In some cases you need a shortcut (win8) or a non-pinned shortcut (win10) to your start menu for the specified appID.
   
 - Where is my icon/image ?
 
@@ -247,15 +248,18 @@ Common Issues
   
 - Notifications when app is fullscreen aren't displayed
   
-  Check your focus assistant and notifcation settings in the windows settings panel.
+  You can't drawn a notification over an exclusive fullscreen app.
+  But you can over a fullscreen borderless.
+  
+  Double check your focus assistant and notifcation settings in the windows settings panel.
+  Note that since Windows 10 1903 there is a new default fullscreen auto rule enabled to alarm only by default which will prevent toast notification over fullscreen borderless.
 
 - Slight delay between event and the display of the notification
 
   Running the PowerShell script can take a few seconds in some cases.
-
   If you are loading remote img resource via http/https it can significantly impact the delay if it hasn't been cached yet.
 
 - Notification don't stay in the Action center
 
-  A Win32 app notification will remove itself from the Action center when the app gets focus.<br/>
+  A Win32 appID -> notification will remove itself from the Action center when the app gets focus.<br/>
   A UWP one will not.
