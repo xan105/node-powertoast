@@ -160,13 +160,12 @@ If an image exceeds the file size, or fails to download, or times out, or is an 
 
 - **silent**
 
-  True to mute the sound; false to allow the toast notification sound to play.<br/>
-  **Default** to false.
+  True to mute the sound; false to allow the toast notification sound to play. **Default** to false.
   
 - **audio**
 
   The audio source to play when the toast is shown to the user.<br/>
-  You can't use file:/// with this ! You are limited to the Windows sound schema available in your system.<br/>
+  You **can't** use file:/// with this ! You are limited to the Windows sound schema available in your system.<br/>
   
   example: ms-winsoundevent:Notification.Default
   
