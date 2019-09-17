@@ -232,7 +232,7 @@ If an image exceeds the file size, or fails to download, or times out, or is an 
   }).catch(err => console.error(err));
   ```
 
-  **Tip**: You can create your own protocol [create your own URI scheme](https://msdn.microsoft.com/en-us/windows/desktop/aa767914).<br/>
+  **Tip**: You can create your own protocol: [create your own URI scheme](https://msdn.microsoft.com/en-us/windows/desktop/aa767914).<br/>
   And even send args back to your electron app:<br/>
   In electron just make your app a single instance with `app.requestSingleInstanceLock()`<br/>
   Then use the second-instance event to parse the new args.
