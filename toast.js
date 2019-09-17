@@ -100,7 +100,7 @@ async function toast(option = {}){
                     <text id="2">${options.message}</text>
                 </binding>  
             </visual>
-            <audio silent="${options.silent}" src="${options.audio}"/>
+            <audio silent="${options.silent}" ${(options.audio) ? `src="${options.audio}"` : ""}/>
         </toast>        
 "@
         $xml = New-Object Windows.Data.Xml.Dom.XmlDocument
