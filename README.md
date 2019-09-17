@@ -1,4 +1,4 @@
-Windows toast notifications using PowerShell for NodeJS.<br />
+Windows toast notification using PowerShell for NodeJS.<br />
 ✔️ No native module.<br />
 ✔️ Promise.<br />
 
@@ -7,7 +7,7 @@ Inspired by go-toast https://github.com/go-toast/toast
 Windows limitation
 ===================
 
-Windows 8/8.1 have very basic notification compared to Windows 10, some options will be ignored.
+Windows 8/8.1 have very basic notification compared to Windows 10, some options will be ignored.<br />
 Windows 7 and before don't have toast notification and thus will throw the error "Unsupported Windows version".<br />
 
 Example
@@ -40,7 +40,7 @@ Options
   
   ⚠️ An invalid appID will result in the notification not being displayed !
 
-  You can view all installed appid via powershell command :
+  You can view all installed appID via the powershell command :
   ```
   PS> Get-StartApps %search%
   ```
@@ -59,7 +59,7 @@ Options
   ### If you are using this module with electron :
   In Electron, you can set it at runtime using the `app.setAppUserModelId()` method.
   
-  Example with a dev electron app (*Dont forget to add a non-pinned shortcut to your start menu in this case.*)
+  Example with a dev electron app : (*Dont forget to add a non-pinned shortcut to your start menu in this case.*)
 
   <p align="center">
   <img src="https://github.com/xan105/node-powertoast/raw/master/screenshot/electron.png">
@@ -91,7 +91,7 @@ Options
 
   Reference the source of your content. This text is always displayed at the bottom of your notification, along with your app's identity or the notification's timestamp.
 
-  On older versions of Windows that don't support attribution text, the text will simply be displayed as another text element (assuming you don't already have the maximum of three text elements).
+  On older versions of Windows that don't support attribution text, the text will simply be displayed as another text element (assuming you don't already have the maximum of 3 text elements).
   
  <p align="center">
 <img src="https://github.com/xan105/node-powertoast/raw/master/screenshot/attribution.png">
@@ -115,12 +115,12 @@ Options
 
 The URI of the image source, using one of these protocol handlers:
 
-1. If you are using a UWP AppID you can use:
+1. If you are using a UWP appID you can use:
 - http:// or https://
 - ms-appx:///
 - ms-appdata:///local/
 
-2. If you are using a Win32 AppID you can use:
+2. If you are using a Win32 appID you can use:
 - file:/// (*eg: `"D:\\Desktop\\test.jpg"`*)
 
 The Icon should be an absolute path to the icon (as the toast is invoked from a temporary path on the user's system, not the working directory).
@@ -160,17 +160,17 @@ If an image exceeds the file size, or fails to download, or times out, or is an 
 
 - **silent**
 
-  True to mute the sound; false to allow the toast notification sound to play.
+  True to mute the sound; false to allow the toast notification sound to play.<br/>
   **Default** to false.
   
 - **audio**
 
-  The audio source to play when the toast is shown to the user.
-  You can't use file:/// with this ! You are limited to the Windows sound schema available in your system.
+  The audio source to play when the toast is shown to the user.<br/>
+  You can't use file:/// with this ! You are limited to the Windows sound schema available in your system.<br/>
   
   example: ms-winsoundevent:Notification.Default
   
-  TIP: But you can create your own Windows sound schema with the registry and use it for your toast:
+  **Tip**: But you can create your own Windows sound schema with the registry and use it for your toast:
   
   File must be a .wav, by default Windows sounds are located in `%WINDIR%\media`
   
@@ -213,28 +213,28 @@ If an image exceeds the file size, or fails to download, or times out, or is an 
   
   Example of protocol type action button to open up Windows 10's maps app with a pre-populated search field set to "sushi":
   
-```js
-const toast = require('powertoast');
+  ```js
+  const toast = require('powertoast');
 
-toast({
-  message: "Sushi",
-  onClick: "bingmaps:?q=sushi"
-}).catch(err => console.error(err));
-```
+  toast({
+    message: "Sushi",
+    onClick: "bingmaps:?q=sushi"
+  }).catch(err => console.error(err));
+  ```
 
   You can also redirect to an http/https resource :
   
- ```js
-const toast = require('powertoast');
+   ```js
+  const toast = require('powertoast');
 
-toast({
-  message: "Google It",
-  onClick: "https://www.google.com"
-}).catch(err => console.error(err));
-```
+  toast({
+    message: "Google It",
+    onClick: "https://www.google.com"
+  }).catch(err => console.error(err));
+  ```
 
   **Tip**: You can create your own protocol [create your own URI scheme](https://msdn.microsoft.com/en-us/windows/desktop/aa767914).<br/>
-  And even send args back to your electron app:
+  And even send args back to your electron app:<br/>
   In electron just make your app a single instance with `app.requestSingleInstanceLock()`<br/>
   Then use the second-instance event to parse the new args.
   
@@ -285,9 +285,9 @@ toast({
 - **timeStamp**
 
   Unix epoch time in seconds.<br/>
-  **Current time by default if not specified.**<br/>
+  Current time by **default** if not specified.<br/>
   
-  By default, the timestamp on toast notifications (visible within Action Center) is set to the time that the notification was sent.<br/>
+  By default, the timestamp visible within Action Center is set to the time that the notification was sent.<br/>
   You can optionally override the timestamp with your own custom date and time, so that the timestamp represents the time the message/information/content was actually created, rather than the time that the notification was sent.<br/>
   This also ensures that your notifications appear in the correct order within Action Center (which are sorted by time). Microsoft recommends that most apps specify a custom timestamp.<br/>
   But you can safely omit this option.
