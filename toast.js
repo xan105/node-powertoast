@@ -67,7 +67,7 @@ async function toast(option = {}){
     
     try{
       
-      if (option.timeStamp && typeof (option.timeStamp) === "number") { //ok
+      if (option.timeStamp && typeof (option.timeStamp) === "number") {
         options.timeStamp = new Date(option.timeStamp *1000).toISOString();
       }  
       else if (option.timeStamp && typeof (option.timeStamp) === "string") {
