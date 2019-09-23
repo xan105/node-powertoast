@@ -65,6 +65,15 @@ async function toast(option = {}){
       button: option.button || []
     };
     
+    if(option.progress) {
+      options.progress = {
+         header : option.progress.header || "",
+         percent : (option.progress.percent >= 0 && option.progress.percent <= 100) ? (option.progress.percent / 100).toFixed(2) : 0,
+         custom : option.progress.custom || "",
+         footer : option.progress.footer || "",
+      }
+    }
+    
     try{
       
       if (option.timeStamp && typeof (option.timeStamp) === "number") {
@@ -122,10 +131,11 @@ async function toast(option = {}){
                     <text><![CDATA[${options.message}]]></text>
                     <text placement="attribution"><![CDATA[${options.attribution}]]></text>
                     <image src="${options.footerImg}" />
+                    ${(options.progress) ? `<progress title="${options.progress.header}" value="${options.progress.percent}" valueStringOverride="${options.progress.custom}" status="${options.progress.footer}"/>` : ""} 
                 </binding>
             </visual>
             <actions>      
-      `;
+       `;
 
       try {    
         for (let i in options.button) {
@@ -149,7 +159,7 @@ async function toast(option = {}){
         
         $toast = New-Object Windows.UI.Notifications.ToastNotification $xml
         [Windows.UI.Notifications.ToastNotificationManager]::CreateToastNotifier($APP_ID).Show($toast)
-      `;
+        `;
     
     }
     
