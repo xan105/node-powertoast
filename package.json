@@ -1,6 +1,6 @@
 {
   "name": "powertoast",
-  "version": "1.0.6",
+  "version": "1.0.7",
   "description": "Windows toast notification using PowerShell for NodeJS.",
   "main": "toast.js",
   "scripts": {
