@@ -2,13 +2,12 @@ About
 =====
 
 Windows toast notification using PowerShell for NodeJS, electron or NW.js (windows 8, 8.1, 10).<br />
-Inspired by [https://github.com/go-toast/toast](go-toast)
+Inspired by [go-toast](https://github.com/go-toast/toast)
 
-cf: [https://docs.microsoft.com/en-us/windows/uwp/design/shell/tiles-and-notifications/adaptive-interactive-toasts](Microsoft Toast API).
-
-Doesn't use any native module everything is done through PowerShell but you can use native WinRT API instead by **optionally** installing [https://github.com/NodeRT/NodeRT](NodeRT) relative package :
+Doesn't use any native module. Everything is done through PowerShell but you can use native WinRT API instead by **optionally** installing [NodeRT](https://github.com/NodeRT/NodeRT) relative package :
 + @nodert-win10-rs4/windows.data.xml.dom
 + @nodert-win10-rs4/windows.ui.notifications
+
 This will give you a little boost as you'll not have to wait for PowerShell to start.  
 
 Example
@@ -37,10 +36,10 @@ Installation
 
 Ignore any warnings about unmet peer dependencies, as they're optional.
 
-#Optional packages
+### Optional packages
 
- + [https://www.npmjs.com/package/@nodert-win10-rs4/windows.data.xml.dom](NodeRT windows.data.xml.dom) `npm install @nodert-win10-rs4/windows.data.xml.dom`
- + [https://www.npmjs.com/package/@nodert-win10-rs4/windows.ui.notifications](NodeRT windows.ui.notifications) `npm install @nodert-win10-rs4/windows.ui.notifications`
+ + [NodeRT windows.data.xml.dom](https://www.npmjs.com/package/@nodert-win10-rs4/windows.data.xml.dom) `npm install @nodert-win10-rs4/windows.data.xml.dom`
+ + [NodeRT windows.ui.notifications](https://www.npmjs.com/package/@nodert-win10-rs4/windows.ui.notifications) `npm install @nodert-win10-rs4/windows.ui.notifications`
 
 _Prequisites: VS2017 / Python 2.7(node-gyp) / Windows SDK 10.0.17134.0 (1803 Redstone 4)_
 
@@ -50,6 +49,8 @@ Options
 
 ⚠️ Windows 8/8.1 have very basic notification compared to Windows 10, some options will be ignored.<br />
 Windows 7 and before don't have toast notification and thus will throw the error `Unsupported Windows version`.<br />
+
+📖 [Microsoft Toast API](https://docs.microsoft.com/en-us/windows/uwp/design/shell/tiles-and-notifications/adaptive-interactive-toasts).
 
 - **appID**
 
@@ -227,7 +228,8 @@ If an image exceeds the file size, or fails to download, or times out, or is an 
   Protocol to launch when the user click on the toast.<br />
   If none (**default**) click will just dismiss the notification.<br />
 
-  Only protocol type action buttons are supported as there's no way of receiving feedback from the user's choice.
+  Only protocol type action buttons are supported as there's no way of receiving feedback from the user's choice.<br />
+  (Well except if you are using NodeRT native module but I didn't implement it to match PowerShell features 😛)
   
   Example of protocol type action button to open up Windows 10's maps app with a pre-populated search field set to "sushi":
   
@@ -312,7 +314,8 @@ toast({
     footer: optional string,
     percent : percent of the progress bar, default to zero if not specified,
     custom : optional string to be displayed instead of the default percentage string,
-    tag: optional tag, you can replace a notification by sending a new toast with the same tag, prevent spamming on progress update
+    tag: optional tag, you can replace a notification by sending a new toast 
+         with the same tag, prevent spamming on progress update
   }
   ```
   
@@ -345,7 +348,8 @@ toast({
     id: use the same header id string to unify them under the header,
     title: title of the header, title can be different and will be shown above the toast.
            title from the most recent notification within a group is used in Action Center, 
-           if that notification gets removed, then the title falls back to the next most recent notification. 
+           if that notification gets removed, then the title falls back 
+           to the next most recent notification. 
   }
   ```
   
@@ -388,7 +392,7 @@ Common Issues
 - Slight delay between event and the display of the notification
 
   Running the PowerShell script can take a few seconds in some cases.<br />
-  If it really bothers you, you might want to try to use the optional NodeRT native module.
+  If it really bothers you, you might want to try to use the optional NodeRT native module.<br />
   If you are loading a remote img resource via http/https it can significantly impact the delay if it hasn't been cached yet by Windows.
 
 - Notification don't stay in the Action center
