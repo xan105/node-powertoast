@@ -1,7 +1,7 @@
 {
   "name": "powertoast",
-  "version": "1.0.7",
-  "description": "Windows toast notification using PowerShell for NodeJS.",
+  "version": "1.1.0",
+  "description": "Windows toast notification using PowerShell for NodeJS, electron or NW.js (windows 8, 8.1, 10).",
   "main": "toast.js",
   "scripts": {
     "start": "node toast.js"
@@ -16,7 +16,11 @@
     "windows",
     "notification center",
     "action center",
-    "powershell"
+    "powershell",
+    "winRT",
+    "node",
+    "electron",
+    "nw.js"
   ],
   "author": "Anthony Beaumont",
   "license": "MIT",
@@ -24,7 +28,16 @@
     "url": "https://github.com/xan105/node-powertoast/issues"
   },
   "homepage": "https://github.com/xan105/node-powertoast#readme",
-  "dependencies": {
-    "rwlock": "^5.0.0"
+  "peerDependencies": {
+    "@nodert-win10-rs4/windows.data.xml.dom": "^0.4.4",
+    "@nodert-win10-rs4/windows.ui.notifications": "^0.4.4"
+  },
+  "peerDependenciesMeta": {
+    "@nodert-win10-rs4/windows.data.xml.dom": {
+      "optional": true
+    },
+    "@nodert-win10-rs4/windows.ui.notifications": {
+      "optional": true
+    }
   }
 }
