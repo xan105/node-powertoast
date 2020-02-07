@@ -1,7 +1,7 @@
 About
 =====
 
-Windows toast notification using PowerShell for NodeJS, electron or NW.js (windows 8, 8.1, 10).<br />
+Windows toast notification using PowerShell for NodeJS, electron or NW.js (Windows 8, 8.1, 10).<br />
 Inspired by [go-toast](https://github.com/go-toast/toast)
 
 Doesn't use any native module. Everything is done through PowerShell but you can use native WinRT API instead by **optionally** installing [NodeRT](https://github.com/NodeRT/NodeRT) relative package :
