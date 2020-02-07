@@ -52,6 +52,11 @@ Windows 7 and before don't have toast notification and thus will throw the error
 
 📖 [Microsoft Toast API](https://docs.microsoft.com/en-us/windows/uwp/design/shell/tiles-and-notifications/adaptive-interactive-toasts).
 
+- **disableWinRT**
+
+  If you have installed the optional NodeRT native module but for whatever reason(s) you want to use PowerShell instead.
+  Then set this to `true`
+
 - **appID**
 
   Your [Application User Model ID](https://docs.microsoft.com/fr-fr/windows/desktop/shell/appids).
