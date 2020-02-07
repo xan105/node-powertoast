@@ -1,7 +1,7 @@
 {
   "name": "powertoast",
   "version": "1.1.0",
-  "description": "Windows toast notification using PowerShell for NodeJS, electron or NW.js (windows 8, 8.1, 10).",
+  "description": "Windows toast notification using PowerShell for NodeJS, electron or NW.js (Windows 8, 8.1, 10).",
   "main": "toast.js",
   "scripts": {
     "start": "node toast.js"
