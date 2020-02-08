@@ -8,7 +8,9 @@ Doesn't use any native module. Everything is done through PowerShell but you can
 + @nodert-win10-rs4/windows.data.xml.dom
 + @nodert-win10-rs4/windows.ui.notifications
 
-This will give you a little boost as you'll not have to wait for PowerShell to start.  
+This will give you a little boost as you'll not have to wait for PowerShell to start. 
+
+Looking for Windows balloon notification ? [node-powerballoon](https://github.com/xan105/node-powerballoon) 
 
 Example
 =======
@@ -21,7 +23,7 @@ Example
 const toast = require('powertoast');
 
 toast({
-  title: "NPM"
+  title: "NPM",
   message: "Installed.",
   icon: "https://static.npmjs.com/7a7ffabbd910fc60161bc04f2cee4160.png"
 }).catch((err) => { 
