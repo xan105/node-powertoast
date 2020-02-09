@@ -345,6 +345,24 @@ toast({
 }).catch(err => console.error(err));
   
   ```
+  
+- **uniqueID**
+
+   You can replace a notification by sending a new toast with the same uniqueID. <br/>
+   This is useful when using a progress bar or correcting/updating the information on a toast. <br/>
+   And you don't want to end up with a flood of similar toasts in the Action Center. <br/> 
+   
+   However this is not really suitable for information that frequently changes in a short period of time (like a download progress for example)
+   or subtle changes to your toast content, like changing 50% to 65%.
+
+- **sequenceNumber**
+
+    Provide sequence number to prevent out-of-order updates, or assign 0 to indicate "always update". <br/>
+    A higher sequence number indicates a newer toast. <br/>
+    _default to 0_ <br/>
+    
+    The sequence number may helps to ensure that toasts will not be displayed in a manner that may confuse when updating/correcting.
+  
 - **group** *//Creators Update*
 
     You can group notifications under a common header within Action Center<br/>

@@ -36,7 +36,9 @@ module.exports = (options) => {
 
 module.exports.legacy = (options) => {
 
-  if (options.progress && !options.message) options.message = `[ ${(options.progress.custom) ? options.progress.custom : `${options.progress.percent*100}/100`} ]\n${options.progress.header}`;
+  if (options.progress && !options.message && option.progress.percent && option.progress.percent >= 0 && option.progress.percent <= 100) {
+    options.message = `[ ${(options.progress.custom) ? options.progress.custom : `${options.progress.percent}/100`} ]\n${options.progress.header}`;
+  }
 
   let template = `<toast><visual><binding template="ToastImageAndText02">` +
                  `<image id="1" src="${options.icon}" alt="image1"/>` +
@@ -47,4 +49,3 @@ module.exports.legacy = (options) => {
   return template;
 
 }
-

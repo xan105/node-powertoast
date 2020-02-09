@@ -140,8 +140,10 @@ module.exports = async (option = {}) => {
       
       if (!toast) throw "Failed to create a new 'ToastNotification'";
       
-      toast.SequenceNumber = +options.sequenceNumber;
-      if(options.uniqueID) toast.tag = toast.group = options.uniqueID;
+      if (!legacyTemplate) {
+        toast.SequenceNumber = +options.sequenceNumber;
+        if(options.uniqueID) toast.tag = toast.group = options.uniqueID;
+      }
       
       const toaster = winRT.notifications.ToastNotificationManager.createToastNotifier(options.appID);
       
