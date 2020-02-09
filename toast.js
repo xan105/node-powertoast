@@ -45,6 +45,8 @@ module.exports = async (option = {}) => {
     
     let options = {
       appID: option.appID || defaultAppID,
+      uniqueID: option.uniqueID || null,
+      sequenceNumber: option.sequenceNumber || 0, //0 to indicate "always update"
       title: option.title || "",
       message: option.message || "",
       attribution: option.attribution || "",
@@ -62,10 +64,9 @@ module.exports = async (option = {}) => {
     if(option.progress) {
       options.progress = {
          header : option.progress.header || "",
-         percent : (option.progress.percent >= 0 && option.progress.percent <= 100) ? (option.progress.percent / 100).toFixed(2) : 0,
+         percent : (option.progress.percent && option.progress.percent >= 0 && option.progress.percent <= 100) ? (option.progress.percent / 100).toFixed(2) : "indeterminate",
          custom : option.progress.custom || "",
-         footer : option.progress.footer || "",
-         tag: option.progress.tag || null
+         footer : option.progress.footer || ""
       }
     }
     
@@ -107,8 +108,9 @@ module.exports = async (option = {}) => {
                     `$xml = New-Object Windows.Data.Xml.Dom.XmlDocument`+ os.EOL +
                     `$xml.LoadXml($template)` + os.EOL +
                     `$toast = New-Object Windows.UI.Notifications.ToastNotification $xml` + os.EOL;
+                    `$toast.SequenceNumber = ${options.sequenceNumber}` + os.EOL;
             
-        if(options.progress && options.progress.tag) template += `$toast.tag = "${options.progress.tag}"` + os.EOL;
+        if(options.uniqueID) template += `$toast.tag = "${options.uniqueID}"` + os.EOL + `$toast.group = "${options.uniqueID}"` + os.EOL ;
             
         template += `[Windows.UI.Notifications.ToastNotificationManager]::CreateToastNotifier($APP_ID).Show($toast)`;
       } else {
@@ -138,7 +140,8 @@ module.exports = async (option = {}) => {
       
       if (!toast) throw "Failed to create a new 'ToastNotification'";
       
-      if(options.progress && options.progress.tag) toast.tag = options.progress.tag; 
+      toast.SequenceNumber = +options.sequenceNumber;
+      if(options.uniqueID) toast.tag = toast.group = options.uniqueID;
       
       const toaster = winRT.notifications.ToastNotificationManager.createToastNotifier(options.appID);
       
