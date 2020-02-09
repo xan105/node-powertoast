@@ -36,14 +36,14 @@ Installation
 
 `npm install powertoast`
 
-Ignore any warnings about unmet peer dependencies, as they're optional.
-
 ### Optional packages
 
- + [NodeRT windows.data.xml.dom](https://www.npmjs.com/package/@nodert-win10-rs4/windows.data.xml.dom) `npm install @nodert-win10-rs4/windows.data.xml.dom`
- + [NodeRT windows.ui.notifications](https://www.npmjs.com/package/@nodert-win10-rs4/windows.ui.notifications) `npm install @nodert-win10-rs4/windows.ui.notifications`
-
 _Prequisites: VS2017 / Python 2.7(node-gyp) / Windows SDK 10.0.17134.0 (1803 Redstone 4)_
+
+ + [NodeRT windows.data.xml.dom](https://www.npmjs.com/package/@nodert-win10-rs4/windows.data.xml.dom)<br />
+ `npm install @nodert-win10-rs4/windows.data.xml.dom`
+ + [NodeRT windows.ui.notifications](https://www.npmjs.com/package/@nodert-win10-rs4/windows.ui.notifications)<br /> 
+ `npm install @nodert-win10-rs4/windows.ui.notifications`
 
 
 Options
@@ -319,10 +319,8 @@ toast({
   {
     header : optional string,
     footer: optional string,
-    percent : percent of the progress bar, default to zero if not specified,
-    custom : optional string to be displayed instead of the default percentage string,
-    tag: optional tag, you can replace a notification by sending a new toast 
-         with the same tag, prevent spamming on progress update
+    percent : percent of the progress bar, set it to null to get a progress with the little dots moving,
+    custom : optional string to be displayed instead of the default percentage string
   }
   ```
   
