@@ -23,7 +23,7 @@ toast({
   progress:{
     header: "up",
     footer: "down",
-    percent: 92,
-    tag: "id0"
-  }
+    percent: 92
+  },
+  uniqueID: "id0"
 }).then(()=>{console.log("ok")}).catch((err)=>{console.log(err)});
