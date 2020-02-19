@@ -52,7 +52,7 @@ Options
 ⚠️ Windows 8/8.1 have very basic notification compared to Windows 10, some options will be ignored.<br />
 Windows 7 and before don't have toast notification and thus will throw the error `Unsupported Windows version`.<br />
 
-📖 [Microsoft Toast API](https://docs.microsoft.com/en-us/windows/uwp/design/shell/tiles-and-notifications/adaptive-interactive-toasts).
+📖 [Microsoft Toast API](https://docs.microsoft.com/en-us/windows/uwp/design/shell/tiles-and-notifications/adaptive-interactive-toasts).<br />
 📖 [Toast content XML schema](https://docs.microsoft.com/en-us/windows/uwp/design/shell/tiles-and-notifications/toast-xml-schema).
 
 - **disableWinRT**
@@ -141,27 +141,27 @@ Windows 7 and before don't have toast notification and thus will throw the error
 
 - **icon**
 
-The URI of the image source, using one of these protocol handlers:
+  The URI of the image source, using one of these protocol handlers:
 
-1. If you are using a UWP appID you can use:
-- http:// or https://
-- ms-appx:///
-- ms-appdata:///local/
+  1. If you are using a UWP appID you can use:
+  - http:// or https://
+  - ms-appx:///
+  - ms-appdata:///local/
 
-2. If you are using a Win32 appID you can use:
-- file:/// (*eg: `"D:\\Desktop\\test.jpg"`*)
+  2. If you are using a Win32 appID you can use:
+  - file:/// (*eg: `"D:\\Desktop\\test.jpg"`*)
 
-The Icon should be an absolute path to the icon (as the toast is invoked from a temporary path on the user's system, not the working directory).
+  The Icon should be an absolute path to the icon (as the toast is invoked from a temporary path on the user's system, not the working directory).
 
-Icon dimensions are 48x48 pixels at 100% scaling.
+  Icon dimensions are 48x48 pixels at 100% scaling.
 
-.png and .jpeg are supported.
+  .png and .jpeg are supported.
 
-For http and https remote web images, there are limits on the file size of each individual image. <br/>
-3 MB on normal connections and 1 MB on metered connections. <br/>
-Before Fall Creators Update, images were always limited to 200 KB.<br/>
+  For http and https remote web images, there are limits on the file size of each individual image. <br/>
+  3 MB on normal connections and 1 MB on metered connections. <br/>
+  Before Fall Creators Update, images were always limited to 200 KB.<br/>
 
-If an image exceeds the file size, or fails to download, or times out, or is an unvalid format the image will be dropped and the rest of the notification will be displayed.
+  If an image exceeds the file size, or fails to download, or times out, or is an unvalid format the image will be dropped and the rest of the notification will be displayed.
 
 - **cropIcon**
 
@@ -171,9 +171,9 @@ If an image exceeds the file size, or fails to download, or times out, or is an 
 
 - **headerImg** *//Anniversary Update*
 
-<p align="center">
-<img src="https://github.com/xan105/node-powertoast/raw/master/screenshot/header.png">
-</p>
+  <p align="center">
+  <img src="https://github.com/xan105/node-powertoast/raw/master/screenshot/header.png">
+  </p>
 
   Display a prominently image within the toast banner and inside the Action Center if there is enough room. <br/>
   Image dimensions are 364x180 pixels at 100% scaling.
@@ -183,9 +183,9 @@ If an image exceeds the file size, or fails to download, or times out, or is an 
 
 - **footerImg** *(inline-image)*
 
-<p align="center">
-<img src="https://github.com/xan105/node-powertoast/raw/master/screenshot/footer.png">
-</p>
+  <p align="center">
+  <img src="https://github.com/xan105/node-powertoast/raw/master/screenshot/footer.png">
+  </p>
 
   A full-width inline-image that appears at the bottom of the toast and inside the Action Center if there is enough room.
   Image will be resized to fit inside the toast.
@@ -232,18 +232,18 @@ If an image exceeds the file size, or fails to download, or times out, or is an 
   
 - **longTime**
 
-  Increase the time the toast should show up for.
+  Increase the time the toast should show up for.<br />
   **Default** to false.
   
-  Most of the time "short" (default) is the most appropriate, and Microsoft recommends not using "long".
+  Most of the time "short" (default) is the most appropriate, and Microsoft recommends not using "long".<br />
   This is only here for specific scenarios and app compatibility (Windows 8).
   
-  Long is around ~ 25sec
-  Short is the user defined value (Windows settings > Ease of Access > Display > Show notification for ...)
+  Long is around ~ 25sec<br />
+  Short is the user defined value (_Windows settings > Ease of Access > Display > Show notification for ..._)
   
   Or registry: `HKCU\Control Panel\Accessibility` -> `MessageDuration`::DWORD (Not recommended)
   
-  Default to 5sec; Available: 5,7,15,30,1min,5min
+  User value default to 5sec; Available: 5,7,15,30,1min,5min
 
 - **onClick**
 
@@ -329,16 +329,18 @@ toast({
   
 - **scenario**
 
-  "default", "alarm", "reminder", "incomingCall"; **Default** to, well, 'default'.
+  "default", "alarm", "reminder", "incomingCall"<br />
+  **Default** to ... well, 'default'.
 
   The scenario adjusts a few behaviors:
 
-  + Reminder: The notification will stay on screen until the user dismisses it or takes action (Sticky notification).
-    Microsoft doesn't recommend to use this just for keeping your notification persistent on screen.
-  + Alarm: In addition to the reminder behaviors, alarms will additionally loop audio with a default alarm sound.
-  + IncomingCall: Same behaviors as alarms except they use ringtone audio and their buttons are styled differently (displayed full screen on Windows Mobile devices).
-
-  When using Reminder or Alarm, you must provide at least one button on your toast notification. Otherwise, the toast will be treated as a normal toast.
+  + **Reminder**: The notification will stay on screen until the user dismisses it or takes action (Sticky notification).
+    _Microsoft doesn't recommend to use this just for keeping your notification persistent on screen_.
+  + **Alarm**: In addition to the reminder behaviors, alarms will additionally loop audio with a default alarm sound.
+  + **IncomingCall**: Same behaviors as alarms except they use ringtone audio and their buttons are styled differently (displayed full screen on Windows Mobile devices).
+  <br />
+  When using Reminder or Alarm, you must provide at least one button on your toast notification.<br /> 
+  Otherwise, the toast will be treated as a normal toast.
   
 - **progress** *//Creators Update* 
 
