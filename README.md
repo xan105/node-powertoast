@@ -53,6 +53,7 @@ Options
 Windows 7 and before don't have toast notification and thus will throw the error `Unsupported Windows version`.<br />
 
 📖 [Microsoft Toast API](https://docs.microsoft.com/en-us/windows/uwp/design/shell/tiles-and-notifications/adaptive-interactive-toasts).
+📖 [Toast content XML schema](https://docs.microsoft.com/en-us/windows/uwp/design/shell/tiles-and-notifications/toast-xml-schema).
 
 - **disableWinRT**
 
@@ -162,6 +163,12 @@ Before Fall Creators Update, images were always limited to 200 KB.<br/>
 
 If an image exceeds the file size, or fails to download, or times out, or is an unvalid format the image will be dropped and the rest of the notification will be displayed.
 
+- **cropIcon**
+
+  You can use this to 'circle-crop' your image (true). Otherwise, the image is square (false).
+  
+  **default** to false.
+
 - **headerImg** *//Anniversary Update*
 
 <p align="center">
@@ -228,7 +235,15 @@ If an image exceeds the file size, or fails to download, or times out, or is an 
   Increase the time the toast should show up for.
   **Default** to false.
   
-  Most of the time "short" is the most appropriate, and Microsoft recommends not using "long", but it can be useful for important dialog.
+  Most of the time "short" (default) is the most appropriate, and Microsoft recommends not using "long".
+  This is only here for specific scenarios and app compatibility (Windows 8).
+  
+  Long is around ~ 25sec
+  Short is the user defined value (Windows settings > Ease of Access > Display > Show notification for ...)
+  
+  Or registry: `HKCU\Control Panel\Accessibility` -> `MessageDuration`::DWORD (Not recommended)
+  
+  Default to 5sec; Available: 5,7,15,30,1min,5min
 
 - **onClick**
 
@@ -311,6 +326,19 @@ toast({
 }).catch(err => console.error(err));
 
   ```
+  
+- **scenario**
+
+  "default", "alarm", "reminder", "incomingCall"; **Default** to, well, 'default'.
+
+  The scenario adjusts a few behaviors:
+
+  + Reminder: The notification will stay on screen until the user dismisses it or takes action (Sticky notification).
+    Microsoft doesn't recommend to use this just for keeping your notification persistent on screen.
+  + Alarm: In addition to the reminder behaviors, alarms will additionally loop audio with a default alarm sound.
+  + IncomingCall: Same behaviors as alarms except they use ringtone audio and their buttons are styled differently (displayed full screen on Windows Mobile devices).
+
+  When using Reminder or Alarm, you must provide at least one button on your toast notification. Otherwise, the toast will be treated as a normal toast.
   
 - **progress** *//Creators Update* 
 
@@ -422,3 +450,12 @@ Common Issues
 
   When using a Win32 appID notification will remove itself from the Action center when the app gets focus.<br/>
   Use a UWP appID instead.
+  
+Known missing features
+======================
+
+  + Expiration time
+  + Supress toast : send directly to Action Center
+  + Adaptative progress bar update
+  + Context menu button
+  + Action(OnClick,OnDismiss)/button js callback (Already explained why in this doc)

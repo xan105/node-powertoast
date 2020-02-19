@@ -4,10 +4,12 @@ const toast = require('./toast.js');
 
 toast({
   disableWinRT: true,
+  scenario: "reminder",
   appID: "Microsoft.XboxApp_8wekyb3d8bbwe!Microsoft.XboxApp",
   title: "Dummy",
   message: "Hello World",
   icon: "https://steamcdn-a.akamaihd.net/steamcommunity/public/images/apps/480/winner.jpg",
+  cropIcon: true,
   attribution: "Achievement",
   timeStamp: "1568710924",
   button: [

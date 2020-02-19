@@ -43,6 +43,8 @@ module.exports = async (option = {}) => {
 
     const defaultAppID = (legacyTemplate) ? "winstore_cw5n1h2txyewy!Windows.Store" : "Microsoft.WindowsStore_8wekyb3d8bbwe!App";
     
+    const scenarios = ["default", "alarm", "reminder", "incomingCall"];
+    
     let options = {
       appID: option.appID || defaultAppID,
       uniqueID: option.uniqueID || null,
@@ -51,6 +53,7 @@ module.exports = async (option = {}) => {
       message: option.message || "",
       attribution: option.attribution || "",
       icon: option.icon || "",
+      cropIcon: option.cropIcon || false,
       headerImg: option.headerImg || "",
       footerImg: option.footerImg || "",
       silent: option.silent || false,
@@ -58,7 +61,8 @@ module.exports = async (option = {}) => {
       longTime: option.longTime || false,
       onClick: option.onClick || "",
       button: option.button || [],
-      group: option.group || null
+      group: option.group || null,
+      scenario: (scenarios.includes(option.scenario)) ? option.scenario : "default"
     };
     
     if(option.progress) {

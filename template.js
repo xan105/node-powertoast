@@ -1,13 +1,13 @@
-'use-strict';
+'use strict';
 
 module.exports = (options) => {
 
-  let template = `<toast ${(options.timeStamp) ? `displayTimestamp="${options.timeStamp}" `:``}activationType="protocol" launch="${options.onClick}" duration="${options.longTime ? "Long" : "Short"}">`;
+  let template = `<toast ${(options.timeStamp) ? `displayTimestamp="${options.timeStamp}" `:``}activationType="protocol" scenario="${options.scenario}" launch="${options.onClick}" duration="${options.longTime ? "Long" : "Short"}">`;
   
   if (options.group && options.group.id && options.group.title) template += `<header id="${options.group.id}" title="${options.group.title}" arguments="" />`;
   
   template += `<visual><binding template="ToastGeneric">` + 
-              `<image placement="appLogoOverride" src="${options.icon}" />` + 
+              `<image placement="appLogoOverride" src="${options.icon}" hint-crop="${options.cropIcon ? "circle" : "none"}"/>` + 
               `<image placement="hero" src="${options.headerImg}"/>` +
               `<text><![CDATA[${options.title}]]></text>` +
               `<text><![CDATA[${options.message}]]></text>` +
