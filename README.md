@@ -333,17 +333,18 @@ toast({
 
   ```
   
-  You can add icons to your buttons. These icons are white transparent 16x16 pixel images at 100% scaling, and should have no padding included in the image itself.<br />
-  In order to transforms the style of your buttons into icon buttons you have to provide icons for _ALL_ of your buttons in the notification.
+  You can add icons to your buttons.<br />
+  These icons are white transparent 16x16 pixel images at 100% scaling, and should have no padding included in the image itself.<br />
+  In order to transforms the style of your buttons into icon buttons you have to provide icons for **ALL** of your buttons in the notification.
   
 <p align="center">
 <img src="https://github.com/xan105/node-powertoast/raw/master/screenshot/btn-icon.png">
 </p>
   
   You can add additional context menu actions to the existing context menu that appears when the user right clicks your toast from within Action Center by using `contextMenu: true`.<br />
-  Note that this menu only appears when right clicked from Action Center. It does not appear when right clicking a toast popup banner.<br />
-  Anniversary Update and up, on older version these additional context menu actions will simply appear as normal buttons on your toast.<br />
-  Additional context menu items contribute to the total limit of 5 buttons on a toast.<br />
+This menu only appears when right clicked from Action Center. It does not appear when right clicking a toast popup banner.
+Anniversary Update and up, on older version these additional context menu actions will simply appear as normal buttons on your toast.
+Additional context menu items contribute to the total limit of 5 buttons on a toast.
   
 - **scenario**
 
