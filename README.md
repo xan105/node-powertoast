@@ -151,8 +151,6 @@ Windows 7 and before don't have toast notification and thus will throw the error
   2. If you are using a Win32 appID you can use:
   - file:/// (*eg: `"D:\\Desktop\\test.jpg"`*)
 
-  The Icon should be an absolute path to the icon (as the toast is invoked from a temporary path on the user's system, not the working directory).
-
   Icon dimensions are 48x48 pixels at 100% scaling.
 
   .png and .jpeg are supported.
@@ -304,8 +302,16 @@ Windows 7 and before don't have toast notification and thus will throw the error
   Array of buttons to add to your toast. You can only have up to 5 buttons. <br/>
   After the 5th they will be ignored.
   
-  ```
-  [{text: "", onClick: ""}, ...]
+  ```js
+  [
+    {
+      text: "", 
+      onClick: "",
+      icon: "", //Optional icon path
+      contextMenu: true //Optional placement to context menu (Anniversary Update)
+    },
+    ...
+  ]
   ```
   
 <p align="center">
@@ -326,6 +332,18 @@ toast({
 }).catch(err => console.error(err));
 
   ```
+  
+  You can add icons to your buttons. These icons are white transparent 16x16 pixel images at 100% scaling, and should have no padding included in the image itself.<br />
+  In order to transforms the style of your buttons into icon buttons you have to provide icons for _ALL_ of your buttons in the notification.
+  
+<p align="center">
+<img src="https://github.com/xan105/node-powertoast/raw/master/screenshot/btn-icon.png">
+</p>
+  
+  You can add additional context menu actions to the existing context menu that appears when the user right clicks your toast from within Action Center by using `contextMenu: true`.<br />
+  Note that this menu only appears when right clicked from Action Center. It does not appear when right clicking a toast popup banner.<br />
+  Anniversary Update and up, on older version these additional context menu actions will simply appear as normal buttons on your toast.<br />
+  Additional context menu items contribute to the total limit of 5 buttons on a toast.<br />
   
 - **scenario**
 
