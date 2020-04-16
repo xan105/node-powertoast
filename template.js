@@ -1,5 +1,7 @@
 'use strict';
 
+const path = require('path');
+
 module.exports = (options) => {
 
   let template = `<toast ${(options.timeStamp) ? `displayTimestamp="${options.timeStamp}" `:``}activationType="protocol" scenario="${options.scenario}" launch="${options.onClick}" duration="${options.longTime ? "Long" : "Short"}">`;
@@ -7,12 +9,12 @@ module.exports = (options) => {
   if (options.group && options.group.id && options.group.title) template += `<header id="${options.group.id}" title="${options.group.title}" arguments="" />`;
   
   template += `<visual><binding template="ToastGeneric">` + 
-              `<image placement="appLogoOverride" src="${options.icon}" hint-crop="${options.cropIcon ? "circle" : "none"}"/>` + 
-              `<image placement="hero" src="${options.headerImg}"/>` +
+              `<image placement="appLogoOverride" src="${imgResolve(options.icon)}" hint-crop="${options.cropIcon ? "circle" : "none"}"/>` + 
+              `<image placement="hero" src="${imgResolve(options.headerImg)}"/>` +
               `<text><![CDATA[${options.title}]]></text>` +
               `<text><![CDATA[${options.message}]]></text>` +
               `<text placement="attribution"><![CDATA[${options.attribution}]]></text>`+
-              `<image src="${options.footerImg}" />`;
+              `<image src="${imgResolve(options.footerImg)}" />`;
               
   if (options.progress) template += `<progress title="${options.progress.header}" value="${options.progress.percent}" valueStringOverride="${options.progress.custom}" status="${options.progress.footer}"/>`;
   
@@ -22,7 +24,7 @@ module.exports = (options) => {
     for (let i in options.button) {
          if ( i <= 4) { //You can only have up to 5 buttons; Ignoring after max button count reached 
             if (options.button[i].text && options.button[i].onClick) {
-                 template += `<action content="${options.button[i].text}" arguments="${options.button[i].onClick}" activationType="protocol"/>`;
+                template +=  `<action content="${options.button[i].text}" placement="${(options.button[i].contextMenu === true) ? 'contextMenu' : ''}" imageUri="${imgResolve(options.button[i].icon)}" arguments="${options.button[i].onClick}" activationType="protocol"/>`;
             } 
         }
     }
@@ -41,11 +43,16 @@ module.exports.legacy = (options) => {
   }
 
   let template = `<toast><visual><binding template="ToastImageAndText02">` +
-                 `<image id="1" src="${options.icon}" alt="image1"/>` +
+                 `<image id="1" src="${imgResolve(options.icon)}" alt="image1"/>` +
                  `<text id="1">${options.title}</text>` +
                  `<text id="2">${options.message}</text>` + 
                  `</binding></visual><audio silent="${options.silent}" ${(options.audio) ? `src="${options.audio}"` : ""}/></toast>`;
 
   return template;
 
+}
+
+function imgResolve(dest = "") {
+  if ( !dest.startsWith("http://") && !dest.startsWith("https://") && dest != "") dest = path.resolve(dest);
+  return dest;
 }

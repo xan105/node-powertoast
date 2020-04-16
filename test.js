@@ -14,7 +14,7 @@ toast({
   timeStamp: "1568710924",
   button: [
     {text: "1", onClick: "bingmaps:?q=sushi"},
-    {text: "2", onClick: "bingmaps:?q=sushi"},
+    {text: "2", onClick: "bingmaps:?q=sushi", contextMenu: true},
     {text: "3", onClick: "bingmaps:?q=sushi"},
     {text: "4", onClick: "bingmaps:?q=sushi"},
     {text: "5", onClick: "bingmaps:?q=sushi"},
@@ -27,5 +27,10 @@ toast({
     footer: "down",
     percent: 92
   },
-  uniqueID: "id0"
+  uniqueID: "id0",
+  group: {
+    id: "id1",
+    title: "group"
+  },
+  headerImg: "screenshot/example.png"
 }).then(()=>{console.log("ok")}).catch((err)=>{console.log(err)});
