@@ -248,8 +248,8 @@ Windows 7 and before don't have toast notification and thus will throw the error
   Protocol to launch when the user click on the toast.<br />
   If none (**default**) click will just dismiss the notification.<br />
 
-  Only protocol type action buttons are supported as there's no way of receiving feedback from the user's choice.<br />
-  (Well except if you are using NodeRT native module but I didn't implement it to match PowerShell features 😛)
+  ⚠️ Only protocol type action buttons are supported as there's no way of receiving feedback from the user's choice via PowerShell.<br />
+  If you are using NodeRT native module and you want to excecute some js code when the user click on the toast or when the toast is dismissed then please see the callback option section below.<br />
   
   Example of protocol type action button to open up Windows 10's maps app with a pre-populated search field set to "sushi":
   
@@ -306,7 +306,7 @@ Windows 7 and before don't have toast notification and thus will throw the error
   [
     {
       text: "", 
-      onClick: "",
+      onClick: "", //Protocol to launch (see previous onClick section)
       icon: "", //Optional icon path
       contextMenu: true //Optional placement to context menu (Anniversary Update)
     },
@@ -345,6 +345,36 @@ toast({
 This menu only appears when right clicked from Action Center. It does not appear when right clicking a toast popup banner.
 Anniversary Update and up, on older version these additional context menu actions will simply appear as normal buttons on your toast.
 Additional context menu items contribute to the total limit of 5 buttons on a toast.
+
+- **callback** (⚠️ WinRT only)
+
+  Callback to excecute when user activates a toast notification through a click or when a toast notification leaves the screen, either by expiring or being explicitly dismissed by the user.<br />
+  
+  Because of how [nodert](https://github.com/NodeRT/NodeRT) works registered event listener does not keep the event loop alive so you will need to provide a timeout value to keep it alive (default to 5sec as it is the default notification duration but keep in mind some users might have change this value in their Windows settings).<br />
+  
+  The promise will resolve as soon as possible and will not wait for the keep-a-live. The keep-a-live is only to permit WinRT events to register.<br />
+  
+  ```js
+  const toast = require('powertoast');
+
+  toast({
+    title: "Hello",
+    message: "world",
+    callback: { 
+      timeout: 5000, //keep-a-live in ms
+      onActivated: ()=>{ console.log("activated") },
+      onDismissed: (reason)=>{ console.log(reason) }
+  })
+  .then(()=> console.log("Notified")
+  .catch(err => console.error(err));
+  ```
+  
+  `onDismissed` gives you an optional reason:
+    + userCanceled (0)
+    + applicationHidden (2)
+    + timeout (when the keep-a-live has been reached)
+    
+    In the case the reason is none of the above then the value will be the reason integer code. You are welcome to tell me any reason code I'm un-aware of.
   
 - **scenario**
 
@@ -450,7 +480,6 @@ Common Issues
   
 - Where is my icon/image ?
 
-  Check url or path (should be an absolute path as the toast is invoked from a temporary path on the user's system, not the working directory).<br />
   If an image exceeds the file size, or fails to download, or times out, or is an unvalid format the image will be dropped and the rest of the notification will be displayed.
   
 - Notifications when app is fullscreen aren't displayed
@@ -478,5 +507,3 @@ Known missing features
   + Expiration time
   + Supress toast : send directly to Action Center
   + Adaptative progress bar update
-  + Context menu button
-  + Action(OnClick,OnDismiss)/button js callback (Already explained why in this doc)

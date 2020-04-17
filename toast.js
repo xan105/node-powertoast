@@ -3,7 +3,7 @@
 const os = require('os');
 const fs = require('fs');
 const path = require('path');
-const util = require('util'); 
+const util = require('util');
 const { exec } = require('child_process');
 const templateXml = require('./template.js');
 
@@ -71,6 +71,14 @@ module.exports = async (option = {}) => {
          percent : (option.progress.percent && option.progress.percent >= 0 && option.progress.percent <= 100) ? (option.progress.percent / 100).toFixed(2) : "indeterminate",
          custom : option.progress.custom || "",
          footer : option.progress.footer || ""
+      }
+    }
+    
+    if(option.callback) {
+      options.callback = {
+        timeout: (Number.isInteger(option.callback.timeout)) ? option.callback.timeout : 5000,
+        onActivated: option.callback.onActivated || function(){},
+        onDismissed: option.callback.onDismissed || function(){} 
       }
     }
     
@@ -162,9 +170,42 @@ module.exports = async (option = {}) => {
       } else if (toaster.setting === 4) {
         throw "Notifications are disabled for this app only (Windows settings)"
       }
-
-      return toaster.show(toast);
       
+      if (options.callback) {
+        
+        //WinRT: registered event listener does not keep the event loop alive
+        //Keep it alive for user provided amount of time
+        const keepalive = setTimeout(()=>{
+          options.callback.onDismissed("timeout");
+        },options.callback.timeout + 400); //Add a little delay so the event loop has time to register the toast dismissal reason when timeout == toast notification display duration.
+        
+        toast.on('activated', () => {
+            clearTimeout(keepalive);
+            options.callback.onActivated();
+        });
+        
+        toast.on('dismissed', (_, { reason }) => {
+          clearTimeout(keepalive);
+          if (reason === 0) {
+            options.callback.onDismissed("userCanceled");
+          } else if (reason === 2){
+            options.callback.onDismissed("applicationHidden");
+          } else {
+            options.callback.onDismissed(reason);
+          }
+        })
+      
+        toast.on('failed', (_, { error }) => { 
+          clearTimeout(keepalive);
+          throw `Failure to raise notification: ${error.ErrorCode}`;
+        });
+      
+        toaster.show(toast);
+      
+      } else {
+        return toaster.show(toast);
+      }
+ 
     }
 
   }catch(err) {

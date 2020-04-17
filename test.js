@@ -3,8 +3,7 @@
 const toast = require('./toast.js');
 
 toast({
-  disableWinRT: true,
-  scenario: "reminder",
+  disableWinRT: false,
   appID: "Microsoft.XboxApp_8wekyb3d8bbwe!Microsoft.XboxApp",
   title: "Dummy",
   message: "Hello World",
@@ -12,6 +11,7 @@ toast({
   cropIcon: true,
   attribution: "Achievement",
   timeStamp: "1568710924",
+  onClick: "bingmaps:?q=sushi",
   button: [
     {text: "1", onClick: "bingmaps:?q=sushi"},
     {text: "2", onClick: "bingmaps:?q=sushi", contextMenu: true},
@@ -32,5 +32,11 @@ toast({
     id: "id1",
     title: "group"
   },
-  headerImg: "screenshot/example.png"
+  headerImg: "screenshot/example.png",
+  callback: { 
+    timeout: 7000,
+    onActivated: ()=>{ console.log("activated") },
+    onDismissed: (reason)=>{ console.log(reason) }
+  }
 }).then(()=>{console.log("ok")}).catch((err)=>{console.log(err)});
+
