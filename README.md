@@ -1,14 +1,14 @@
 About
 =====
 
-Windows toast notification using PowerShell for NodeJS, electron or NW.js (Windows 8, 8.1, 10).<br />
+Windows toast notification using PowerShell or WinRT for NodeJS, electron and NW.js (Windows 8, 8.1, 10).<br />
 Inspired by [go-toast](https://github.com/go-toast/toast)
 
 Doesn't use any native module. Everything is done through PowerShell but you can use native WinRT API instead by **optionally** installing [NodeRT](https://github.com/NodeRT/NodeRT) relative package :
 + @nodert-win10-rs4/windows.data.xml.dom
 + @nodert-win10-rs4/windows.ui.notifications
 
-This will give you a little boost as you'll not have to wait for PowerShell to start. 
+Using NodeRT is a bit faster as you don't have to wait for the PowerShell VM to start and you'll be able to register to the onActivated/onDismissed callback.
 
 Looking for Windows balloon notification ? [node-powerballoon](https://github.com/xan105/node-powerballoon) 
 
@@ -351,7 +351,7 @@ Additional context menu items contribute to the total limit of 5 buttons on a to
 
   Callback to excecute when user activates a toast notification through a click or when a toast notification leaves the screen, either by expiring or being explicitly dismissed by the user.<br />
   
-  Because of how [nodert](https://github.com/NodeRT/NodeRT) works registered event listener does not keep the event loop alive so you will need to provide a timeout value to keep it alive (default to 5sec as it is the default notification duration but keep in mind some users might have change this value in their Windows settings).<br />
+  Because of how [NodeRT](https://github.com/NodeRT/NodeRT) works registered event listener does not keep the event loop alive so you will need to provide a timeout value to keep it alive (default to 5sec as it is the default notification duration but keep in mind some users might have change this value in their Windows settings).<br />
   
   The promise will resolve as soon as possible and will not wait for the keep-a-live. The keep-a-live is only to permit WinRT events to register.<br />
   
