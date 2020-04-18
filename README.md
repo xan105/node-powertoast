@@ -2,7 +2,6 @@ About
 =====
 
 Windows toast notification using PowerShell or WinRT for NodeJS, electron and NW.js (Windows 8, 8.1, 10).<br />
-Inspired by [go-toast](https://github.com/go-toast/toast)
 
 Doesn't use any native module. Everything is done through PowerShell but you can use native WinRT API instead by **optionally** installing [NodeRT](https://github.com/NodeRT/NodeRT) relative package :
 + @nodert-win10-rs4/windows.data.xml.dom
@@ -19,9 +18,11 @@ Example
 </p>
 
 ```js 
-//Sending a simple notification
 const toast = require('powertoast'); //CommonJS
+//OR
 import toast from 'powertoast'; //ES Module
+
+//Sending a simple notification
 
 toast({
   title: "NPM",
@@ -46,15 +47,17 @@ _Prequisites: VS2017 / Python 2.7(node-gyp) / Windows SDK 10.0.17134.0 (1803 Red
  + [NodeRT windows.ui.notifications](https://www.npmjs.com/package/@nodert-win10-rs4/windows.ui.notifications)<br /> 
  `npm install @nodert-win10-rs4/windows.ui.notifications`
 
+Microsoft doc
+=============
+
+📖 [Microsoft Toast API](https://docs.microsoft.com/en-us/windows/uwp/design/shell/tiles-and-notifications/adaptive-interactive-toasts).<br />
+📖 [Toast content XML schema](https://docs.microsoft.com/en-us/windows/uwp/design/shell/tiles-and-notifications/toast-xml-schema).
 
 Options
 =======
 
 ⚠️ Windows 8/8.1 have very basic notification compared to Windows 10, some options will be ignored.<br />
 Windows 7 and before don't have toast notification and thus will throw the error `Unsupported Windows version`.<br />
-
-📖 [Microsoft Toast API](https://docs.microsoft.com/en-us/windows/uwp/design/shell/tiles-and-notifications/adaptive-interactive-toasts).<br />
-📖 [Toast content XML schema](https://docs.microsoft.com/en-us/windows/uwp/design/shell/tiles-and-notifications/toast-xml-schema).
 
 - **disableWinRT**
 
@@ -240,17 +243,18 @@ Windows 7 and before don't have toast notification and thus will throw the error
   Long is around ~ 25sec<br />
   Short is the user defined value (_Windows settings > Ease of Access > Display > Show notification for ..._)
   
-  Or registry: `HKCU\Control Panel\Accessibility` -> `MessageDuration`::DWORD (Not recommended)
+  Or registry: `HKCU\Control Panel\Accessibility` -> `MessageDuration`::DWORD (Not recommended to directly modify registry value)
   
-  User value default to 5sec; Available: 5,7,15,30,1min,5min
+  User value default to 5sec; <br/>
+  Available: 5, 7, 15, 30, 1min, 5min
 
 - **onClick**
 
   Protocol to launch when the user click on the toast.<br />
   If none (**default**) click will just dismiss the notification.<br />
 
-  ⚠️ Only protocol type action buttons are supported as there's no way of receiving feedback from the user's choice via PowerShell.<br />
-  If you are using NodeRT native module and you want to excecute some js code when the user click on the toast or when the toast is dismissed then please see the callback option section below.<br />
+  ⚠️ Only protocol type action is supported as there's no way of receiving feedback from the user's choice via PowerShell.<br />
+  If you are using NodeRT native module and you want to execute some js code when the user click on the toast or when the toast is dismissed then please see the callback option section down below.<br />
   
   Example of protocol type action button to open up Windows 10's maps app with a pre-populated search field set to "sushi":
   
@@ -349,7 +353,7 @@ Additional context menu items contribute to the total limit of 5 buttons on a to
 
 - **callback** (⚠️ WinRT only)
 
-  Callback to excecute when user activates a toast notification through a click or when a toast notification leaves the screen, either by expiring or being explicitly dismissed by the user.<br />
+  Callback to execute when user activates a toast notification through a click or when a toast notification leaves the screen, either by expiring or being explicitly dismissed by the user.<br />
   
   Because of how [NodeRT](https://github.com/NodeRT/NodeRT) works registered event listener does not keep the event loop alive so you will need to provide a timeout value to keep it alive (default to 5sec as it is the default notification duration but keep in mind some users might have change this value in their Windows settings).<br />
   
