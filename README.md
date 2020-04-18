@@ -518,5 +518,4 @@ Known missing features
 ======================
 
   + Expiration time
-  + Supress toast : send directly to Action Center
   + Adaptative progress bar update
