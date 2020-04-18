@@ -57,6 +57,7 @@ module.exports = async (option = {}) => {
       headerImg: option.headerImg || "",
       footerImg: option.footerImg || "",
       silent: option.silent || false,
+      hide: option.hide || false,
       audio: option.audio || "",
       longTime: option.longTime || false,
       onClick: option.onClick || "",
@@ -122,6 +123,7 @@ module.exports = async (option = {}) => {
                     `$toast = New-Object Windows.UI.Notifications.ToastNotification $xml` + os.EOL;
                     `$toast.SequenceNumber = ${options.sequenceNumber}` + os.EOL;
             
+        if(options.hide) template += `$toast.SuppressPopup = "true"` + os.EOL;
         if(options.uniqueID) template += `$toast.tag = "${options.uniqueID}"` + os.EOL + `$toast.group = "${options.uniqueID}"` + os.EOL ;
             
         template += `[Windows.UI.Notifications.ToastNotificationManager]::CreateToastNotifier($APP_ID).Show($toast)`;
@@ -154,6 +156,7 @@ module.exports = async (option = {}) => {
       
       if (!legacyTemplate) {
         toast.SequenceNumber = +options.sequenceNumber;
+        if(options.hide) toast.suppressPopup = true;
         if(options.uniqueID) toast.tag = toast.group = options.uniqueID;
       }
       

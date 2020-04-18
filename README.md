@@ -197,6 +197,11 @@ Windows 7 and before don't have toast notification and thus will throw the error
 - **silent**
 
   True to mute the sound; false to allow the toast notification sound to play. **Default** to false.
+
+- **hide**
+  
+  True to suppress the popup message and places the toast notification **silently** into the action center. **Default** to false.<br/>
+  Using `silent: true` is redundant in this case.
   
 - **audio**
 
