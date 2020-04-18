@@ -485,7 +485,10 @@ Common Issues
   
 - Where is my icon/image ?
 
-  If an image exceeds the file size, or fails to download, or times out, or is an unvalid format the image will be dropped and the rest of the notification will be displayed.
+  Check URL or file path.<br/>
+  URL is only available for UWP appID.<br/>
+  If an image exceeds the file size, or fails to download, or times out, or is an unvalid format the image will be dropped and the rest of the notification will be displayed.<br/>
+  A workaround is to download yourself the image and pass the img filepath instead of an URL.
   
 - Notifications when app is fullscreen aren't displayed
   
