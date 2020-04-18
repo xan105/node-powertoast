@@ -1,6 +1,6 @@
 'use strict';
 
-const toast = require('./toast.js');
+const toast = require('./toast.cjs');
 
 toast({
   disableWinRT: false,

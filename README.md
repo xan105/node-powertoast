@@ -20,7 +20,8 @@ Example
 
 ```js 
 //Sending a simple notification
-const toast = require('powertoast');
+const toast = require('powertoast'); //CommonJS
+import toast from 'powertoast'; //ES Module
 
 toast({
   title: "NPM",

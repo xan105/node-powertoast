@@ -5,7 +5,7 @@ const fs = require('fs');
 const path = require('path');
 const util = require('util');
 const { exec } = require('child_process');
-const templateXml = require('./template.js');
+const templateXml = require('./template.cjs');
 
 let winRT;
 try {
@@ -177,7 +177,7 @@ module.exports = async (option = {}) => {
         //Keep it alive for user provided amount of time
         const keepalive = setTimeout(()=>{
           options.callback.onDismissed("timeout");
-        },options.callback.timeout + 400); //Add a little delay so the event loop has time to register the toast dismissal reason when timeout == toast notification display duration.
+        },options.callback.timeout + 500); //Add a little delay so the event loop has time to register the toast dismissal reason when timeout == toast notification display duration.
         
         toast.on('activated', () => {
             clearTimeout(keepalive);
