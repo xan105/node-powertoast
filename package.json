@@ -8,9 +8,11 @@
     "import": "./esm.mjs",
     "require": "./toast.cjs"
   },
-  "os" : [ "win32" ],
-  "engines" : { 
-    "node" : ">=0.12" 
+  "os": [
+    "win32"
+  ],
+  "engines": {
+    "node": ">=0.12"
   },
   "repository": {
     "type": "git",
@@ -49,5 +51,8 @@
     "@nodert-win10-rs4/windows.ui.notifications": {
       "optional": true
     }
+  },
+  "devDependencies": {
+    "get-startapps": "^1.0.1"
   }
 }

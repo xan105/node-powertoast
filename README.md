@@ -478,6 +478,27 @@ toast({
   You can optionally override the timestamp with your own custom date and time, so that the timestamp represents the time the message/information/content was actually created, rather than the time that the notification was sent.<br/>
   This also ensures that your notifications appear in the correct order within Action Center (which are sorted by time). Microsoft recommends that most apps specify a custom timestamp.<br/>
   But you can safely omit this option.
+  
+  
+Helper function
+===============
+
+- `isValidAUMID(appID string) bol`
+
+  > Error if appID isn't a string.
+   
+  Check if appID is a valid **UWP** Application User Model ID.
+  
+  ```js
+  const { isValidAUMID } = require('powertoast');
+  
+  let test0 = isValidAUMID("Microsoft.WindowsStore_8wekyb3d8bbwe!App");
+  console.log(test0); //true
+  
+  let test1 = isValidAUMID("com.squirrel.GitHubDesktop.GitHubDesktop");
+  console.log(test1); //false
+  
+  ```
 
 Common Issues
 =============

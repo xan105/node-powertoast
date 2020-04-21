@@ -14,7 +14,7 @@ try {
     notifications : require('@nodert-win10-rs4/windows.ui.notifications')
   };
   if (!winRT.xml || !winRT.notifications) winRT = null;
-} catch {}
+} catch { /*Do nothing*/ }
 
 module.exports = async (option = {}) => {
 
@@ -223,6 +223,31 @@ module.exports = async (option = {}) => {
     
   }
 }
+
+//Helper fn
+
+module.exports.isValidAUMID = function(appID) { // Check if appID is a valid UWP Application User Model ID
+  
+    if (typeof appID !== 'string') throw "appID must be a string";
+
+    appID = appID.trim();
+
+    if ( appID.length > 128 || appID.includes(" ") || !appID.includes("!")) return false;
+
+    const [familyname, id] = appID.split("!");
+
+    if(!familyname.includes("_")) return false;
+
+    const [name, publisherID] = familyname.split("_");
+
+    const sections = name.split(".");
+
+    if (sections.length > 4 || sections.length  < 2 ) return false 
+
+    return true;
+}
+
+//Private fn
 
 function windowsGetVersion(){
   const version = os.release().split("."); 
