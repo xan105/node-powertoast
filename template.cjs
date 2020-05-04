@@ -11,9 +11,9 @@ module.exports = (options) => {
   template += `<visual><binding template="ToastGeneric">` + 
               `<image placement="appLogoOverride" src="${imgResolve(options.icon)}" hint-crop="${options.cropIcon ? "circle" : "none"}"/>` + 
               `<image placement="hero" src="${imgResolve(options.headerImg)}"/>` +
-              `<text><![CDATA[${escape_xml(options.title)}]]></text>` +
-              `<text><![CDATA[${escape_xml(options.message)}]]></text>` +
-              `<text placement="attribution"><![CDATA[${escape_xml(options.attribution)}]]></text>`+
+              `<text><![CDATA[${unescape_xml(options.title)}]]></text>` +
+              `<text><![CDATA[${unescape_xml(options.message)}]]></text>` +
+              `<text placement="attribution"><![CDATA[${unescape_xml(options.attribution)}]]></text>`+
               `<image src="${imgResolve(options.footerImg)}" />`;
               
   if (options.progress) template += `<progress title="${options.progress.header}" value="${options.progress.percent}" valueStringOverride="${options.progress.custom}" status="${options.progress.footer}"/>`;
@@ -57,7 +57,7 @@ function imgResolve(dest = "") {
   return dest;
 }
 
-function escape_xml(string) {
+function unescape_xml(string) {
 
   const xml_char_ref = {
     "&amp;" : '\u0026', //& (ampersand)
