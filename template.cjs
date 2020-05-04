@@ -11,9 +11,9 @@ module.exports = (options) => {
   template += `<visual><binding template="ToastGeneric">` + 
               `<image placement="appLogoOverride" src="${imgResolve(options.icon)}" hint-crop="${options.cropIcon ? "circle" : "none"}"/>` + 
               `<image placement="hero" src="${imgResolve(options.headerImg)}"/>` +
-              `<text><![CDATA[${options.title}]]></text>` +
-              `<text><![CDATA[${options.message}]]></text>` +
-              `<text placement="attribution"><![CDATA[${options.attribution}]]></text>`+
+              `<text><![CDATA[${escape_xml(options.title)}]]></text>` +
+              `<text><![CDATA[${escape_xml(options.message)}]]></text>` +
+              `<text placement="attribution"><![CDATA[${escape_xml(options.attribution)}]]></text>`+
               `<image src="${imgResolve(options.footerImg)}" />`;
               
   if (options.progress) template += `<progress title="${options.progress.header}" value="${options.progress.percent}" valueStringOverride="${options.progress.custom}" status="${options.progress.footer}"/>`;
@@ -55,4 +55,20 @@ module.exports.legacy = (options) => {
 function imgResolve(dest = "") {
   if ( !dest.startsWith("http://") && !dest.startsWith("https://") && dest != "") dest = path.resolve(dest);
   return dest;
+}
+
+function escape_xml(string) {
+
+  const xml_char_ref = {
+    "&amp;" : '\u0026', //& (ampersand)
+    "&lt;" : '\u003C', //< (less-than sign)
+    "&gt;" : '\u003E', //> (greater-than sign)
+    "&quot;" : '\u0022', //" (quotation mark)
+    "&apos;" : '\u0027' //' (apostrophe)
+  };
+  
+  for (let i in xml_char_ref) string = string.replace(new RegExp(i, 'g'),xml_char_ref[i]); //replace all
+  
+  return string;
+
 }
