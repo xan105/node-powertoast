@@ -1,3 +1,4 @@
 screenshot/
 .github/
 test/
+.eslintrc.json

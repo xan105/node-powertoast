@@ -23,7 +23,7 @@ toast({
   progress:{
     header: "up",
     footer: "down",
-    percent: 92
+    percent: 0
   },
   uniqueID: "id0",
   group: {

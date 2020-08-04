@@ -1,3 +1,27 @@
+/*
+MIT License
+
+Copyright (c) 2019-2020 Anthony Beaumont
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+
+*/
 'use strict';
 
 const os = require('os');
@@ -5,6 +29,7 @@ const fs = require('fs');
 const path = require('path');
 const util = require('util');
 const { exec } = require('child_process');
+const { rng, windowsGetVersion } = require('./helper.cjs');
 const templateXml = require('./template.cjs');
 
 let winRT;
@@ -14,35 +39,26 @@ try {
     notifications : require('@nodert-win10-rs4/windows.ui.notifications')
   };
   if (!winRT.xml || !winRT.notifications) winRT = null;
-} catch { /*Do nothing*/ }
+} catch { winRT = null }
 
 module.exports = async (option = {}) => {
 
   if (os.platform() !== 'win32') throw "API is only available in Windows.";
+  
+  const version = windowsGetVersion(); 
+  
+  let legacyTemplate = false;
+  
+  if (version.major == 6 && ( version.minor == 3 || version.minor == 2) ) legacyTemplate = true; //Windows 8 && Windows 8.1
+  else if (version.major <= 6 ) throw "Unsupported Windows version";
 
-  if (!winRT || (winRT && option.disableWinRT === true)) {
-    const temp = os.tmpdir() || process.env.TEMP;
-    const rng = function(min, max) {
-      return Math.floor(Math.random() * (max - min + 1) ) + min;
-    };
-    var script = path.join(temp,`${Date.now()}${rng(0,1000)}.ps1`);
-  }
+  const powerShell = (!winRT || (winRT && option.disableWinRT === true)) ? false : true;
+
+  const scriptPath = path.join(os.tmpdir() || process.env.TEMP,`${Date.now()}${rng(0,1000)}.ps1`);
 
   try {
 
-    let legacyTemplate = false;
-    
-    const version = windowsGetVersion(); 
-
-    if (version.major == 6 && ( version.minor == 3 || version.minor == 2) ) { //Windows 8 && Windows 8.1
-      legacyTemplate = true; 
-    }
-    else if (version.major <= 6) {
-      throw "Unsupported Windows version";
-    }
-
     const defaultAppID = (legacyTemplate) ? "winstore_cw5n1h2txyewy!Windows.Store" : "Microsoft.WindowsStore_8wekyb3d8bbwe!App";
-    
     const scenarios = ["default", "alarm", "reminder", "incomingCall"];
     
     let options = {
@@ -69,7 +85,7 @@ module.exports = async (option = {}) => {
     if(option.progress) {
       options.progress = {
          header : option.progress.header || "",
-         percent : (option.progress.percent && option.progress.percent >= 0 && option.progress.percent <= 100) ? (option.progress.percent / 100).toFixed(2) : "indeterminate",
+         percent : ((option.progress.percent || option.progress.percent === 0) && option.progress.percent >= 0 && option.progress.percent <= 100) ? (option.progress.percent / 100).toFixed(2) : "indeterminate",
          custom : option.progress.custom || "",
          footer : option.progress.footer || ""
       }
@@ -77,7 +93,7 @@ module.exports = async (option = {}) => {
     
     if(option.callback) {
       options.callback = {
-        timeout: (Number.isInteger(option.callback.timeout)) ? option.callback.timeout : 5000,
+        keepalive: (Number.isInteger(option.callback.keepalive)) ? option.callback.keepalive : 5000,
         onActivated: option.callback.onActivated || function(){},
         onDismissed: option.callback.onDismissed || function(){} 
       }
@@ -95,7 +111,8 @@ module.exports = async (option = {}) => {
 
     let template;
     
-    if (!winRT || (winRT && option.disableWinRT === true)) {
+    if (powerShell) 
+    {
       template = `(Get-Process -Id $pid).PriorityClass = 'High'`+ os.EOL +
                  `[Windows.UI.Notifications.ToastNotificationManager, Windows.UI.Notifications, ContentType = WindowsRuntime] | Out-Null` + os.EOL +
                  `[Windows.UI.Notifications.ToastNotification, Windows.UI.Notifications, ContentType = WindowsRuntime] | Out-Null` + os.EOL +
@@ -105,7 +122,7 @@ module.exports = async (option = {}) => {
 
     if (legacyTemplate) 
     {
-      if (!winRT || (winRT && option.disableWinRT === true)) {
+      if (powerShell) {
         template += `[xml]$template = @"`+ os.EOL + templateXml.legacy(options) + os.EOL + `"@` + os.EOL +
                     `$xml = New-Object Windows.Data.Xml.Dom.XmlDocument` + os.EOL +
                     `$xml.LoadXml($template.OuterXml)` + os.EOL +
@@ -116,7 +133,7 @@ module.exports = async (option = {}) => {
     } 
     else 
     {
-      if (!winRT || (winRT && option.disableWinRT === true)) {
+      if (powerShell) {
         template += `$template = @"`+ os.EOL + templateXml(options) + os.EOL + `"@` + os.EOL +
                     `$xml = New-Object Windows.Data.Xml.Dom.XmlDocument`+ os.EOL +
                     `$xml.LoadXml($template)` + os.EOL +
@@ -132,16 +149,16 @@ module.exports = async (option = {}) => {
       }
     }
     
-    if (!winRT || (winRT && option.disableWinRT === true))
+    if (powerShell)
     {
     
       const bom = "\ufeff";
-      await fs.promises.writeFile(script, bom+template, "utf8");
+      await fs.promises.writeFile(scriptPath, bom+template, "utf8");
 
-      const output = await util.promisify(exec)(`powershell -ExecutionPolicy Bypass -File "${script}"`,{windowsHide: true});
+      const output = await util.promisify(exec)(`powershell -NoProfile -ExecutionPolicy Bypass -File "${scriptPath}"`,{windowsHide: true});
       if (output.stderr) throw output.stderr;
       
-      await fs.promises.unlink(script).catch(()=>{});
+      await fs.promises.unlink(scriptPath).catch(()=>{});
     
     } 
     else 
@@ -178,9 +195,8 @@ module.exports = async (option = {}) => {
         
         //WinRT: registered event listener does not keep the event loop alive
         //Keep it alive for user provided amount of time
-        const keepalive = setTimeout(()=>{
-          options.callback.onDismissed("timeout");
-        },options.callback.timeout + 500); //Add a little delay so the event loop has time to register the toast dismissal reason when timeout == toast notification display duration.
+        //Plus a little delay so the event loop has time to register the toast dismissal reason when timeout == toast notification display duration
+        const keepalive = setTimeout(()=>{},options.callback.keepalive + 500);
         
         toast.on('activated', () => {
             clearTimeout(keepalive);
@@ -212,47 +228,7 @@ module.exports = async (option = {}) => {
     }
 
   }catch(err) {
-  
-    if (!winRT || (winRT && option.disableWinRT === true)) {
-      fs.unlink(script, function(){
-        throw err;
-      });
-    } else {
-      throw err;
-    }
-    
+    if (powerShell) fs.unlink(scriptPath, function(){ throw err });
+    else throw err;
   }
-}
-
-//Helper fn
-
-module.exports.isValidAUMID = function(appID) { // Check if appID is a valid UWP Application User Model ID
-  
-    if (typeof appID !== 'string') throw "appID must be a string";
-
-    appID = appID.trim();
-
-    if ( appID.length > 128 || appID.includes(" ") || !appID.includes("!")) return false;
-
-    const [familyname, id] = appID.split("!");
-
-    if(!familyname.includes("_")) return false;
-
-    const [name, publisherID] = familyname.split("_");
-
-    const sections = name.split(".");
-
-    if (sections.length > 4 || sections.length  < 2 ) return false 
-
-    return true;
-}
-
-//Private fn
-
-function windowsGetVersion(){
-  const version = os.release().split("."); 
-  return { major: +version[0], 
-            minor: +version[1], 
-            build: +version[2]
-          };
 }

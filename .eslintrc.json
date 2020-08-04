@@ -1,0 +1,31 @@
+{
+    "env": {
+        "commonjs": true,
+        "es6": true,
+        "es2017": true,
+        "es2020": false,
+        "node": true
+    },
+    "extends": "eslint:recommended",
+    "globals": {
+        "Atomics": "readonly",
+        "SharedArrayBuffer": "readonly"
+    },
+    "parserOptions": {
+        "ecmaVersion": 11
+    },
+    "rules": {
+      "no-alert": "warn",
+      "no-eval": "error",
+      "require-await": "warn",
+      "strict": "error"
+    },
+    "overrides": [
+      {
+        "files": ["*.mjs"],
+        "parserOptions": {
+          "sourceType": "module"
+        }
+      }
+    ]
+}

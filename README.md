@@ -1,9 +1,9 @@
 About
 =====
 
-Windows toast notification using PowerShell or WinRT for NodeJS, electron and NW.js (Windows 8, 8.1, 10).<br />
+Windows toast notification using PowerShell or WinRT (Windows 8, 8.1, 10).<br />
 
-Doesn't use any native module. Everything is done through PowerShell but you can use native WinRT API instead by **optionally** installing [NodeRT](https://github.com/NodeRT/NodeRT) relative package :
+Doesn't use any native module. Everything is done through PowerShell but you can use native WinRT API instead by **optionally** installing [NodeRT](https://github.com/NodeRT/NodeRT) relative package:
 + @nodert-win10-rs4/windows.data.xml.dom
 + @nodert-win10-rs4/windows.ui.notifications
 
@@ -47,24 +47,20 @@ _Prequisites: VS2017 / Python 2.7(node-gyp) / Windows SDK 10.0.17134.0 (1803 Red
  + [NodeRT windows.ui.notifications](https://www.npmjs.com/package/@nodert-win10-rs4/windows.ui.notifications)<br /> 
  `npm install @nodert-win10-rs4/windows.ui.notifications`
 
-Microsoft doc
-=============
-
-📖 [Microsoft Toast API](https://docs.microsoft.com/en-us/windows/uwp/design/shell/tiles-and-notifications/adaptive-interactive-toasts).<br />
-📖 [Toast content XML schema](https://docs.microsoft.com/en-us/windows/uwp/design/shell/tiles-and-notifications/toast-xml-schema).
-
 Options
 =======
 
 ⚠️ Windows 8/8.1 have very basic notification compared to Windows 10, some options will be ignored.<br />
 Windows 7 and before don't have toast notification and thus will throw the error `Unsupported Windows version`.<br />
 
-- **disableWinRT**
+All options are optional.
+
+- **disableWinRT** : boolean | Win10
 
   If you have installed the optional NodeRT native module but for whatever reason(s) you want to use PowerShell instead.
   Then set this to `true`
 
-- **appID**
+- **appID** : string | Win8,8.1,10
 
   Your [Application User Model ID](https://docs.microsoft.com/fr-fr/windows/desktop/shell/appids).
   
@@ -108,18 +104,18 @@ Windows 7 and before don't have toast notification and thus will throw the error
 
   ```
 
-- **title**
+- **title** : string | Win8,8.1,10
   
   The title of your notification
 
-- **message**
+- **message** : string | Win8,8.1,10
 
   The content message of your notification.
   You can use "\n" to create a new line for the forthcoming text.
   
   Since the Windows 10 Anniversary Update the default and maximum is up to 2 lines of text for the title, and up to 4 lines (combined) for the message.
 
-- **attribution** *//Windows 10 Anniversary Update*
+- **attribution** : string | Win10 (>= Anniversary Update)
 
   Reference the source of your content. This text is always displayed at the bottom of your notification, along with your app's identity or the notification's timestamp.
 
@@ -143,17 +139,12 @@ Windows 7 and before don't have toast notification and thus will throw the error
 
   ```
 
-- **icon**
+- **icon** : string | Win8,8.1,10
 
   The URI of the image source, using one of these protocol handlers:
-
-  1. If you are using a UWP appID you can use:
-  - http:// or https://
-  - ms-appx:///
-  - ms-appdata:///local/
-
-  2. If you are using a Win32 appID you can use:
+  
   - file:/// (*eg: `"D:\\Desktop\\test.jpg"`*)
+  - http(s):// (only available when using a UWP appID)
 
   Icon dimensions are 48x48 pixels at 100% scaling.
 
@@ -165,13 +156,13 @@ Windows 7 and before don't have toast notification and thus will throw the error
 
   If an image exceeds the file size, or fails to download, or times out, or is an unvalid format the image will be dropped and the rest of the notification will be displayed.
 
-- **cropIcon**
+- **cropIcon** : boolean | Win10
 
   You can use this to 'circle-crop' your image (true). Otherwise, the image is square (false).
   
   **default** to false.
 
-- **headerImg** *//Anniversary Update*
+- **headerImg** : string | Win10 (>= Anniversary Update)
 
   <p align="center">
   <img src="https://github.com/xan105/node-powertoast/raw/master/screenshot/header.png">
@@ -183,7 +174,7 @@ Windows 7 and before don't have toast notification and thus will throw the error
   
   Otherwise same restriction as above.
 
-- **footerImg** *(inline-image)*
+- **footerImg** : string | Win10
 
   <p align="center">
   <img src="https://github.com/xan105/node-powertoast/raw/master/screenshot/footer.png">
@@ -194,16 +185,16 @@ Windows 7 and before don't have toast notification and thus will throw the error
   
   Otherwise same restriction as above.
 
-- **silent**
+- **silent** : boolean | Win8,8.1,10
 
   True to mute the sound; false to allow the toast notification sound to play. **Default** to false.
 
-- **hide**
+- **hide** : boolean | Win10
   
   True to suppress the popup message and places the toast notification **silently** into the action center. **Default** to false.<br/>
   Using `silent: true` is redundant in this case.
   
-- **audio**
+- **audio** : string | Win8,8.1,10
 
   The audio source to play when the toast is shown to the user.<br/>
   You **can't** use file:/// with this ! You are limited to the Windows sound schema available in your system.<br/>
@@ -237,7 +228,7 @@ Windows 7 and before don't have toast notification and thus will throw the error
   }).catch(err => console.error(err));
   ```
   
-- **longTime**
+- **longTime** : boolean | Win10
 
   Increase the time the toast should show up for.<br />
   **Default** to false.
@@ -253,7 +244,7 @@ Windows 7 and before don't have toast notification and thus will throw the error
   User value default to 5sec; <br/>
   Available: 5, 7, 15, 30, 1min, 5min
 
-- **onClick**
+- **onClick** : string | Win10
 
   Protocol to launch when the user click on the toast.<br />
   If none (**default**) click will just dismiss the notification.<br />
@@ -307,7 +298,7 @@ Windows 7 and before don't have toast notification and thus will throw the error
   }) 
   ```
 
-- **button**
+- **button** : [{ text : string, onClick : string, contextMenu ?: boolean, icon ?: string }] | Win10 (contextMenu >= Anniversary Update)
 
   Array of buttons to add to your toast. You can only have up to 5 buttons. <br/>
   After the 5th they will be ignored.
@@ -356,7 +347,7 @@ This menu only appears when right clicked from Action Center. It does not appear
 Anniversary Update and up, on older version these additional context menu actions will simply appear as normal buttons on your toast.
 Additional context menu items contribute to the total limit of 5 buttons on a toast.
 
-- **callback** (⚠️ WinRT only)
+- **callback** : { keepalive ?: number, onActivated?() : void, onDismissed?() : void } | Win10 (⚠️ WinRT only) 
 
   Callback to execute when user activates a toast notification through a click or when a toast notification leaves the screen, either by expiring or being explicitly dismissed by the user.<br />
   
@@ -386,7 +377,7 @@ Additional context menu items contribute to the total limit of 5 buttons on a to
     
     In the case the reason is none of the above then the value will be the reason integer code. You are welcome to tell me any reason code I'm un-aware of.
   
-- **scenario**
+- **scenario** : string | Win10
 
   "default", "alarm", "reminder", "incomingCall"<br />
   **Default** to ... well, 'default'.
@@ -401,14 +392,14 @@ Additional context menu items contribute to the total limit of 5 buttons on a to
   When using Reminder or Alarm, you must provide at least one button on your toast notification.<br /> 
   Otherwise, the toast will be treated as a normal toast.
   
-- **progress** *//Creators Update* 
+- **progress** : { header ?: string, percent ?: number | null, custom ?: string, footer ?: string } | Win10 (>= Creators Update)
 
   Add a progress bar to your toast.<br/>
   ```
   {
     header : optional string,
     footer: optional string,
-    percent : percent of the progress bar, set it to null to get a progress with the little dots moving,
+    percent : percent of the progress bar, set it to null or omit it to get a progress with the little dots moving,
     custom : optional string to be displayed instead of the default percentage string
   }
   ```
@@ -435,7 +426,7 @@ toast({
   
   ```
   
-- **uniqueID**
+- **uniqueID** : string | Win10
 
    You can replace a notification by sending a new toast with the same uniqueID. <br/>
    This is useful when using a progress bar or correcting/updating the information on a toast. <br/>
@@ -444,7 +435,7 @@ toast({
    However this is not really suitable for information that frequently changes in a short period of time (like a download progress for example)
    or subtle changes to your toast content, like changing 50% to 65%.
 
-- **sequenceNumber**
+- **sequenceNumber** : number | Win10
 
     Provide sequence number to prevent out-of-order updates, or assign 0 to indicate "always update". <br/>
     A higher sequence number indicates a newer toast. <br/>
@@ -452,7 +443,7 @@ toast({
     
     The sequence number may helps to ensure that toasts will not be displayed in a manner that may confuse when updating/correcting.
   
-- **group** *//Creators Update*
+- **group** : { id : string, title : string } | Win10 (>= Creators Update)
 
     You can group notifications under a common header within Action Center<br/>
     ```
@@ -469,7 +460,7 @@ toast({
 <img src="https://github.com/xan105/node-powertoast/raw/master/screenshot/group.png">
 </p>
   
-- **timeStamp**
+- **timeStamp** : number | string
 
   Unix epoch time in seconds.<br/>
   Current time by **default** if not specified.<br/>
@@ -478,27 +469,12 @@ toast({
   You can optionally override the timestamp with your own custom date and time, so that the timestamp represents the time the message/information/content was actually created, rather than the time that the notification was sent.<br/>
   This also ensures that your notifications appear in the correct order within Action Center (which are sorted by time). Microsoft recommends that most apps specify a custom timestamp.<br/>
   But you can safely omit this option.
-  
-  
-Helper function
-===============
 
-- `isValidAUMID(appID string) bol`
+Microsoft doc
+=============
 
-  > Error if appID isn't a string.
-   
-  Check if appID is a valid **UWP** Application User Model ID.
-  
-  ```js
-  const { isValidAUMID } = require('powertoast');
-  
-  let test0 = isValidAUMID("Microsoft.WindowsStore_8wekyb3d8bbwe!App");
-  console.log(test0); //true
-  
-  let test1 = isValidAUMID("com.squirrel.GitHubDesktop.GitHubDesktop");
-  console.log(test1); //false
-  
-  ```
+📖 [Microsoft Toast API](https://docs.microsoft.com/en-us/windows/uwp/design/shell/tiles-and-notifications/adaptive-interactive-toasts).<br />
+📖 [Toast content XML schema](https://docs.microsoft.com/en-us/windows/uwp/design/shell/tiles-and-notifications/toast-xml-schema).
 
 Common Issues
 =============

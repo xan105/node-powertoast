@@ -1,7 +1,7 @@
 {
   "name": "powertoast",
-  "version": "1.1.4",
-  "description": "Windows toast notification using PowerShell or WinRT for NodeJS, electron and NW.js (Windows 8, 8.1, 10).",
+  "version": "1.2.0",
+  "description": "Windows toast notification using PowerShell or WinRT (Windows 8, 8.1, 10).",
   "type": "module",
   "main": "toast.cjs",
   "exports": {
@@ -14,9 +14,8 @@
   "engines": {
     "node": ">=0.12"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/xan105/node-powertoast.git"
+  "scripts": {
+    "lint": "npx eslint --ignore-path .gitignore ./**/*.{cjs,mjs}"
   },
   "keywords": [
     "toast",
@@ -25,10 +24,7 @@
     "notification center",
     "action center",
     "powershell",
-    "winRT",
-    "node",
-    "electron",
-    "nw.js"
+    "winRT"
   ],
   "author": {
     "name": "Anthony Beaumont",
@@ -36,6 +32,10 @@
     "url": "https://xan105.com/"
   },
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/xan105/node-powertoast.git"
+  },
   "bugs": {
     "url": "https://github.com/xan105/node-powertoast/issues"
   },
@@ -53,6 +53,8 @@
     }
   },
   "devDependencies": {
-    "get-startapps": "^1.0.1"
+    "@nodert-win10-rs4/windows.data.xml.dom": "^0.4.4",
+    "@nodert-win10-rs4/windows.ui.notifications": "^0.4.4",
+    "eslint": "^7.6.0"
   }
 }
