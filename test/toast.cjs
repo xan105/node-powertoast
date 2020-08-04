@@ -32,6 +32,6 @@ toast({
     id: "id1",
     title: "group"
   },
-  headerImg: "screenshot/example.png"
+  headerImg: "../screenshot/example.png"
 }).then(()=>{console.log("ok")}).catch((err)=>{console.log(err)});
 

@@ -30,7 +30,7 @@ toast({
     id: "id1",
     title: "group"
   },
-  headerImg: "screenshot/example.png",
+  headerImg: "../screenshot/example.png",
   callback: { 
     timeout: 7000,
     onActivated: ()=>{ console.log("activated") },
