@@ -52,7 +52,7 @@ module.exports = async (option = {}) => {
   if (version.major == 6 && ( version.minor == 3 || version.minor == 2) ) legacyTemplate = true; //Windows 8 && Windows 8.1
   else if (version.major <= 6 ) throw "Unsupported Windows version";
 
-  const powerShell = (!winRT || (winRT && option.disableWinRT === true)) ? false : true;
+  const powerShell = (!winRT || (winRT && option.disableWinRT === true)) ? true : false;
 
   const scriptPath = path.join(os.tmpdir() || process.env.TEMP,`${Date.now()}${rng(0,1000)}.ps1`);
 
