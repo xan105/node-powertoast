@@ -40,7 +40,8 @@ Installation
 
 ### Optional packages
 
-_Prequisites: VS2017 / Python 2.7(node-gyp) / Windows SDK 10.0.17134.0 (1803 Redstone 4)_
+_Prequisites: VS2017 / Python 2.7(node-gyp) / Windows SDK **10.0.17134.0** (1803 Redstone 4)_<br/>
+_⚠️ SDK version is important here. It will fail with another one._
 
  + [NodeRT windows.data.xml.dom](https://www.npmjs.com/package/@nodert-win10-rs4/windows.data.xml.dom)<br />
  `npm install @nodert-win10-rs4/windows.data.xml.dom`
