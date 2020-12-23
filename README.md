@@ -475,6 +475,7 @@ Helper
 ======
 
 - isWinRTAvailable(void) bool
+
 Return true if the peerDependencies for WinRT were successfully loaded; false otherwise.
 
 Microsoft doc
