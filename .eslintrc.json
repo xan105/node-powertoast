@@ -6,7 +6,6 @@
         "es2020": false,
         "node": true
     },
-    "extends": "eslint:recommended",
     "globals": {
         "Atomics": "readonly",
         "SharedArrayBuffer": "readonly"
@@ -27,5 +26,6 @@
           "sourceType": "module"
         }
       }
-    ]
+    ],
+    "extends": ["eslint:recommended", "prettier"]
 }

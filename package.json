@@ -1,12 +1,12 @@
 {
   "name": "powertoast",
-  "version": "1.2.1",
+  "version": "1.2.2",
   "description": "Windows toast notification using PowerShell or WinRT (Windows 8, 8.1, 10).",
   "type": "module",
-  "main": "toast.cjs",
+  "main": "./lib/toast.cjs",
   "exports": {
-    "import": "./esm.mjs",
-    "require": "./toast.cjs"
+    "import": "./lib/esm.mjs",
+    "require": "./lib/toast.cjs"
   },
   "os": [
     "win32"
@@ -15,7 +15,8 @@
     "node": ">=0.12"
   },
   "scripts": {
-    "lint": "npx eslint --ignore-path .gitignore ./**/*.{cjs,mjs}"
+    "lint": "npx eslint --ignore-path .gitignore ./**/*.{cjs,mjs}",
+    "pretty": "npx prettier --write ./**/*.{cjs,mjs}"
   },
   "keywords": [
     "toast",
@@ -55,6 +56,8 @@
   "devDependencies": {
     "@nodert-win10-rs4/windows.data.xml.dom": "^0.4.4",
     "@nodert-win10-rs4/windows.ui.notifications": "^0.4.4",
-    "eslint": "^7.6.0"
+    "eslint": "^7.6.0",
+    "eslint-config-prettier": "^6.15.0",
+    "prettier": "^2.2.0"
   }
 }

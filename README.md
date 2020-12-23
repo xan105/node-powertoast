@@ -470,6 +470,12 @@ toast({
   You can optionally override the timestamp with your own custom date and time, so that the timestamp represents the time the message/information/content was actually created, rather than the time that the notification was sent.<br/>
   This also ensures that your notifications appear in the correct order within Action Center (which are sorted by time). Microsoft recommends that most apps specify a custom timestamp.<br/>
   But you can safely omit this option.
+  
+Helper
+======
+
+- isWinRTAvailable(void) bool
+Return true if the peerDependencies for WinRT were successfully loaded; false otherwise.
 
 Microsoft doc
 =============
