@@ -43,9 +43,9 @@ toast({
     },
   },
 })
-.then(() => {
-  console.log("ok");
-})
-.catch((err) => {
-  console.log(err);
-});
+  .then(() => {
+    console.log("ok");
+  })
+  .catch((err) => {
+    console.log(err);
+  });
