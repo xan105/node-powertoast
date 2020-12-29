@@ -352,7 +352,7 @@ Additional context menu items contribute to the total limit of 5 buttons on a to
 
   Callback to execute when user activates a toast notification through a click or when a toast notification leaves the screen, either by expiring or being explicitly dismissed by the user.<br />
   
-  Because of how [NodeRT](https://github.com/NodeRT/NodeRT) works registered event listener does not keep the event loop alive so you will need to provide a timeout value to keep it alive (default to 5sec as it is the default notification duration but keep in mind some users might have change this value in their Windows settings).<br />
+  Because of how [NodeRT](https://github.com/NodeRT/NodeRT) works registered event listener does not keep the event loop alive so you will need to provide a timeout value to keep it alive (default to 6sec as 5sec is the default notification duration but keep in mind some users might have change this value in their Windows settings).<br />
   
   The promise will resolve as soon as possible and will not wait for the keep-a-live. The keep-a-live is only to permit WinRT events to register.<br />
   
@@ -363,7 +363,7 @@ Additional context menu items contribute to the total limit of 5 buttons on a to
     title: "Hello",
     message: "world",
     callback: { 
-      timeout: 5000, //keep-a-live in ms
+      timeout: 6000, //keep-a-live in ms
       onActivated: ()=>{ console.log("activated") },
       onDismissed: (reason)=>{ console.log(reason) }
   })
@@ -374,7 +374,6 @@ Additional context menu items contribute to the total limit of 5 buttons on a to
   `onDismissed` gives you an optional reason:
     + userCanceled (0)
     + applicationHidden (2)
-    + timeout (when the keep-a-live has been reached)
     
     In the case the reason is none of the above then the value will be the reason integer code. You are welcome to tell me any reason code I'm un-aware of.
   
@@ -510,9 +509,9 @@ Common Issues
 
 - Slight delay between event and the display of the notification
 
-  Running the PowerShell script can take a few seconds in some cases.<br />
+  Running the PowerShell script can take up to a few seconds in some cases.<br />
   If it really bothers you, you might want to try to use the optional NodeRT native module.<br />
-  If you are loading a remote img resource via http/https it can significantly impact the delay if it hasn't been cached yet by Windows.
+  If you are loading a remote img resource via http/https it will significantly impact the delay if it hasn't been cached yet by Windows.
 
 - Notification don't stay in the Action center
 

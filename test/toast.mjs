@@ -34,7 +34,7 @@ toast({
   },
   headerImg: "../screenshot/example.png",
   callback: {
-    timeout: 7000,
+    keepalive: 8000,
     onActivated: () => {
       console.log("activated");
     },
@@ -43,9 +43,9 @@ toast({
     },
   },
 })
-  .then(() => {
-    console.log("ok");
-  })
-  .catch((err) => {
-    console.log(err);
-  });
+.then(() => {
+  console.log("ok");
+})
+.catch((err) => {
+  console.log(err);
+});
