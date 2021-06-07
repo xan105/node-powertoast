@@ -1,6 +1,6 @@
-import toast from "../lib/esm.mjs";
+import toast, { isWinRTAvailable } from "../lib/esm.js";
 
-console.log("Default transport: " + `${toast.isWinRTAvailable ? "WinRT" : "Powershell"}`);
+console.log("Default transport: " + `${isWinRTAvailable ? "WinRT" : "Powershell"}`);
 
 toast({
   disableWinRT: false,

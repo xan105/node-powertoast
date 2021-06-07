@@ -18,9 +18,7 @@ Example
 </p>
 
 ```js 
-const toast = require('powertoast'); //CommonJS
-//OR
-import toast from 'powertoast'; //ES Module
+import toast from 'powertoast';
 
 //Sending a simple notification
 
@@ -40,7 +38,7 @@ Installation
 
 ### Optional packages
 
-_Prequisites: VS2017 / Python 2.7(node-gyp) / Windows SDK **10.0.17134.0** (1803 Redstone 4)_<br/>
+_Prequisites: C/C++ build tools and Python 3.x (node-gyp) / Windows 10 SDK **10.0.17134.0** (1803 Redstone 4)_<br/>
 _⚠️ SDK version is important here. It will fail with another one._
 
  + [NodeRT windows.data.xml.dom](https://www.npmjs.com/package/@nodert-win10-rs4/windows.data.xml.dom)<br />
@@ -48,13 +46,26 @@ _⚠️ SDK version is important here. It will fail with another one._
  + [NodeRT windows.ui.notifications](https://www.npmjs.com/package/@nodert-win10-rs4/windows.ui.notifications)<br /> 
  `npm install @nodert-win10-rs4/windows.ui.notifications`
 
-Options
-=======
+Compatibility
+=============
 
 ⚠️ Windows 8/8.1 have very basic notification compared to Windows 10, some options will be ignored.<br />
 Windows 7 and before don't have toast notification and thus will throw the error `Unsupported Windows version`.<br />
 
-All options are optional.
+API
+===
+
+⚠️ This module is only available as an ECMAScript module (ESM) starting with version 2.0.0.
+
+## Named export
+
+#### `bool isWinRTAvailable`
+
+True if the peerDependencies for WinRT were successfully loaded; false otherwise.
+
+## Default export
+
+#### `<Promise> (<obj> option = {}) : <void>`
 
 - **disableWinRT** : boolean | Win10
 
@@ -470,13 +481,6 @@ toast({
   You can optionally override the timestamp with your own custom date and time, so that the timestamp represents the time the message/information/content was actually created, rather than the time that the notification was sent.<br/>
   This also ensures that your notifications appear in the correct order within Action Center (which are sorted by time). Microsoft recommends that most apps specify a custom timestamp.<br/>
   But you can safely omit this option.
-  
-Helper
-======
-
-- isWinRTAvailable(void) bool
-
-Return true if the peerDependencies for WinRT were successfully loaded; false otherwise.
 
 Microsoft doc
 =============
