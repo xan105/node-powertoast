@@ -21,7 +21,6 @@ Example
 import toast from 'powertoast';
 
 //Sending a simple notification
-
 toast({
   title: "NPM",
   message: "Installed.",
@@ -49,7 +48,7 @@ _⚠️ SDK version is important here. It will fail with another one._
 API
 ===
 
-⚠️ This module is only available as an ECMAScript module (ESM) starting with version 2.0.0.
+⚠️ This module is only available as an ECMAScript module (ESM) starting with version 2.0.0.<br />
 Previous version(s) are CommonJS (CJS) with an ESM wrapper.
 
 ## Named export
