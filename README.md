@@ -3,13 +3,9 @@ About
 
 Windows toast notification using PowerShell or WinRT (Windows 8, 8.1, 10).<br />
 
-Doesn't use any native module. Everything is done through PowerShell but you can use native WinRT API instead by **optionally** installing [NodeRT](https://github.com/NodeRT/NodeRT) relative package:
-+ @nodert-win10-rs4/windows.data.xml.dom
-+ @nodert-win10-rs4/windows.ui.notifications
+Doesn't use any native module. Everything is done through PowerShell but you can use native WinRT API instead by **optionally** installing [NodeRT](https://github.com/NodeRT/NodeRT) relative package (see [installation](#Installation))
 
 Using NodeRT is a bit faster as you don't have to wait for the PowerShell VM to start and you'll be able to register to the onActivated/onDismissed callback.
-
-Looking for Windows balloon notification ? [node-powerballoon](https://github.com/xan105/node-powerballoon) 
 
 Example
 =======
