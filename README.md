@@ -46,16 +46,11 @@ _⚠️ SDK version is important here. It will fail with another one._
  + [NodeRT windows.ui.notifications](https://www.npmjs.com/package/@nodert-win10-rs4/windows.ui.notifications)<br /> 
  `npm install @nodert-win10-rs4/windows.ui.notifications`
 
-Compatibility
-=============
-
-⚠️ Windows 8/8.1 have very basic notification compared to Windows 10, some options will be ignored.<br />
-Windows 7 and before don't have toast notification and thus will throw the error `Unsupported Windows version`.<br />
-
 API
 ===
 
 ⚠️ This module is only available as an ECMAScript module (ESM) starting with version 2.0.0.
+Previous version(s) are CommonJS (CJS) with an ESM wrapper.
 
 ## Named export
 
@@ -66,6 +61,8 @@ True if the peerDependencies for WinRT were successfully loaded; false otherwise
 ## Default export
 
 #### `<Promise> (<obj> option = {}) : <void>`
+
+⚠️ Windows 8/8.1 have very basic notification compared to Windows 10, some options will be ignored.
 
 - **disableWinRT** : boolean | Win10
 
@@ -81,21 +78,19 @@ True if the peerDependencies for WinRT were successfully loaded; false otherwise
   ⚠️ An invalid appID will result in the notification not being displayed !
 
   You can view all installed appID via the powershell command :
-  ```
-  PS> Get-StartApps %search%
-  ```
+
+  `PS> Get-StartApps %search%`
 
   ```js  
-  const toast = require('powertoast');
+  import toast from 'powertoast';
 
   toast({
     appID: "Microsoft.XboxApp_8wekyb3d8bbwe!Microsoft.XboxApp", //Xbox App
     title: "Hello",
     message: "world"
   }).catch(err => console.error(err));
-
   ```
-
+  
   ### If you are using this module with electron :
   In Electron, you can set it at runtime using the `app.setAppUserModelId()` method.
   
@@ -106,7 +101,7 @@ True if the peerDependencies for WinRT were successfully loaded; false otherwise
   </p>
 
   ```js  
-  const toast = require('powertoast');
+  import toast from 'powertoast';
 
   toast({
     appID: "D:\\dev\\hello_world\\node_modules\\electron\\dist\\electron.exe", //app.setAppUserModelId(process.execPath) 
@@ -139,7 +134,7 @@ True if the peerDependencies for WinRT were successfully loaded; false otherwise
   
   ```js
     
-    const toast = require('powertoast');
+    import toast from 'powertoast';
 
     toast({
       appID: "com.squirrel.GitHubDesktop.GitHubDesktop",
@@ -229,8 +224,8 @@ True if the peerDependencies for WinRT were successfully loaded; false otherwise
   [HKEY_CURRENT_USER\AppEvents\Schemes\Apps\.Default\**YOUR_SOUND_ID**\.Default]
   @="path_to_your_sound_file.wav"
   
-  //Js
-  const toast = require('powertoast');
+  //js
+  import toast from 'powertoast';
 
   toast({
     appID: "com.squirrel.GitHubDesktop.GitHubDesktop",
@@ -267,7 +262,7 @@ True if the peerDependencies for WinRT were successfully loaded; false otherwise
   Example of protocol type action button to open up Windows 10's maps app with a pre-populated search field set to "sushi":
   
   ```js
-  const toast = require('powertoast');
+  import toast from 'powertoast';
 
   toast({
     message: "Sushi",
@@ -278,7 +273,7 @@ True if the peerDependencies for WinRT were successfully loaded; false otherwise
   You can also redirect to an http/https resource :
   
    ```js
-  const toast = require('powertoast');
+  import toast from 'powertoast';
 
   toast({
     message: "Google It",
@@ -333,7 +328,7 @@ True if the peerDependencies for WinRT were successfully loaded; false otherwise
   
  ```js
   
-const toast = require('powertoast');
+import toast from 'powertoast';
 
 toast({
   title: "Browser",
@@ -368,7 +363,7 @@ Additional context menu items contribute to the total limit of 5 buttons on a to
   The promise will resolve as soon as possible and will not wait for the keep-a-live. The keep-a-live is only to permit WinRT events to register.<br />
   
   ```js
-  const toast = require('powertoast');
+  import toast from 'powertoast';
 
   toast({
     title: "Hello",
@@ -422,7 +417,7 @@ Additional context menu items contribute to the total limit of 5 buttons on a to
   
   ```js
   
-const toast = require('powertoast');
+import toast from 'powertoast';
 
 toast({
   title: "Dummy",

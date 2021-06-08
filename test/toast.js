@@ -1,6 +1,6 @@
 import toast, { isWinRTAvailable } from "../lib/esm.js";
 
-console.log("Default transport: " + `${isWinRTAvailable ? "WinRT" : "Powershell"}`);
+console.info("Default transport: " + `${isWinRTAvailable ? "WinRT" : "Powershell"}`);
 
 toast({
   disableWinRT: false,
@@ -43,9 +43,9 @@ toast({
     },
   },
 })
-  .then(() => {
-    console.log("ok");
-  })
-  .catch((err) => {
-    console.log(err);
-  });
+.then(() => {
+  console.log("ok");
+})
+.catch((err) => {
+  console.error(err);
+});
