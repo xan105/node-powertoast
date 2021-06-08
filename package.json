@@ -4,6 +4,7 @@
   "description": "Windows toast notification using PowerShell or WinRT (Windows 8, 8.1, 10).",
   "type": "module",
   "exports": "./lib/esm.js",
+  "types": "./types/esm.d.ts"
   "os": [
     "win32"
   ],
