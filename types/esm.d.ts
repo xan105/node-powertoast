@@ -44,7 +44,7 @@ declare interface IOption {
     button?: IButton[],
     group?: IGroup | null,
     progress?: IProgress,
-    callback: ICallback 
+    callback?: ICallback 
 }
 
 export default function (option?: IOption): Promise<any>;
