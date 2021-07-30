@@ -66,9 +66,7 @@ Previous version(s) are CommonJS (CJS) with an ESM wrapper.
   
   ⚠️ An invalid appID will result in the notification not being displayed !
 
-  You can view all installed appID via the powershell command :
-
-  `PS> Get-StartApps %search%`
+  You can view all installed appID via the powershell command `Get-StartApps`.
 
 ```js  
   import toast from 'powertoast';
@@ -80,7 +78,7 @@ Previous version(s) are CommonJS (CJS) with an ESM wrapper.
   }).catch(err => console.error(err));
 ```
   
-  ### If you are using this module with electron :
+  📢 If you are using this module with electron :
   In Electron, you can set it at runtime using the `app.setAppUserModelId()` method.
   
   Example with a dev electron app : (*Dont forget to add a non-pinned shortcut to your start menu in this case.*)
@@ -138,7 +136,7 @@ Previous version(s) are CommonJS (CJS) with an ESM wrapper.
   The URI of the image source, using one of these protocol handlers:
   
   - file:/// (*eg: `"D:\\Desktop\\test.jpg"`*)
-  - http(s):// (**only** available when using a UWP appID)
+  - http(s):// (**only** available when using an UWP appID)
 
   Icon dimensions are 48x48 pixels at 100% scaling.
 
@@ -344,6 +342,7 @@ Additional context menu items contribute to the total limit of 5 buttons on a to
   Callback to execute when user activates a toast notification through a click or when a toast notification leaves the screen, either by expiring or being explicitly dismissed by the user.<br />
   
   Because of how [NodeRT](https://github.com/NodeRT/NodeRT) works registered event listener does not keep the event loop alive so you will need to provide a timeout value to keep it alive (default to 6sec as 5sec is the default notification duration but keep in mind some users might have change this value in their Windows settings).<br />
+  If you have something else maintaining the event loop then you can ignore this.<br />
   
   The promise will resolve as soon as possible and will not wait for the keep-a-live. The keep-a-live is only to permit WinRT events to register.<br />
   
@@ -364,10 +363,11 @@ Additional context menu items contribute to the total limit of 5 buttons on a to
 ```
   
   `onDismissed` gives you an optional reason:
-    + userCanceled (0)
-    + applicationHidden (2)
+  
+  + userCanceled (0)
+  + applicationHidden (2)
     
-    In the case the reason is none of the above then the value will be the reason integer code. You are welcome to tell me any reason code I'm un-aware of.
+  In the case the reason is none of the above then the value will be the reason integer code.
   
 - **scenario** : string | Win10
 
@@ -468,23 +468,23 @@ toast({
 
 True if the peerDependencies for WinRT were successfully loaded; false otherwise.
 
-### `<Promise> remove(string appID, string|array uniqueID = null) : <void>` | Win10
+### `<Promise> remove(string appID, string|array uniqueID = null) : <void>`
 
-Remove programmatically notification(s) from the Action Center.
+Remove programmatically notification(s) from the Action Center (Win10).
 
 If using only appID then it removes every notification for said appID in the action center.<br/>
 If you provide an optional uniqueID _as a string_ then it removes that specific notification for the given appID.
 
-If you want to use the tag and group (label) properties of a toast to target a notification then use uniqueID _as an array_ as [tag, groupLabel].<br/>
-Only need to use groupLabel ? set tag to null [null, groupLabel].<br/>
-groupLabel can not be omitted so [tag, null] isn't valid.
+If you want to use the tag and group (label) properties of a toast to target a notification then use uniqueID _as an array_ as `[tag, groupLabel]`.<br/>
+Only need to use groupLabel ? set tag to null `[null, groupLabel]`.<br/>
+groupLabel can not be omitted so `[tag, null]` isn't valid.
 
-NB: Do not confuse group (label) with the `group` option of this lib default export.<br/>
+💡 NB: Do not confuse group (label) with the `group` option of this lib default export.<br/>
 `uniqueID` option of this lib default export actually sets both tag and group (label) to the same value for convenience.
 
-### `<Promise> getHistory(string appID) : <Array> [<obj> {}, ...]` | Win10
+### `<Promise> getHistory(string appID) : <Array> [<obj> {}, ...]`
 
-Get notification history for the given appID.<br/>
+Get notification history for the given appID (Win10).<br/>
 Contrary to what the _'history'_ might suggest it just list the current notification(s) for the given appID in the action center.<br/>
 Once a notification is cleared from it it's gone.
 
@@ -495,12 +495,12 @@ Return an array of object with the following properties:<br/>
 |expirationTime|string|time after which a toast should not be displayed (eg: "01/08/2021 20:53:23 +07:00")|
 |tag|string|unique identifier (tag)|
 |group|string|unique identifier (group label)|
-|remoteID|string/null|id to correlate this notification with another one generated on another device|
-|suppressPopup|boolean|whether toast's pop-up UI was displayed on the user's screen|
+|remoteID|string or null|id to correlate this notification with another one generated on another device|
+|suppressPopup|boolean|whether toast's pop-up UI is displayed on the user's screen|
 |mirroringAllowed|boolean|whether notification is allowed to be displayed on multiple devices|
 |expiresOnReboot|boolean|whether toast will remain in the Action Center after a reboot|
-|highPriority|boolean|whether the notification was displayed in high priority (wake up the screen, etc)|
-|status|string/null|additional information about the status of the toast|
+|highPriority|boolean|whether the notification is displayed in high priority (wake up the screen, etc)|
+|status|string or null|additional information about the status of the toast|
 
 Microsoft doc
 =============

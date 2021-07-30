@@ -52,6 +52,6 @@
   "devDependencies": {
     "@nodert-win10-rs4/windows.data.xml.dom": "^0.4.4",
     "@nodert-win10-rs4/windows.ui.notifications": "^0.4.4",
-    "eslint": "^7.28.0"
+    "eslint": "^7.31.0"
   }
 }
