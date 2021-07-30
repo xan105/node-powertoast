@@ -24,28 +24,43 @@ declare interface IButton{
 }
 
 declare interface IOption {
-    appID?: string,
-    uniqueID?: string | null,
-    sequenceNumber?: number,
-    title?: string,
-    message?: string,
-    attribution?: string,
-    icon?: string,
-    cropIcon?: bool,
-    headerImg?: string,
-    footerImg?: string,
-    silent?: bool,
-    hide?: bool,
-    audio?: string,
-    longTime?: bool,
-    onClick?: string,
-    scenario?: string,
-    timeStamp?: number | string,
-    button?: IButton[],
-    group?: IGroup | null,
-    progress?: IProgress,
-    callback?: ICallback 
+  appID?: string,
+  uniqueID?: string | null,
+  sequenceNumber?: number,
+  title?: string,
+  message?: string,
+  attribution?: string,
+  icon?: string,
+  cropIcon?: bool,
+  headerImg?: string,
+  footerImg?: string,
+  silent?: bool,
+  hide?: bool,
+  audio?: string,
+  longTime?: bool,
+  onClick?: string,
+  scenario?: string,
+  timeStamp?: number | string,
+  button?: IButton[],
+  group?: IGroup | null,
+  progress?: IProgress,
+  callback?: ICallback 
 }
 
 export default function (option?: IOption): Promise<any>;
 export isWinRTAvailable: bool;
+
+declare interface IToastProperties {
+  expirationTime: string,
+  tag: string,
+  group: string,
+  remoteID: string | null,
+  suppressPopup: bool,
+  mirroringAllowed: bool,
+  expiresOnReboot: bool,
+  highPriority: bool,
+  status: string | null
+}
+
+export function remove(appID: string, uniqueID?: string | string[] | null): Promise<any>;
+export function getHistory(appID: string): Promise<IToastProperties[]>;

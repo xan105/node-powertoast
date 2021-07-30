@@ -47,12 +47,6 @@ API
 ⚠️ This module is only available as an ECMAScript module (ESM) starting with version 2.0.0.<br />
 Previous version(s) are CommonJS (CJS) with an ESM wrapper.
 
-## Named export
-
-#### `bool isWinRTAvailable`
-
-True if the peerDependencies for WinRT were successfully loaded; false otherwise.
-
 ## Default export
 
 #### `<Promise> (<obj> option = {}) : <void>`
@@ -76,7 +70,7 @@ True if the peerDependencies for WinRT were successfully loaded; false otherwise
 
   `PS> Get-StartApps %search%`
 
-  ```js  
+```js  
   import toast from 'powertoast';
 
   toast({
@@ -84,7 +78,7 @@ True if the peerDependencies for WinRT were successfully loaded; false otherwise
     title: "Hello",
     message: "world"
   }).catch(err => console.error(err));
-  ```
+```
   
   ### If you are using this module with electron :
   In Electron, you can set it at runtime using the `app.setAppUserModelId()` method.
@@ -95,7 +89,7 @@ True if the peerDependencies for WinRT were successfully loaded; false otherwise
   <img src="https://github.com/xan105/node-powertoast/raw/master/screenshot/electron.png">
   </p>
 
-  ```js  
+```js  
   import toast from 'powertoast';
 
   toast({
@@ -103,8 +97,7 @@ True if the peerDependencies for WinRT were successfully loaded; false otherwise
     title: "Hello",
     message: "world"
   }).catch(err => console.error(err));
-
-  ```
+```
 
 - **title** : string | Win8,8.1,10
   
@@ -127,7 +120,7 @@ True if the peerDependencies for WinRT were successfully loaded; false otherwise
 <img src="https://github.com/xan105/node-powertoast/raw/master/screenshot/attribution.png">
 </p>
   
-  ```js
+```js
     
     import toast from 'powertoast';
 
@@ -138,15 +131,14 @@ True if the peerDependencies for WinRT were successfully loaded; false otherwise
       icon: "D:\\Desktop\\25231.png",
       attribution: "Via Web"
     }).catch(err => console.error(err));
-
-  ```
+```
 
 - **icon** : string | Win8,8.1,10
 
   The URI of the image source, using one of these protocol handlers:
   
   - file:/// (*eg: `"D:\\Desktop\\test.jpg"`*)
-  - http(s):// (only available when using a UWP appID)
+  - http(s):// (**only** available when using a UWP appID)
 
   Icon dimensions are 48x48 pixels at 100% scaling.
 
@@ -207,7 +199,7 @@ True if the peerDependencies for WinRT were successfully loaded; false otherwise
   
   File must be a .wav, by default Windows sounds are located in `%WINDIR%\media`
   
-  ```
+```
   //Registry
   Windows Registry Editor Version 5.00
 
@@ -228,7 +220,7 @@ True if the peerDependencies for WinRT were successfully loaded; false otherwise
     message: "Someone commented your issue",
     audio: "ms-winsoundevent:**YOUR_SOUND_ID**"
   }).catch(err => console.error(err));
-  ```
+```
   
 - **longTime** : boolean | Win10
 
@@ -256,25 +248,25 @@ True if the peerDependencies for WinRT were successfully loaded; false otherwise
   
   Example of protocol type action button to open up Windows 10's maps app with a pre-populated search field set to "sushi":
   
-  ```js
+```js
   import toast from 'powertoast';
 
   toast({
     message: "Sushi",
     onClick: "bingmaps:?q=sushi"
   }).catch(err => console.error(err));
-  ```
+```
 
   You can also redirect to an http/https resource :
   
-   ```js
+```js
   import toast from 'powertoast';
 
   toast({
     message: "Google It",
     onClick: "https://www.google.com"
   }).catch(err => console.error(err));
-  ```
+```
 
   **Tip**: You can create your own protocol: [create your own URI scheme](https://msdn.microsoft.com/en-us/windows/desktop/aa767914).<br/>
   And even send args back to your electron app:<br/>
@@ -283,7 +275,7 @@ True if the peerDependencies for WinRT were successfully loaded; false otherwise
   
   Let's say we created an electron: URI scheme;
   Let's send a notification:
-  ```js
+```js
   toast({
     message: "custom URI",
     onClick: "electron:helloworld"
@@ -298,14 +290,14 @@ True if the peerDependencies for WinRT were successfully loaded; false otherwise
     //[...,"electron:helloworld"]
 
   }) 
-  ```
+```
 
 - **button** : [{ text : string, onClick : string, contextMenu ?: boolean, icon ?: string }] | Win10 (contextMenu >= Anniversary Update)
 
   Array of buttons to add to your toast. You can only have up to 5 buttons. <br/>
   After the 5th they will be ignored.
   
-  ```js
+```js
   [
     {
       text: "", 
@@ -315,14 +307,13 @@ True if the peerDependencies for WinRT were successfully loaded; false otherwise
     },
     ...
   ]
-  ```
+```
   
 <p align="center">
 <img src="https://github.com/xan105/node-powertoast/raw/master/screenshot/button.png">
 </p>
   
- ```js
-  
+```js
 import toast from 'powertoast';
 
 toast({
@@ -333,8 +324,7 @@ toast({
     {text: "Chrome", onClick:"https://www.google.com/chrome/"}
   ]
 }).catch(err => console.error(err));
-
-  ```
+```
   
   You can add icons to your buttons.<br />
   These icons are white transparent 16x16 pixel images at 100% scaling, and should have no padding included in the image itself.<br />
@@ -357,7 +347,7 @@ Additional context menu items contribute to the total limit of 5 buttons on a to
   
   The promise will resolve as soon as possible and will not wait for the keep-a-live. The keep-a-live is only to permit WinRT events to register.<br />
   
-  ```js
+```js
   import toast from 'powertoast';
 
   toast({
@@ -371,7 +361,7 @@ Additional context menu items contribute to the total limit of 5 buttons on a to
   })
   .then(()=> console.log("Notified")
   .catch(err => console.error(err));
-  ```
+```
   
   `onDismissed` gives you an optional reason:
     + userCanceled (0)
@@ -397,20 +387,20 @@ Additional context menu items contribute to the total limit of 5 buttons on a to
 - **progress** : { header ?: string, percent ?: number | null, custom ?: string, footer ?: string } | Win10 (>= Creators Update)
 
   Add a progress bar to your toast.<br/>
-  ```
+```
   {
     header : optional string,
     footer: optional string,
     percent : percent of the progress bar, set it to null or omit it to get a progress with the little dots moving,
     custom : optional string to be displayed instead of the default percentage string
   }
-  ```
+```
   
 <p align="center">
 <img src="https://github.com/xan105/node-powertoast/raw/master/screenshot/progress.png">
 </p>
   
-  ```js
+```js
   
 import toast from 'powertoast';
 
@@ -425,8 +415,7 @@ toast({
     custom: "10/20 Beers"
   }
 }).catch(err => console.error(err));
-  
-  ```
+```
   
 - **uniqueID** : string | Win10
 
@@ -448,7 +437,7 @@ toast({
 - **group** : { id : string, title : string } | Win10 (>= Creators Update)
 
     You can group notifications under a common header within Action Center<br/>
-    ```
+```
   {
     id: use the same header id string to unify them under the header,
     title: title of the header, title can be different and will be shown above the toast.
@@ -456,7 +445,7 @@ toast({
            if that notification gets removed, then the title falls back 
            to the next most recent notification. 
   }
-  ```
+```
   
 <p align="center">
 <img src="https://github.com/xan105/node-powertoast/raw/master/screenshot/group.png">
@@ -472,11 +461,54 @@ toast({
   This also ensures that your notifications appear in the correct order within Action Center (which are sorted by time). Microsoft recommends that most apps specify a custom timestamp.<br/>
   But you can safely omit this option.
 
+
+## Named export
+
+#### `bool isWinRTAvailable`
+
+True if the peerDependencies for WinRT were successfully loaded; false otherwise.
+
+### `<Promise> remove(string appID, string|array uniqueID = null) : <void>` | Win10
+
+Remove programmatically notification(s) from the Action Center.
+
+If using only appID then it removes every notification for said appID in the action center.<br/>
+If you provide an optional uniqueID _as a string_ then it removes that specific notification for the given appID.
+
+If you want to use the tag and group (label) properties of a toast to target a notification then use uniqueID _as an array_ as [tag, groupLabel].<br/>
+Only need to use groupLabel ? set tag to null [null, groupLabel].<br/>
+groupLabel can not be omitted so [tag, null] isn't valid.
+
+NB: Do not confuse group (label) with the `group` option of this lib default export.<br/>
+`uniqueID` option of this lib default export actually sets both tag and group (label) to the same value for convenience.
+
+### `<Promise> getHistory(string appID) : <Array> [<obj> {}, ...]` | Win10
+
+Get notification history for the given appID.<br/>
+Contrary to what the _'history'_ might suggest it just list the current notification(s) for the given appID in the action center.<br/>
+Once a notification is cleared from it it's gone.
+
+Return an array of object with the following properties:<br/>
+
+|name|type|description|
+|----|----|-----------|
+|expirationTime|string|time after which a toast should not be displayed (eg: "01/08/2021 20:53:23 +07:00")|
+|tag|string|unique identifier (tag)|
+|group|string|unique identifier (group label)|
+|remoteID|string/null|id to correlate this notification with another one generated on another device|
+|suppressPopup|boolean|whether toast's pop-up UI was displayed on the user's screen|
+|mirroringAllowed|boolean|whether notification is allowed to be displayed on multiple devices|
+|expiresOnReboot|boolean|whether toast will remain in the Action Center after a reboot|
+|highPriority|boolean|whether the notification was displayed in high priority (wake up the screen, etc)|
+|status|string/null|additional information about the status of the toast|
+
 Microsoft doc
 =============
 
 📖 [Microsoft Toast API](https://docs.microsoft.com/en-us/windows/uwp/design/shell/tiles-and-notifications/adaptive-interactive-toasts).<br />
-📖 [Toast content XML schema](https://docs.microsoft.com/en-us/windows/uwp/design/shell/tiles-and-notifications/toast-xml-schema).
+📖 [Toast content XML schema](https://docs.microsoft.com/en-us/windows/uwp/design/shell/tiles-and-notifications/toast-xml-schema).<br />
+📖 [ToastNotificationHistory class](https://docs.microsoft.com/en-us/uwp/api/Windows.UI.Notifications.ToastNotificationHistory).<br />
+📖 [ToastNotification properties](https://docs.microsoft.com/en-us/uwp/api/windows.ui.notifications.toastnotification#properties).<br />
 
 Common Issues
 =============
