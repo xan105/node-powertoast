@@ -468,7 +468,7 @@ toast({
 
 True if the peerDependencies for WinRT were successfully loaded; false otherwise.
 
-### `<Promise> remove(string appID, string|array uniqueID = null) : <void>`
+#### `<Promise> remove(string appID, string|array uniqueID = null) : <void>`
 
 Remove programmatically notification(s) from the Action Center (Win10).
 
@@ -482,7 +482,7 @@ groupLabel can not be omitted so `[tag, null]` isn't valid.
 💡 NB: Do not confuse group (label) with the `group` option of this lib default export.<br/>
 `uniqueID` option of this lib default export actually sets both tag and group (label) to the same value for convenience.
 
-### `<Promise> getHistory(string appID) : <Array> [<obj> {}, ...]`
+#### `<Promise> getHistory(string appID) : <Array> [<obj> {}, ...]`
 
 Get notification history for the given appID (Win10).<br/>
 Contrary to what the _'history'_ might suggest it just list the current notification(s) for the given appID in the action center.<br/>
