@@ -33,7 +33,7 @@ Installation
 
 ### Optional packages
 
-_Prequisites: C/C++ build tools and Python 3.x (node-gyp) / Windows 10 SDK **10.0.17134.0** (1803 Redstone 4)_<br/>
+_Prerequisite: C/C++ build tools and Python 3.x (node-gyp) / Windows 10 SDK **10.0.17134.0** (1803 Redstone 4)_<br/>
 _⚠️ SDK version is important here. It will fail with another one._
 
  + [NodeRT windows.data.xml.dom](https://www.npmjs.com/package/@nodert-win10-rs4/windows.data.xml.dom)<br />
@@ -48,6 +48,13 @@ API
 
 ⚠️ This module is only available as an ECMAScript module (ESM) starting with version 2.0.0.<br />
 Previous version(s) are CommonJS (CJS) with an ESM wrapper.
+
+- Default
+  + [default()](#promise-obj-option----void) : send a toast notification
+- Named
+  + [isWinRTAvailable](#bool-iswinrtavailable) : is NodeRT loaded ?
+  + [remove()](#promise-removestring-appid-stringarray-uniqueid--null--void) : remove notification from Action Center
+  + [getHistory()](#promise-gethistorystring-appid--array-obj--) : list notification from Action Center
 
 ## Default export
 
