@@ -24,6 +24,20 @@ toast({
 }).catch((err) => { 
   console.error(err);
 });
+
+//Callback
+toast({
+  title: "NPM",
+  message: "Installed.",
+  icon: "https://static.npmjs.com/7a7ffabbd910fc60161bc04f2cee4160.png",
+  callback: { 
+   onActivated: ()=>{ console.log("click") },
+   onDismissed: (reason)=>{ console.log(reason) }
+  }
+})
+.catch((err) => { 
+  console.error(err);
+});
 ```
 
 Installation
