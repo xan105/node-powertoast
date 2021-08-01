@@ -83,8 +83,8 @@ Previous version(s) are CommonJS (CJS) with an ESM wrapper.
   <em>xan105/node-Get-StartApps isValidAUMID()</em>
   </p>
   
-  Win32 appID (red) is whatever string you want.<br />
-  UWP appID (green) is a string with a very specific set of rules.<br />
+  Win32 appID (_red_) is whatever string you want.<br />
+  UWP appID (_green_) is a string with a very specific set of rules.<br />
   Some features / behaviors are limited to UWP appID only because Microsoft™.
   
   Your framework, installer, setup, etc... should have method(s) to create / use one for you.<br />
@@ -96,11 +96,6 @@ Previous version(s) are CommonJS (CJS) with an ESM wrapper.
 
   toast({
     appID: "Microsoft.XboxApp_8wekyb3d8bbwe!Microsoft.XboxApp", //Xbox App (UWP)
-    title: "Hello",
-    message: "world"
-  }).catch(err => console.error(err));
-  
-  toast({
     appID: "com.squirrel.GitHubDesktop.GitHubDesktop", //GitHub Desktop (win32)
     title: "Hello",
     message: "world"
