@@ -41,6 +41,8 @@ _⚠️ SDK version is important here. It will fail with another one._
  + [NodeRT windows.ui.notifications](https://www.npmjs.com/package/@nodert-win10-rs4/windows.ui.notifications)<br /> 
  `npm install @nodert-win10-rs4/windows.ui.notifications`
 
+ ⚠️Electron ≥ 14 : NodeRT should be loaded in the main process [NodeRT#158](https://github.com/NodeRT/NodeRT/issues/158)
+
 API
 ===
 
@@ -53,35 +55,35 @@ Previous version(s) are CommonJS (CJS) with an ESM wrapper.
 
 ⚠️ Windows 8/8.1 have very basic notification compared to Windows 10, some options will be ignored.
 
-- **disableWinRT** : boolean | Win10
+- **disableWinRT** : boolean | ≥ Win8.x
 
   If you have installed the optional NodeRT native module but for whatever reason(s) you want to use PowerShell instead.
   Then set this to `true`
 
-- **appID** : string | Win8,8.1,10
+- **appID** : string | ≥ Win8.x
 
-  Your [Application User Model ID](https://docs.microsoft.com/fr-fr/windows/desktop/shell/appids).
+  Your [Application User Model ID](https://docs.microsoft.com/fr-fr/windows/desktop/shell/appids) a.k.a. AUMID.
   
   **Default** to Microsoft Store so you can see how it works if not specified.
   
   ⚠️ An invalid appID will result in the notification not being displayed !
-
-  You can view all installed appID via the powershell command `Get-StartApps`.
-
+  
+  You can view all installed appID via the powershell command `Get-StartApps`.<br />
+  Your framework, installer, setup, etc... should have method(s) to use / create one for you.<br />
+  Eg: Innosetup has the parameter `AppUserModelID` in the `[Icons]` section, Electron has the method `app.setAppUserModelId()`.<br />
+  💡 It basically boils down to creating a .lnk shortcut in the `StartMenu` folder with the AUMID property set and some registry.<br />
+  
 ```js  
   import toast from 'powertoast';
 
   toast({
-    appID: "Microsoft.XboxApp_8wekyb3d8bbwe!Microsoft.XboxApp", //Xbox App
+    appID: "Microsoft.XboxApp_8wekyb3d8bbwe!Microsoft.XboxApp", //Xbox App (UWP)
     title: "Hello",
     message: "world"
   }).catch(err => console.error(err));
 ```
-  
-  📢 If you are using this module with electron :
-  In Electron, you can set it at runtime using the `app.setAppUserModelId()` method.
-  
-  Example with a dev electron app : (*Dont forget to add a non-pinned shortcut to your start menu in this case.*)
+
+  Example with a **dev** electron app : (_Dont forget to add a non-pinned shortcut to your start menu in this case._)
 
   <p align="center">
   <img src="https://github.com/xan105/node-powertoast/raw/master/screenshot/electron.png">
@@ -97,18 +99,18 @@ Previous version(s) are CommonJS (CJS) with an ESM wrapper.
   }).catch(err => console.error(err));
 ```
 
-- **title** : string | Win8,8.1,10
+- **title** : string | ≥ Win8.x
   
-  The title of your notification
+  The title of your notification.
 
-- **message** : string | Win8,8.1,10
+- **message** : string | ≥ Win8.x
 
   The content message of your notification.
   You can use "\n" to create a new line for the forthcoming text.
   
   Since the Windows 10 Anniversary Update the default and maximum is up to 2 lines of text for the title, and up to 4 lines (combined) for the message.
 
-- **attribution** : string | Win10 (>= Anniversary Update)
+- **attribution** : string | ≥ Win10 (Anniversary Update)
 
   Reference the source of your content. This text is always displayed at the bottom of your notification, along with your app's identity or the notification's timestamp.
 
@@ -131,30 +133,31 @@ Previous version(s) are CommonJS (CJS) with an ESM wrapper.
     }).catch(err => console.error(err));
 ```
 
-- **icon** : string | Win8,8.1,10
+- **icon** : string | ≥ Win8.x
 
   The URI of the image source, using one of these protocol handlers:
   
-  - file:/// (*eg: `"D:\\Desktop\\test.jpg"`*)
-  - http(s):// (**only** available when using an UWP appID)
+  - file:/// (_eg: `"D:\\Desktop\\test.jpg"`_)
+  - http(s)://
 
-  Icon dimensions are 48x48 pixels at 100% scaling.
+  .png and .jpeg are supported (48x48 pixels at 100% scaling).
 
-  .png and .jpeg are supported.
-
-  For http and https remote web images, there are limits on the file size of each individual image. <br/>
-  3 MB on normal connections and 1 MB on metered connections. <br/>
+  Remote web images over http(s) are only available when using an UWP appID.<br/>
+  There are limits on the file size of each individual image.<br/>
+  3 MB on normal connections and 1 MB on metered connections.<br/>
   Before Fall Creators Update, images were always limited to 200 KB.<br/>
 
   If an image exceeds the file size, or fails to download, or times out, or is an unvalid format the image will be dropped and the rest of the notification will be displayed.
+  
+  💡 A workaround is to download yourself the image and pass the img filepath instead of an URL.
 
-- **cropIcon** : boolean | Win10
+- **cropIcon** : boolean | ≥ Win10
 
   You can use this to 'circle-crop' your image (true). Otherwise, the image is square (false).
   
   **default** to false.
 
-- **headerImg** : string | Win10 (>= Anniversary Update)
+- **headerImg** : string | ≥ Win10 (Anniversary Update)
 
   <p align="center">
   <img src="https://github.com/xan105/node-powertoast/raw/master/screenshot/header.png">
@@ -164,9 +167,9 @@ Previous version(s) are CommonJS (CJS) with an ESM wrapper.
   Image dimensions are 364x180 pixels at 100% scaling.
   If the image is too big it will be cut from the bottom.
   
-  Otherwise same restriction as above.
+  Otherwise same restrictions as mentionned in the `icon` option.
 
-- **footerImg** : string | Win10
+- **footerImg** : string | ≥ Win10
 
   <p align="center">
   <img src="https://github.com/xan105/node-powertoast/raw/master/screenshot/footer.png">
@@ -175,25 +178,25 @@ Previous version(s) are CommonJS (CJS) with an ESM wrapper.
   A full-width inline-image that appears at the bottom of the toast and inside the Action Center if there is enough room.
   Image will be resized to fit inside the toast.
   
-  Otherwise same restriction as above.
+  Otherwise same restrictions as mentionned in the `icon` option.
 
-- **silent** : boolean | Win8,8.1,10
+- **silent** : boolean | ≥ Win8.x
 
   True to mute the sound; false to allow the toast notification sound to play. **Default** to false.
 
-- **hide** : boolean | Win10
+- **hide** : boolean | ≥ Win10
   
   True to suppress the popup message and places the toast notification **silently** into the action center. **Default** to false.<br/>
   Using `silent: true` is redundant in this case.
   
-- **audio** : string | Win8,8.1,10
+- **audio** : string | ≥ Win8.x
 
   The audio source to play when the toast is shown to the user.<br/>
   You **can't** use file:/// with this ! You are limited to the Windows sound schema available in your system.<br/>
   
   example: ms-winsoundevent:Notification.Default
   
-  **Tip**: But you can create your own Windows sound schema with the registry and use it for your toast:
+  💡 But you can create your own Windows sound schema with the registry and use it for your toast:
   
   File must be a .wav, by default Windows sounds are located in `%WINDIR%\media`
   
@@ -220,7 +223,7 @@ Previous version(s) are CommonJS (CJS) with an ESM wrapper.
   }).catch(err => console.error(err));
 ```
   
-- **longTime** : boolean | Win10
+- **longTime** : boolean | ≥ Win8.x
 
   Increase the time the toast should show up for.<br />
   **Default** to false.
@@ -236,13 +239,13 @@ Previous version(s) are CommonJS (CJS) with an ESM wrapper.
   User value default to 5sec; <br/>
   Available: 5, 7, 15, 30, 1min, 5min
 
-- **onClick** : string | Win10
+- **onClick** : string | ≥ Win10
 
   Protocol to launch when the user click on the toast.<br />
   If none (**default**) click will just dismiss the notification.<br />
 
   ⚠️ Only protocol type action is supported as there's no way of receiving feedback from the user's choice via PowerShell.<br />
-  If you are using NodeRT native module and you want to execute some js code when the user click on the toast or when the toast is dismissed then please see the callback option section down below.<br />
+  💡 If you are using NodeRT native module and you want to execute some js code when the user click on the toast or when the toast is dismissed then please see the callback option section down below.<br />
   
   Example of protocol type action button to open up Windows 10's maps app with a pre-populated search field set to "sushi":
   
@@ -266,8 +269,8 @@ Previous version(s) are CommonJS (CJS) with an ESM wrapper.
   }).catch(err => console.error(err));
 ```
 
-  **Tip**: You can create your own protocol: [create your own URI scheme](https://msdn.microsoft.com/en-us/windows/desktop/aa767914).<br/>
-  And even send args back to your electron app:<br/>
+  💡 You can create your own protocol: [create your own URI scheme](https://msdn.microsoft.com/en-us/windows/desktop/aa767914).<br/>
+  And even send args back to say an electron app:<br/>
   In electron just make your app a single instance with `app.requestSingleInstanceLock()`<br/>
   Then use the second-instance event to parse the new args.
   
@@ -290,7 +293,7 @@ Previous version(s) are CommonJS (CJS) with an ESM wrapper.
   }) 
 ```
 
-- **button** : [{ text : string, onClick : string, contextMenu ?: boolean, icon ?: string }] | Win10 (contextMenu >= Anniversary Update)
+- **button** : [{ text : string, onClick : string, contextMenu ?: boolean, icon ?: string }] | ≥ Win10
 
   Array of buttons to add to your toast. You can only have up to 5 buttons. <br/>
   After the 5th they will be ignored.
@@ -301,7 +304,7 @@ Previous version(s) are CommonJS (CJS) with an ESM wrapper.
       text: "", 
       onClick: "", //Protocol to launch (see previous onClick section)
       icon: "", //Optional icon path
-      contextMenu: true //Optional placement to context menu (Anniversary Update)
+      contextMenu: true //Optional placement to context menu (≥ Win10 Anniversary Update)
     },
     ...
   ]
@@ -332,17 +335,17 @@ toast({
 <img src="https://github.com/xan105/node-powertoast/raw/master/screenshot/btn-icon.png">
 </p>
   
-  You can add additional context menu actions to the existing context menu that appears when the user right clicks your toast from within Action Center by using `contextMenu: true`.<br />
+  You can add additional context menu actions (Anniversary Update) to the existing context menu that appears when the user right clicks your toast from within Action Center by using `contextMenu: true`.<br />
 This menu only appears when right clicked from Action Center. It does not appear when right clicking a toast popup banner.
 Anniversary Update and up, on older version these additional context menu actions will simply appear as normal buttons on your toast.
 Additional context menu items contribute to the total limit of 5 buttons on a toast.
 
-- **callback** : { keepalive ?: number, onActivated?() : void, onDismissed?() : void } | Win10 (⚠️ WinRT only) 
+- **callback** : { keepalive ?: number, onActivated?() : void, onDismissed?() : void } | ≥ Win10 (⚠️ WinRT only) 
 
   Callback to execute when user activates a toast notification through a click or when a toast notification leaves the screen, either by expiring or being explicitly dismissed by the user.<br />
   
   Because of how [NodeRT](https://github.com/NodeRT/NodeRT) works registered event listener does not keep the event loop alive so you will need to provide a timeout value to keep it alive (default to 6sec as 5sec is the default notification duration but keep in mind some users might have change this value in their Windows settings).<br />
-  If you have something else maintaining the event loop then you can ignore this.<br />
+  💡 If you have something else maintaining the event loop then you can ignore this.<br />
   
   The promise will resolve as soon as possible and will not wait for the keep-a-live. The keep-a-live is only to permit WinRT events to register.<br />
   
@@ -369,7 +372,7 @@ Additional context menu items contribute to the total limit of 5 buttons on a to
     
   In the case the reason is none of the above then the value will be the reason integer code.
   
-- **scenario** : string | Win10
+- **scenario** : string | ≥ Win10
 
   "default", "alarm", "reminder", "incomingCall"<br />
   **Default** to ... well, 'default'.
@@ -381,10 +384,10 @@ Additional context menu items contribute to the total limit of 5 buttons on a to
   + **Alarm**: In addition to the reminder behaviors, alarms will additionally loop audio with a default alarm sound.
   + **IncomingCall**: Same behaviors as alarms except they use ringtone audio and their buttons are styled differently (displayed full screen on Windows Mobile devices).
   <br />
-  When using Reminder or Alarm, you must provide at least one button on your toast notification.<br /> 
+  ⚠️ When using Reminder or Alarm, you must provide at least one button on your toast notification.<br /> 
   Otherwise, the toast will be treated as a normal toast.
   
-- **progress** : { header ?: string, percent ?: number | null, custom ?: string, footer ?: string } | Win10 (>= Creators Update)
+- **progress** : { header ?: string, percent ?: number | null, custom ?: string, footer ?: string } | ≥ Win10 (Creators Update)
 
   Add a progress bar to your toast.<br/>
 ```
@@ -417,7 +420,7 @@ toast({
 }).catch(err => console.error(err));
 ```
   
-- **uniqueID** : string | Win10
+- **uniqueID** : string | ≥ Win10
 
    You can replace a notification by sending a new toast with the same uniqueID. <br/>
    This is useful when using a progress bar or correcting/updating the information on a toast. <br/>
@@ -426,7 +429,7 @@ toast({
    However this is not really suitable for information that frequently changes in a short period of time (like a download progress for example)
    or subtle changes to your toast content, like changing 50% to 65%.
 
-- **sequenceNumber** : number | Win10
+- **sequenceNumber** : number | ≥ Win10
 
     Provide sequence number to prevent out-of-order updates, or assign 0 to indicate "always update". <br/>
     A higher sequence number indicates a newer toast. <br/>
@@ -434,7 +437,7 @@ toast({
     
     The sequence number may helps to ensure that toasts will not be displayed in a manner that may confuse when updating/correcting.
   
-- **group** : { id : string, title : string } | Win10 (>= Creators Update)
+- **group** : { id : string, title : string } | ≥ Win10 (Creators Update)
 
     You can group notifications under a common header within Action Center<br/>
 ```
@@ -451,7 +454,7 @@ toast({
 <img src="https://github.com/xan105/node-powertoast/raw/master/screenshot/group.png">
 </p>
   
-- **timeStamp** : number | string
+- **timeStamp** : number | string | ≥ Win10
 
   Unix epoch time in seconds.<br/>
   Current time by **default** if not specified.<br/>
@@ -470,7 +473,7 @@ True if the peerDependencies for WinRT were successfully loaded; false otherwise
 
 #### `<Promise> remove(string appID, string|array uniqueID = null) : <void>`
 
-Remove programmatically notification(s) from the Action Center (Win10).
+Remove programmatically notification(s) from the Action Center (≥ Win10).
 
 If using only appID then it removes every notification for said appID in the action center.<br/>
 If you provide an optional uniqueID _as a string_ then it removes that specific notification for the given appID.
@@ -479,12 +482,12 @@ If you want to use the tag and group (label) properties of a toast to target a n
 Only need to use groupLabel ? set tag to null `[null, groupLabel]`.<br/>
 groupLabel can not be omitted so `[tag, null]` isn't valid.
 
-💡 NB: Do not confuse group (label) with the `group` option of this lib default export.<br/>
+⚠️ NB: Do not confuse group (label) with the `group` option of this lib default export.<br/>
 `uniqueID` option of this lib default export actually sets both tag and group (label) to the same value for convenience.
 
 #### `<Promise> getHistory(string appID) : <Array> [<obj> {}, ...]`
 
-Get notification history for the given appID (Win10).<br/>
+Get notification history for the given appID (≥ Win10).<br/>
 Contrary to what the _'history'_ might suggest it just list the current notification(s) for the given appID in the action center.<br/>
 Once a notification is cleared from it it's gone.
 
@@ -522,9 +525,9 @@ Common Issues
 - Where is my icon/image ?
 
   Check URL or file path.<br/>
-  URL is only available for UWP appID.<br/>
+  ⚠️ URL is only available for UWP appID.<br/>
   If an image exceeds the file size, or fails to download, or times out, or is an unvalid format the image will be dropped and the rest of the notification will be displayed.<br/>
-  A workaround is to download yourself the image and pass the img filepath instead of an URL.
+  💡 A workaround is to download yourself the image and pass the img filepath instead of an URL.
   
 - Notifications when app is fullscreen aren't displayed
   
@@ -532,7 +535,7 @@ Common Issues
   But you can over a fullscreen borderless.<br />
   
   Double check your focus assistant and notifcation settings in the windows settings panel.<br />
-  Note that since Windows 10 1903 there is a new default fullscreen auto rule enabled to alarm only by default which will prevent toast notification over fullscreen borderless.
+  ⚠️ Note that since Windows 10 1903 there is a new default fullscreen auto rule enabled to alarm only by default which will prevent toast notification over fullscreen borderless.
 
 - Slight delay between event and the display of the notification
 
@@ -540,10 +543,11 @@ Common Issues
   If it really bothers you, you might want to try to use the optional NodeRT native module.<br />
   If you are loading a remote img resource via http/https it will significantly impact the delay if it hasn't been cached yet by Windows.
 
-- Notification don't stay in the Action center
+- Notification(s) don't stay in the Action center
 
-  When using a Win32 appID notification will remove itself from the Action center when the app gets focus.<br/>
-  Use a UWP appID instead.
+  When using a Win32 appID a notification will remove itself from the Action center when the app gets focus.<br/>
+  You can change this behavior in the Win10 settings panel for notification (not globally but per application).<br/>
+  💡 This can also be done programmatically by setting the DWORD regkey `ShowInActionCenter` to `1` in `HKCU:\\SOFTWARE\Microsoft\Windows\CurrentVersion\Notifications\Settings` for your appID.
   
 Known missing features
 ======================
