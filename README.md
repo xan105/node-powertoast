@@ -72,9 +72,9 @@ Previous version(s) are CommonJS (CJS) with an ESM wrapper.
   AppIDs can be classified into 2 categories: Win32 appID and UWP appID.<br />
   
   <p align="center">
-  <img src="https://github.com/xan105/node-powertoast/raw/master/screenshot/aumid.png">
+  <img src="https://github.com/xan105/node-powertoast/raw/master/screenshot/aumid.png"><br />
+  <em>xan105/node-Get-StartApps isValidAUMID()</em>
   </p>
-  _[@xan105/node-Get-StartApps isValidAUMID()](https://github.com/xan105/node-Get-StartApps)_
   
   Win32 appID (red) is whatever string you want.<br />
   UWP appID (green) is a string with a very specific set of rules.<br />
