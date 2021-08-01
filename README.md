@@ -382,11 +382,7 @@ Additional context menu items contribute to the total limit of 5 buttons on a to
   .catch(err => console.error(err));
 ```
   
-  `onDismissed` gives you an optional reason:
-  
-  + userCanceled (0)
-  + applicationHidden (2)
-    
+  `onDismissed` gives you an optional reason: userCanceled (0) / applicationHidden (2)<br />
   In the case the reason is none of the above then the value will be the reason integer code.
   
 - **scenario** : string | ≥ Win10
