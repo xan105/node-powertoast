@@ -64,12 +64,23 @@ Previous version(s) are CommonJS (CJS) with an ESM wrapper.
 
   Your [Application User Model ID](https://docs.microsoft.com/fr-fr/windows/desktop/shell/appids) a.k.a. AUMID.
   
-  **Default** to Microsoft Store so you can see how it works if not specified.
+  **Default** to Microsoft Store (UWP) so you can see how it works if not specified.
   
   ⚠️ An invalid appID will result in the notification not being displayed !
   
-  You can view all installed appID via the powershell command `Get-StartApps`.<br />
-  Your framework, installer, setup, etc... should have method(s) to use / create one for you.<br />
+  You can view all installed appID via the PowerShell command `Get-StartApps`.<br />
+  AppIDs can be classified into 2 categories: Win32 appID and UWP appID.<br />
+  
+  <p align="center">
+  <img src="https://github.com/xan105/node-powertoast/raw/master/screenshot/aumid.png">
+  </p>
+  _[@xan105/node-Get-StartApps isValidAUMID()](https://github.com/xan105/node-Get-StartApps)_
+  
+  Win32 appID (red) is whatever string you want.<br />
+  UWP appID (green) is a string with a very specific set of rules.<br />
+  Some features / behaviors are limited to UWP appID only because Microsoft™.
+  
+  Your framework, installer, setup, etc... should have method(s) to create / use one for you.<br />
   Eg: Innosetup has the parameter `AppUserModelID` in the `[Icons]` section, Electron has the method `app.setAppUserModelId()`.<br />
   💡 It basically boils down to creating a .lnk shortcut in the `StartMenu` folder with the AUMID property set and some registry.<br />
   
@@ -78,6 +89,12 @@ Previous version(s) are CommonJS (CJS) with an ESM wrapper.
 
   toast({
     appID: "Microsoft.XboxApp_8wekyb3d8bbwe!Microsoft.XboxApp", //Xbox App (UWP)
+    title: "Hello",
+    message: "world"
+  }).catch(err => console.error(err));
+  
+  toast({
+    appID: "com.squirrel.GitHubDesktop.GitHubDesktop", //GitHub Desktop (win32)
     title: "Hello",
     message: "world"
   }).catch(err => console.error(err));
@@ -142,7 +159,7 @@ Previous version(s) are CommonJS (CJS) with an ESM wrapper.
 
   .png and .jpeg are supported (48x48 pixels at 100% scaling).
 
-  Remote web images over http(s) are only available when using an UWP appID.<br/>
+  ⚠️ Remote web images over http(s) are **only available when using an UWP appID**.<br/>
   There are limits on the file size of each individual image.<br/>
   3 MB on normal connections and 1 MB on metered connections.<br/>
   Before Fall Creators Update, images were always limited to 200 KB.<br/>
