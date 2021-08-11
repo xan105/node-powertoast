@@ -9,7 +9,7 @@ if($Version.Major -gt 7 -or ($Version.Major -eq 7 -and $Version.Minor -ge 1)){
       Install-Package -Name $Lib.name -MinimumVersion $Lib.version -ProviderName NuGet -Source 'https://www.nuget.org/api/v2' -Force -Scope CurrentUser
     }
     ForEach ($File in $Lib.files) {
-      $Source = Split-Path -Path (Get-Package -Name $Lib.name | Select-Object Source).Source
+      $Source = Split-Path -Path (Get-Package -Name $Lib.name).Source
       $FilePath = Join-Path -Path $Source -ChildPath $File
       Add-Type -Path $FilePath -ErrorAction Stop
     }
