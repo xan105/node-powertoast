@@ -78,8 +78,14 @@ Previous version(s) are CommonJS (CJS) with an ESM wrapper.
 
 - **disableWinRT** : boolean | ≥ Win8.x
 
-  If you have installed the optional NodeRT native module but for whatever reason(s) you want to use PowerShell instead.
-  Then set this to `true`
+  If you have installed the optional NodeRT native module but for whatever reason(s) you want to use PowerShell instead.<br />
+  Then set this to true. **Default** to false.
+  
+- **usePowerShellCore** : boolean | ≥ Win8.x
+
+  Use `pwsh` (PowerShell Core) instead of `powershell` (PowerShell Desktop / Windows Embedded).<br />
+  _Needless to say PowerShell (core) needs to be installed for this to work._<br />
+  **Default** to false.
 
 - **appID** : string | ≥ Win8.x
 
