@@ -6,7 +6,7 @@ Windows toast notification using PowerShell or WinRT (Windows 8, 8.1, 10).<br />
 Doesn't use any native module. Everything is done through PowerShell but you can use native WinRT API instead by **optionally** installing [NodeRT](https://github.com/NodeRT/NodeRT) relative package (see [installation](#Installation))
 
 Using NodeRT is a bit faster as you don't have to wait for the PowerShell VM to start and you'll be able to subscribe to the onActivated/onDismissed callback.<br />
-NB: Callbacks are also available with PowerShell ≥ 7.1.
+_NB: Callbacks are now also available with PowerShell ≥ 7.1._
 
 Example
 =======
@@ -401,8 +401,13 @@ Additional context menu items contribute to the total limit of 5 buttons on a to
   .catch(err => console.error(err));
 ```
   
-  `onDismissed` gives you an optional reason: userCanceled (0) / applicationHidden (2)<br />
-  In the case the reason is none of the above then the value will be the reason integer code.
+  `onDismissed` gives you the reason:
+  
+  |Name|Code|Description|
+  |----|----|-----------|
+  |UserCanceled|0|User dismissed the toast|
+  |ApplicationHidden|1|App explicitly hid the toast notification by calling the ToastNotifier.hide method|
+  |TimedOut|2|Toast had been shown for the maximum allowed time and was faded out|
   
   ⚠️ When using PowerShell ≥ 7.1 usage is as above with the following changes:
   

@@ -8,7 +8,7 @@ declare interface IProgress {
 declare interface ICallback{
   keepalive?: number,
   onActivated?(): void,
-  onDismissed?(reason: string | number): void
+  onDismissed?(reason: string): void
 }
 
 declare interface IGroup{
