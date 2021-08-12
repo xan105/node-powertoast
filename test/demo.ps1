@@ -2,10 +2,12 @@
 $Version = $PSVersionTable.PSVersion
 if($Version.Major -gt 7 -or ($Version.Major -eq 7 -and $Version.Minor -ge 1)){
   $Assembly = [pscustomobject]@{name = 'Microsoft.Windows.SDK.NET.Ref';version = '10.0.20348.20';files = @('lib/WinRT.Runtime.dll';'lib/Microsoft.Windows.SDK.NET.dll')}
-  if (!(Get-Package -Name $Assembly.name -ErrorAction SilentlyContinue)){
+  $Package = Get-Package -Name $Assembly.name -ErrorAction SilentlyContinue
+  if (!$Package){
     Install-Package -Name $Assembly.name -MinimumVersion $Assembly.version -ProviderName NuGet -Source 'https://www.nuget.org/api/v2' -Force -Scope CurrentUser
+    $Package = Get-Package -Name $Assembly.name
   }
-  $Source = Split-Path -Path (Get-Package -Name $Assembly.name).Source
+  $Source = Split-Path -Path $Package.Source
   ForEach ($File in $Assembly.files) {
     $FilePath = Join-Path -Path $Source -ChildPath $File
     Add-Type -Path $FilePath -ErrorAction Stop

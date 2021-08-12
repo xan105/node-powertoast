@@ -63,18 +63,14 @@ API
 ⚠️ This module is only available as an ECMAScript module (ESM) starting with version 2.0.0.<br />
 Previous version(s) are CommonJS (CJS) with an ESM wrapper.
 
-- Default
-  + [default()](#promise-obj-option----void) : send a toast notification
-- Named
-  + [isWinRTAvailable](#bool-iswinrtavailable) : is NodeRT loaded ?
-  + [remove()](#promise-removestring-appid-stringarray-uniqueid--null--void) : remove notification from Action Center
-  + [getHistory()](#promise-gethistorystring-appid--array-obj--) : list notification from Action Center
-
 ## Default export
 
 #### `<Promise> (<obj> option = {}) : <void>`
 
 ⚠️ Windows 8/8.1 have very basic notification compared to Windows 10, some options will be ignored.
+
+<details>
+<summary>⚙️ Options</summary>
 
 - **disableWinRT** : boolean | ≥ Win8.x
 
@@ -84,7 +80,7 @@ Previous version(s) are CommonJS (CJS) with an ESM wrapper.
 - **usePowerShellCore** : boolean | ≥ Win8.x
 
   Use `pwsh` (PowerShell Core) instead of `powershell` (PowerShell Desktop / Windows Embedded).<br />
-  _Needless to say PowerShell (core) needs to be installed for this to work._<br />
+  _Needless to say PowerShell (core) needs to be installed and its path added to your env var for this to work._<br />
   **Default** to false.
 
 - **appID** : string | ≥ Win8.x
@@ -422,7 +418,7 @@ Additional context menu items contribute to the total limit of 5 buttons on a to
   ⚠️ When using Reminder or Alarm, you must provide at least one button on your toast notification.<br /> 
   Otherwise, the toast will be treated as a normal toast.
   
-- **progress** : { header ?: string, percent ?: number | null, custom ?: string, footer ?: string } | ≥ Win10 (Creators Update)
+- **progress** : { header ?: string, percent ?: number | null, custom ?: string, footer ?: string } | Win8.x and ≥ Win10 (Creators Update)
 
   Add a progress bar to your toast.<br/>
 ```
@@ -439,7 +435,6 @@ Additional context menu items contribute to the total limit of 5 buttons on a to
 </p>
   
 ```js
-  
 import toast from 'powertoast';
 
 toast({
@@ -452,6 +447,23 @@ toast({
     percent: 50,
     custom: "10/20 Beers"
   }
+}).catch(err => console.error(err));
+```
+
+💡 On Windows 8.x This will be shown as a text as long as your message is one line max.<br/>
+custom takes precedence over percent and both header and footer are ignored.
+<p align="center">
+<img src="https://github.com/xan105/node-powertoast/raw/master/screenshot/progress_win8.png">
+</p>
+
+```js
+import toast from 'powertoast';
+
+toast({
+  title: "Dummy",
+  message: "Hello World",
+  icon: "https://steamcdn-a.akamaihd.net/steamcommunity/public/images/apps/480/winner.jpg",
+  progress:{ percent: 50 }
 }).catch(err => console.error(err));
 ```
   
@@ -499,6 +511,7 @@ toast({
   This also ensures that your notifications appear in the correct order within Action Center (which are sorted by time). Microsoft recommends that most apps specify a custom timestamp.<br/>
   But you can safely omit this option.
 
+</details>
 
 ## Named export
 
@@ -576,7 +589,8 @@ Common Issues
 
   Running the PowerShell script can take up to a few seconds in some cases.<br />
   If it really bothers you, you might want to try to use the optional NodeRT native module.<br />
-  If you are loading a remote img resource via http/https it will significantly impact the delay if it hasn't been cached yet by Windows.
+  If you are loading a remote img resource via http/https it will significantly impact the delay if it hasn't been cached yet by Windows.<br />
+  The first time you are using this with PowerShell ≥ 7.1; It has to download assemblies (such as WinRT types).
 
 - Notification(s) don't stay in the Action center
 

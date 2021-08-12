@@ -24,6 +24,8 @@ declare interface IButton{
 }
 
 declare interface IOption {
+  disableWinRT?: bool,
+  usePowerShellCore?: bool,
   appID?: string,
   uniqueID?: string | null,
   sequenceNumber?: number,
