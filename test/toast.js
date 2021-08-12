@@ -34,7 +34,7 @@ toast({
   },
   headerImg: "../screenshot/example.png",
   callback: {
-    keepalive: 8000,
+    keepalive: 8,
     onActivated: () => {
       console.log("activated");
     },

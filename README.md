@@ -5,7 +5,8 @@ Windows toast notification using PowerShell or WinRT (Windows 8, 8.1, 10).<br />
 
 Doesn't use any native module. Everything is done through PowerShell but you can use native WinRT API instead by **optionally** installing [NodeRT](https://github.com/NodeRT/NodeRT) relative package (see [installation](#Installation))
 
-Using NodeRT is a bit faster as you don't have to wait for the PowerShell VM to start and you'll be able to register to the onActivated/onDismissed callback.
+Using NodeRT is a bit faster as you don't have to wait for the PowerShell VM to start and you'll be able to subscribe to the onActivated/onDismissed callback.<br />
+NB: Callbacks are also available with PowerShell ≥ 7.1.
 
 Example
 =======
@@ -279,8 +280,8 @@ Previous version(s) are CommonJS (CJS) with an ESM wrapper.
   Protocol to launch when the user click on the toast.<br />
   If none (**default**) click will just dismiss the notification.<br />
 
-  ⚠️ Only protocol type action is supported as there's no way of receiving feedback from the user's choice via PowerShell.<br />
-  💡 If you are using NodeRT native module and you want to execute some js code when the user click on the toast or when the toast is dismissed then please see the callback option section down below.<br />
+  ⚠️ Only protocol type action is supported ~~as there's no way of receiving feedback from the user's choice via PowerShell~~.<br />
+  💡 If you are using PowerShell ≥ 7.1 or NodeRT native module and you want to execute some js code when the user click on the toast or when the toast is dismissed then please see the callback option section down below.<br />
   
   Example of protocol type action button to open up Windows 10's maps app with a pre-populated search field set to "sushi":
   
@@ -375,7 +376,7 @@ This menu only appears when right clicked from Action Center. It does not appear
 Anniversary Update and up, on older version these additional context menu actions will simply appear as normal buttons on your toast.
 Additional context menu items contribute to the total limit of 5 buttons on a toast.
 
-- **callback** : { keepalive ?: number, onActivated?() : void, onDismissed?() : void } | ≥ Win10 (⚠️ WinRT only) 
+- **callback** : { keepalive ?: number, onActivated?() : void, onDismissed?() : void } | ≥ Win10 (⚠️ WinRT / PowerShell ≥ 7.1 only) 
 
   Callback to execute when user activates a toast notification through a click or when a toast notification leaves the screen, either by expiring or being explicitly dismissed by the user.<br />
   
@@ -391,7 +392,7 @@ Additional context menu items contribute to the total limit of 5 buttons on a to
     title: "Hello",
     message: "world",
     callback: { 
-      timeout: 6000, //keep-a-live in ms
+      keepalive: 6, //keep-a-live in sec
       onActivated: ()=>{ console.log("activated") },
       onDismissed: (reason)=>{ console.log(reason) }
     }
@@ -402,6 +403,28 @@ Additional context menu items contribute to the total limit of 5 buttons on a to
   
   `onDismissed` gives you an optional reason: userCanceled (0) / applicationHidden (2)<br />
   In the case the reason is none of the above then the value will be the reason integer code.
+  
+  ⚠️ When using PowerShell ≥ 7.1 usage is as above with the following changes:
+  
+  - We have to keep PowerShell running to subscribe to the events hence the promise will resolve only afterwards.
+  - keepalive is the maximum value PowerShell will wait for any of the events before exiting.
+  
+```js
+  import toast from 'powertoast';
+
+  toast({
+    usePowerShellCore: true, //Use pwsh (core) instead of powershell (desktop); In this case v7.1
+    title: "Hello",
+    message: "world",
+    callback: { 
+      keepalive: 6, //time-out in sec
+      onActivated: ()=>{ console.log("activated") },
+      onDismissed: (reason)=>{ console.log(reason) }
+    }
+  })
+  .then(()=> console.log("Notified")
+  .catch(err => console.error(err));
+```
   
 - **scenario** : string | ≥ Win10
 
