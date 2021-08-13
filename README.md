@@ -413,6 +413,7 @@ Additional context menu items contribute to the total limit of 5 buttons on a to
   
   - We have to keep PowerShell running to subscribe to the events hence the promise will resolve only afterwards.
   - keepalive is the maximum value PowerShell will wait for any of the events before exiting.
+  - There is no need to keep the event loop alive (if that wasn't clear)
   
 ```js
   import toast from 'powertoast';

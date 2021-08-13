@@ -1,4 +1,4 @@
-import toast, { isWinRTAvailable } from "../lib/esm.js";
+import toast from "../lib/esm.js";
 
 toast({
   disableWinRT: true, //No WinRT -> Force PowerShell
