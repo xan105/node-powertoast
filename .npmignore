@@ -1,6 +1,5 @@
 screenshot/
 .github/
 test/
+build/
 .eslintrc.json
-.prettierrc.json
-.prettierignore

@@ -1,7 +1,7 @@
 About
 =====
 
-Windows toast notification using PowerShell or WinRT (Windows 8, 8.1, 10).<br />
+Windows toast notification using PowerShell or WinRT (Windows 8, 8.1, 10, 11).<br />
 
 Doesn't use any native module. Everything is done through PowerShell but you can use native WinRT API instead by **optionally** installing [NodeRT](https://github.com/NodeRT/NodeRT) relative package (see [installation](#Installation))
 
@@ -48,15 +48,39 @@ Installation
 
 ### Optional packages
 
-_Prerequisite: C/C++ build tools and Python 3.x (node-gyp) / Windows 10 SDK **10.0.17134.0** (1803 Redstone 4)_<br/>
-_⚠️ SDK version is important here. It will fail with another one._
+The recommended NodeRT scope is the official [@nodert-win10-rs4](https://github.com/NodeRT/NodeRT) but unofficial [@nodert-win10-20h1](https://github.com/MaySoMusician/NodeRT) is also supported.
+`@nodert-win10-20h1` is _"easier"_ to compile nowadays as it supports vs2019 and targets a more up to date Windows 10 SDK.
+But as per the author's instruction it should be considered experimental.
+
+<details>
+<summary>@nodert-win10-rs4 (recommended)</summary>
 
  + [NodeRT windows.data.xml.dom](https://www.npmjs.com/package/@nodert-win10-rs4/windows.data.xml.dom)<br />
  `npm install @nodert-win10-rs4/windows.data.xml.dom`
  + [NodeRT windows.ui.notifications](https://www.npmjs.com/package/@nodert-win10-rs4/windows.ui.notifications)<br /> 
  `npm install @nodert-win10-rs4/windows.ui.notifications`
+ 
+ _Prerequisite: C/C++ build tools (vs20**15**/**2017**) and Python 3.x (node-gyp) / Windows 10 SDK **10.0.17134.0** (1803 Redstone 4)_<br/>
+_⚠️ SDK and build tools version are important here. This will most likely fail to compile otherwise._
 
- ⚠️Electron ≥ 14 : NodeRT should be loaded in the main process [NodeRT#158](https://github.com/NodeRT/NodeRT/issues/158)
+</details>
+
+<details>
+<summary>@nodert-win10-20h1 (experimental)</summary>
+
+ + [NodeRT windows.data.xml.dom](https://www.npmjs.com/package/@nodert-win10-20h1/windows.data.xml.dom)<br />
+ `npm install @nodert-win10-20h1/windows.data.xml.dom`
+ + [NodeRT windows.ui.notifications](https://www.npmjs.com/package/@nodert-win10-20h1/windows.ui.notifications)<br /> 
+ `npm install @nodert-win10-20h1/windows.ui.notifications`
+ 
+ _Prerequisite: C/C++ build tools (vs20**19**/20**22**) and Python 3.x (node-gyp) / Windows 10 SDK **10.0.19041.0** (2004)_<br/>
+_⚠️ SDK and build tools version are important here. This will most likely fail to compile otherwise._
+
+ 💡 node-gyp ≥ v8.4.0 supports vs2022
+
+</details>
+
+⚠️ Electron ≥ 14 : NodeRT should be loaded in the main process [NodeRT#158](https://github.com/NodeRT/NodeRT/issues/158)
 
 API
 ===
@@ -632,3 +656,4 @@ Known missing features
 
   + Expiration time
   + Adaptative progress bar update
+  + Button callback (_due to technical limitation_)
