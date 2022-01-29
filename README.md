@@ -415,13 +415,14 @@ Additional context menu items contribute to the total limit of 5 buttons on a to
   toast({
     title: "Hello",
     message: "world",
+    onClick: "https://www.google.com",
     callback: { 
       keepalive: 6, //keep-a-live in sec
       onActivated: ()=>{ console.log("activated") },
       onDismissed: (reason)=>{ console.log(reason) }
     }
   })
-  .then(()=> console.log("Notified")
+  .then(()=> console.log("Notified"))
   .catch(err => console.error(err));
 ```
   
@@ -452,11 +453,10 @@ Additional context menu items contribute to the total limit of 5 buttons on a to
     message: "world",
     callback: { 
       keepalive: 6, //time-out in sec
-      onActivated: ()=>{ console.log("activated") },
       onDismissed: (reason)=>{ console.log(reason) }
     }
   })
-  .then(()=> console.log("Notified")
+  .then(()=> console.log("Notified"))
   .catch(err => console.error(err));
 ```
   
