@@ -415,10 +415,9 @@ Additional context menu items contribute to the total limit of 5 buttons on a to
   toast({
     title: "Hello",
     message: "world",
-    onClick: "https://www.google.com",
     callback: { 
       keepalive: 6, //keep-a-live in sec
-      onActivated: ()=>{ console.log("activated") },
+      onActivated: ()=>{ console.log("click") },
       onDismissed: (reason)=>{ console.log(reason) }
     }
   })
@@ -433,10 +432,6 @@ Additional context menu items contribute to the total limit of 5 buttons on a to
   |UserCanceled|0|User dismissed the toast|
   |ApplicationHidden|1|App explicitly hid the toast notification by calling the ToastNotifier.hide method|
   |TimedOut|2|Toast had been shown for the maximum allowed time and was faded out|
-  
-  `onActivated` will only be triggered when there is a clickable action registered (buttons included).
-  You can't "_activate_" the toast if there is none and since the click will just dismiss the notification:
-  TimedOut (onDismissed) event will trigger early instead of at the end of the max allowed time.
 
   ⚠️ When using PowerShell ≥ 7.1 usage is as above with the following changes:
   
@@ -453,6 +448,7 @@ Additional context menu items contribute to the total limit of 5 buttons on a to
     message: "world",
     callback: { 
       keepalive: 6, //time-out in sec
+      onActivated: ()=>{ console.log("click") },
       onDismissed: (reason)=>{ console.log(reason) }
     }
   })
