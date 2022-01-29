@@ -24,8 +24,8 @@ declare interface IButton{
 }
 
 declare interface IOption {
-  disableWinRT?: bool,
-  usePowerShellCore?: bool,
+  disableWinRT?: boolean,
+  usePowerShellCore?: boolean,
   appID?: string,
   uniqueID?: string | null,
   sequenceNumber?: number,
@@ -33,13 +33,13 @@ declare interface IOption {
   message?: string,
   attribution?: string,
   icon?: string,
-  cropIcon?: bool,
+  cropIcon?: boolean,
   headerImg?: string,
   footerImg?: string,
-  silent?: bool,
-  hide?: bool,
+  silent?: boolean,
+  hide?: boolean,
   audio?: string,
-  longTime?: bool,
+  longTime?: boolean,
   onClick?: string,
   scenario?: string,
   timeStamp?: number | string,
@@ -50,17 +50,17 @@ declare interface IOption {
 }
 
 export default function (option?: IOption): Promise<any>;
-export isWinRTAvailable: bool;
+export isWinRTAvailable: boolean;
 
 declare interface IToastProperties {
   expirationTime: string,
   tag: string,
   group: string,
   remoteID: string | null,
-  suppressPopup: bool,
-  mirroringAllowed: bool,
-  expiresOnReboot: bool,
-  highPriority: bool,
+  suppressPopup: boolean,
+  mirroringAllowed: boolean,
+  expiresOnReboot: boolean,
+  highPriority: boolean,
   status: string | null
 }
 
