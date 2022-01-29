@@ -433,6 +433,10 @@ Additional context menu items contribute to the total limit of 5 buttons on a to
   |ApplicationHidden|1|App explicitly hid the toast notification by calling the ToastNotifier.hide method|
   |TimedOut|2|Toast had been shown for the maximum allowed time and was faded out|
   
+  `onActivated` will only be triggered when there is a clickable action registered (buttons included).
+  You can't "_activate_" the toast if there is none and since the click will just dismiss the notification:
+  TimedOut (onDismissed) event will trigger early instead of at the end of the max allowed time.
+
   ⚠️ When using PowerShell ≥ 7.1 usage is as above with the following changes:
   
   - We have to keep PowerShell running to subscribe to the events hence the promise will resolve only afterwards.
