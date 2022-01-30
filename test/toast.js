@@ -1,4 +1,4 @@
-import toast, { isWinRTAvailable } from "../lib/esm.js";
+import toast, { isWinRTAvailable } from "../lib/index.js";
 
 console.info("Default transport: " + `${isWinRTAvailable ? "WinRT" : "Powershell"}`);
 
@@ -11,7 +11,6 @@ toast({
   cropIcon: true,
   attribution: "Achievement",
   timeStamp: "1568710924",
-  onClick: "bingmaps:?q=sushi",
   button: [
     { text: "1", onClick: "bingmaps:?q=sushi" },
     { text: "2", onClick: "bingmaps:?q=sushi", contextMenu: true },
@@ -34,7 +33,7 @@ toast({
   },
   headerImg: "../screenshot/example.png",
   callback: {
-    keepalive: 8,
+    keepalive: 9,
     onActivated: () => {
       console.log("activated");
     },

@@ -1,15 +1,13 @@
 {
   "name": "powertoast",
-  "version": "2.0.1",
-  "description": "Windows toast notification using PowerShell or WinRT (Windows 8, 8.1, 10).",
+  "version": "2.0.2",
+  "description": "Windows toast notification using PowerShell or WinRT (Windows 8, 10, 11).",
   "type": "module",
-  "exports": "./lib/esm.js",
-  "types": "./types/esm.d.ts",
-  "os": [
-    "win32"
-  ],
+  "exports": "./lib/index.js",
+  "types": "./types/index.d.ts",
   "engines": {
-    "node": ">=16.0.0"
+    "node": ">=16.0.0",
+    "npm": ">=8.1.4"
   },
   "scripts": {
     "lint": "npx eslint --ignore-path .gitignore ./**/*.{js,mjs}"
@@ -38,10 +36,10 @@
   },
   "homepage": "https://github.com/xan105/node-powertoast#readme",
   "peerDependencies": {
-    "@nodert-win10-rs4/windows.data.xml.dom": "^0.4.4",
-    "@nodert-win10-rs4/windows.ui.notifications": "^0.4.4",
     "@nodert-win10-20h1/windows.data.xml.dom": "^0.1.0",
-    "@nodert-win10-20h1/windows.ui.notifications": "^0.1.0"
+    "@nodert-win10-20h1/windows.ui.notifications": "^0.1.0",
+    "@nodert-win10-rs4/windows.data.xml.dom": "^0.4.4",
+    "@nodert-win10-rs4/windows.ui.notifications": "^0.4.4"
   },
   "peerDependenciesMeta": {
     "@nodert-win10-rs4/windows.data.xml.dom": {
@@ -61,5 +59,10 @@
     "@nodert-win10-20h1/windows.data.xml.dom": "^0.1.0",
     "@nodert-win10-20h1/windows.ui.notifications": "^0.1.0",
     "eslint": "^8.2.0"
+  },
+  "dependencies": {
+    "@xan105/error": "^1.0.0",
+    "@xan105/fs": "^2.0.0",
+    "@xan105/is": "^2.0.0"
   }
 }

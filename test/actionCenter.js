@@ -1,4 +1,4 @@
-import toast, { remove, getHistory } from "../lib/esm.js";
+import toast, { remove, getHistory } from "../lib/index.js";
 
 (async()=>{
 

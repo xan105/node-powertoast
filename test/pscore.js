@@ -1,4 +1,4 @@
-import toast from "../lib/esm.js";
+import toast from "../lib/index.js";
 
 toast({
   disableWinRT: true, //No WinRT -> Force PowerShell
@@ -10,16 +10,10 @@ toast({
   cropIcon: true,
   attribution: "Achievement",
   timeStamp: "1568710924",
-  onClick: "bingmaps:?q=sushi",
-  button: [
-    { text: "1", onClick: "bingmaps:?q=sushi" },
-    { text: "2", onClick: "bingmaps:?q=sushi", contextMenu: true },
-    { text: "3", onClick: "bingmaps:?q=sushi" },
-    { text: "4", onClick: "bingmaps:?q=sushi" },
-    { text: "5", onClick: "bingmaps:?q=sushi" },
-    { text: "6", onClick: "bingmaps:?q=sushi" },
-  ],
   silent: false,
+  button: [
+    { text: "1", onClick: "bingmaps:?q=sushi" }
+  ],
   audio: "ms-winsoundevent:Notification.Achievement",
   progress: {
     header: "up",

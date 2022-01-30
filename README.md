@@ -1,7 +1,7 @@
 About
 =====
 
-Windows toast notification using PowerShell or WinRT (Windows 8, 8.1, 10, 11).<br />
+Windows toast notification using PowerShell or WinRT (Windows 8, 10, 11).<br />
 
 Doesn't use any native module. Everything is done through PowerShell but you can use native WinRT API instead by **optionally** installing [NodeRT](https://github.com/NodeRT/NodeRT) relative package (see [installation](#Installation))
 
@@ -90,9 +90,9 @@ Previous version(s) are CommonJS (CJS) with an ESM wrapper.
 
 ## Default export
 
-#### `<Promise> (<obj> option = {}) : <void>`
+#### `(option?: obj): Promise<void>`
 
-⚠️ Windows 8/8.1 have very basic notification compared to Windows 10, some options will be ignored.
+⚠️ Windows 8/8.1 have very basic notification compared to Windows 10/11, some options will be ignored.
 
 <details>
 <summary>⚙️ Options</summary>
@@ -568,11 +568,11 @@ toast({
 
 ## Named export
 
-#### `bool isWinRTAvailable`
+#### `boolean isWinRTAvailable`
 
 True if the peerDependencies for WinRT were successfully loaded; false otherwise.
 
-#### `<Promise> remove(string appID, string|array uniqueID = null) : <void>`
+#### `remove(appID: string, uniqueID?: string | string[]): Promise<void>`
 
 Remove programmatically notification(s) from the Action Center (≥ Win10).
 
@@ -586,7 +586,7 @@ groupLabel can not be omitted so `[tag, null]` isn't valid.
 ⚠️ NB: Do not confuse group (label) with the `group` option of this lib default export.<br/>
 `uniqueID` option of this lib default export actually sets both tag and group (label) to the same value for convenience.
 
-#### `<Promise> getHistory(string appID) : <Array> [<obj> {}, ...]`
+#### `getHistory(appID: string): Promise<obj[]>`
 
 Get notification history for the given appID (≥ Win10).<br/>
 Contrary to what the _'history'_ might suggest it just list the current notification(s) for the given appID in the action center.<br/>

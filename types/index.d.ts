@@ -49,7 +49,7 @@ declare interface IOption {
   callback?: ICallback 
 }
 
-export default function (option?: IOption): Promise<any>;
+export default function (option?: IOption): Promise<void>;
 export isWinRTAvailable: boolean;
 
 declare interface IToastProperties {
@@ -64,5 +64,5 @@ declare interface IToastProperties {
   status: string | null
 }
 
-export function remove(appID: string, uniqueID?: string | string[] | null): Promise<any>;
+export function remove(appID: string, uniqueID?: string | string[]): Promise<void>;
 export function getHistory(appID: string): Promise<IToastProperties[]>;
