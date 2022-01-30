@@ -60,7 +60,7 @@ But as per the author's instruction it should be considered experimental.
  + [NodeRT windows.ui.notifications](https://www.npmjs.com/package/@nodert-win10-rs4/windows.ui.notifications)<br /> 
  `npm install @nodert-win10-rs4/windows.ui.notifications`
  
- _Prerequisite: C/C++ build tools (vs20**15**/**2017**) and Python 3.x (node-gyp) / Windows 10 SDK **10.0.17134.0** (1803 Redstone 4)_<br/>
+ _Prerequisite: C/C++ build tools (vs20**15**/20**17**) and Python 3.x (node-gyp) / Windows 10 SDK **10.0.17134.0** (1803 Redstone 4)_<br/>
 _⚠️ SDK and build tools version are important here. This will most likely fail to compile otherwise._
 
 </details>
@@ -76,7 +76,7 @@ _⚠️ SDK and build tools version are important here. This will most likely fa
  _Prerequisite: C/C++ build tools (vs20**19**/20**22**) and Python 3.x (node-gyp) / Windows 10 SDK **10.0.19041.0** (2004)_<br/>
 _⚠️ SDK and build tools version are important here. This will most likely fail to compile otherwise._
 
- 💡 node-gyp ≥ v8.4.0 supports vs2022
+ 💡 node-gyp ≥ v8.4.0 supports vs2022 (_included in npm ≥ 8.1.4_)
 
 </details>
 
