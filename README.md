@@ -432,6 +432,9 @@ Additional context menu items contribute to the total limit of 5 buttons on a to
   |UserCanceled|0|User dismissed the toast|
   |ApplicationHidden|1|App explicitly hid the toast notification by calling the ToastNotifier.hide method|
   |TimedOut|2|Toast had been shown for the maximum allowed time and was faded out|
+  
+  💡 When using a win32 appID (AUMID) and you aren't using activation protocol (_onClick_ option) to get the `onActivated` callback to trigger from the action center. You'll need to set up a CLSID (_com interface_) for said appID.
+  In innosetup this can be done with `AppUserModelToastActivatorCLSID`. Please refer to your framework, installer, setup, etc...
 
   ⚠️ When using PowerShell ≥ 7.1 usage is as above with the following changes:
   
@@ -617,7 +620,6 @@ For Windows 8/8.1 there is an additional option `legacy`.
 import { makeXML } from "powertoast";
 
 const options = {
-  appID: "io.github.xan105.achievement.watcher",
   title: "Winner",
   message: "Win a game",
   icon: "https://steamcdn-a.akamaihd.net/steamcommunity/public/images/apps/480/winner.jpg",
