@@ -1,18 +1,18 @@
 import { makeXML } from "../lib/index.js";
 
 const options = {
-  appID: "io.github.xan105.achievement.watcher",
   title: "Dummy",
   message: "Hello World",
   icon: "https://steamcdn-a.akamaihd.net/steamcommunity/public/images/apps/480/winner.jpg",
   cropIcon: true,
   attribution: "Achievement",
+  activationType: "foreground",
   button: [
     { text: "1", onClick: "bingmaps:?q=sushi" },
     { text: "2", onClick: "bingmaps:?q=sushi", contextMenu: true },
     { text: "3", onClick: "bingmaps:?q=sushi" },
     { text: "4", onClick: "bingmaps:?q=sushi" },
-    { text: "5", onClick: "bingmaps:?q=sushi" },
+    { text: "5", onClick: "bingmaps:?q=sushi", activationType: "foreground" },
     { text: "6", onClick: "bingmaps:?q=sushi" },
   ],
   silent: false,

@@ -1,6 +1,6 @@
 {
   "name": "powertoast",
-  "version": "2.0.2",
+  "version": "2.0.3",
   "description": "Windows toast notification using PowerShell or WinRT (Windows 8, 10, 11).",
   "type": "module",
   "exports": "./lib/index.js",
@@ -19,7 +19,8 @@
     "notification center",
     "action center",
     "powershell",
-    "winRT"
+    "winRT",
+    "toastXml"
   ],
   "author": {
     "name": "Anthony Beaumont",

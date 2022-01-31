@@ -17,10 +17,11 @@ declare interface IGroup{
 }
 
 declare interface IButton{
-  text : string, 
-  onClick : string, 
-  contextMenu ?: boolean, 
-  icon ?: string
+  text: string, 
+  onClick: string, 
+  activationType ?: string,
+  contextMenu?: boolean, 
+  icon?: string
 }
 
 declare interface IOption {
@@ -41,6 +42,7 @@ declare interface IOption {
   audio?: string,
   longTime?: boolean,
   onClick?: string,
+  activationType?: string,
   scenario?: string,
   timeStamp?: number | string,
   button?: IButton[],

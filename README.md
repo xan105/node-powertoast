@@ -304,7 +304,7 @@ Previous version(s) are CommonJS (CJS) with an ESM wrapper.
   Protocol to launch when the user click on the toast.<br />
   If none (**default**) click will just dismiss the notification.<br />
 
-  ⚠️ Only protocol type action is supported ~~as there's no way of receiving feedback from the user's choice via PowerShell~~.<br />
+  ⚠️ Protocol type action is recommended (see activationType below) ~~as there's no way of receiving feedback from the user's choice via PowerShell~~.<br />
   💡 If you are using PowerShell ≥ 7.1 or NodeRT native module and you want to execute some js code when the user click on the toast or when the toast is dismissed then please see the callback option section down below.<br />
   
   Example of protocol type action button to open up Windows 10's maps app with a pre-populated search field set to "sushi":
@@ -353,9 +353,27 @@ Previous version(s) are CommonJS (CJS) with an ESM wrapper.
   }) 
 ```
 
-- **button** : [{ text : string, onClick : string, contextMenu ?: boolean, icon ?: string }] | ≥ Win10
+- **activationType** : string | ≥ Win10
 
-  Array of buttons to add to your toast. You can only have up to 5 buttons. <br/>
+  This option allows you to override the activation type of the _onClick_ option.<br/>
+  Use this only if you know what you are doing 🙃.<br/>
+
+  |activation|description|
+  |----------|-----------|
+  |foreground|launch corresponding appID|
+  |background|launch corresponding background task (assuming you set everything up)|
+  |protocol|activation protocol (URI scheme)|
+  |system| undocumented but used by Notification Visualizer|
+  
+  Default is `protocol` as due to the scope of this lib this is what you'll most likely need and when using callback without _onClick_ option it defaults to `background` as a _workaround_ for the `onActivated` callback to trigger in this case (this is for your own convenience).
+  
+  💡 When using a win32 appID (AUMID) with foreground and background type,<br/>
+  If you wish to get any argument back or a valid toast activation: you will need an installed and registered COM server (CLSID).<br/>
+  In innosetup this can be done with `AppUserModelToastActivatorCLSID`. Please refer to your framework, installer, setup, etc...
+
+- **button** : [{ text : string, onClick : string, activationType?: string, contextMenu ?: boolean, icon ?: string }] | ≥ Win10
+
+  Array of buttons to add to your toast. You can only have up to 5 buttons.<br/>
   After the 5th they will be ignored.
   
 ```js
@@ -363,6 +381,7 @@ Previous version(s) are CommonJS (CJS) with an ESM wrapper.
     {
       text: "", 
       onClick: "", //Protocol to launch (see previous onClick section)
+      activationType: "protocol", //Optional onClick activation type override (see previous activationType section; always defaults to protocol)
       icon: "", //Optional icon path
       contextMenu: true //Optional placement to context menu (≥ Win10 Anniversary Update)
     },
@@ -433,8 +452,7 @@ Additional context menu items contribute to the total limit of 5 buttons on a to
   |ApplicationHidden|1|App explicitly hid the toast notification by calling the ToastNotifier.hide method|
   |TimedOut|2|Toast had been shown for the maximum allowed time and was faded out|
   
-  💡 When using a win32 appID (AUMID) and you aren't using activation protocol (_onClick_ option) to get the `onActivated` callback to trigger from the action center. You'll need to set up a CLSID (_com interface_) for said appID.
-  In innosetup this can be done with `AppUserModelToastActivatorCLSID`. Please refer to your framework, installer, setup, etc...
+  💡 When using a win32 appID (AUMID) and you aren't using the _onClick_ option and you didn't override the default _activationType_ for it then in order to get the `onActivated` callback to trigger **from the action center**. You'll need to set up a CLSID (_COM interface_) for said appID. In innosetup this can be done with `AppUserModelToastActivatorCLSID`. Please refer to your framework, installer, setup, etc...
 
   ⚠️ When using PowerShell ≥ 7.1 usage is as above with the following changes:
   
