@@ -41,6 +41,32 @@ toast({
 });
 ```
 
+Powertoast was made for Node.js first but it can work as well with Electron (PowerShell or WinRT/NodeRT).<br />
+Alternatively if you prefer to use [Electron native API](https://www.electronjs.org/fr/docs/latest/api/notification#new-notificationoptions) you can build a toastXml string instead:
+
+```js
+"use strict";
+const { Notification } = require('electron');
+
+(async()=>{
+  const { makeXML } = await import('powertoast'); //Load ESM
+  
+  const options = {
+    title: "foo",
+    message: "bar",
+    button: [
+      { text: "red", onClick: "electron:red" },
+      { text: "blue", onClick: "electron:blue" }
+    ]
+  };
+
+  const toastXmlString = makeXML(options);
+  const toast = new Notification({toastXml: toastXmlString});
+  toast.show();
+
+})().catch(console.error);
+```
+
 Installation
 ============
 
@@ -367,7 +393,7 @@ Previous version(s) are CommonJS (CJS) with an ESM wrapper.
   
   Default is `protocol` as due to the scope of this lib this is what you'll most likely need and when using callback without _onClick_ option it defaults to `background` as a _workaround_ for the `onActivated` callback to trigger in this case (this is for your own convenience).
   
-  💡 When using a win32 appID (AUMID) with foreground and background type,<br/>
+  💡 When using a win32 appID (AUMID) with foreground and background type.<br/>
   If you wish to get any argument back or a valid toast activation: you will need an installed and registered COM server (CLSID).<br/>
   In innosetup this can be done with `AppUserModelToastActivatorCLSID`. Please refer to your framework, installer, setup, etc...
 
@@ -629,7 +655,7 @@ Return an array of object with the following properties:<br/>
 
 #### `makeXML(option?: obj): string`
 
-Expose the toastXML string builder used by the default export for debugging purposes or for example to be used by [electron's toastXml property](https://www.electronjs.org/fr/docs/latest/api/notification#new-notificationoptions).
+Expose the toastXML string builder used by the default export for debugging purposes or for example if you want to use it with [Electron native API](https://www.electronjs.org/fr/docs/latest/api/notification#new-notificationoptions).
 
 Please see the default export for the relevant option(s).<br />
 For Windows 8/8.1 there is an additional option `legacy`.
