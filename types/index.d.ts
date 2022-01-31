@@ -66,3 +66,4 @@ declare interface IToastProperties {
 
 export function remove(appID: string, uniqueID?: string | string[]): Promise<void>;
 export function getHistory(appID: string): Promise<IToastProperties[]>;
+export function makeXML(option?: IOption): string;

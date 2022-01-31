@@ -606,6 +606,32 @@ Return an array of object with the following properties:<br/>
 |highPriority|boolean|whether the notification is displayed in high priority (wake up the screen, etc)|
 |status|string or null|additional information about the status of the toast|
 
+#### `makeXML(option?: obj): string`
+
+Expose the toastXML string builder used by the default export for debugging purposes or for example to be used by [electron's toastXml property](https://www.electronjs.org/fr/docs/latest/api/notification#new-notificationoptions).
+
+Please see the default export for the relevant option(s).<br />
+For Windows 8/8.1 there is an additional option `legacy`.
+
+```js
+import { makeXML } from "powertoast";
+
+const options = {
+  appID: "io.github.xan105.achievement.watcher",
+  title: "Winner",
+  message: "Win a game",
+  icon: "https://steamcdn-a.akamaihd.net/steamcommunity/public/images/apps/480/winner.jpg",
+  legacy: true //Win 8/8.1
+};
+
+const toastXmlString = makeXML(options);
+console.log(toastXmlString); //do something
+
+//Or with Electron
+const toast = new Notification({toastXml: toastXmlString});
+toast.show();
+```
+
 Microsoft doc
 =============
 
