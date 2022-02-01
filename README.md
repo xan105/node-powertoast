@@ -633,25 +633,33 @@ groupLabel can not be omitted so `[tag, null]` isn't valid.
 ⚠️ NB: Do not confuse group (label) with the `group` option of this lib default export.<br/>
 `uniqueID` option of this lib default export actually sets both tag and group (label) to the same value for convenience.
 
-#### `getHistory(appID: string): Promise<obj[]>`
+#### `getHistory(appID: string, verbose?: boolean): Promise<obj[]>`
 
 Get notification history for the given appID (≥ Win10).<br/>
 Contrary to what the _'history'_ might suggest it just list the current notification(s) for the given appID in the action center.<br/>
 Once a notification is cleared from it it's gone.
 
-Return an array of object with the following properties:<br/>
+<details>
+<summary>Return an array of object with the following properties:</summary>
 
 |name|type|description|
 |----|----|-----------|
 |expirationTime|string|time after which a toast should not be displayed (eg: "01/08/2021 20:53:23 +07:00")|
 |tag|string|unique identifier (tag)|
 |group|string|unique identifier (group label)|
+
+If verbose is true then the following properties are added:
+
+|name|type|description|
+|----|----|-----------|
 |remoteID|string or null|id to correlate this notification with another one generated on another device|
 |suppressPopup|boolean|whether toast's pop-up UI is displayed on the user's screen|
 |mirroringAllowed|boolean|whether notification is allowed to be displayed on multiple devices|
 |expiresOnReboot|boolean|whether toast will remain in the Action Center after a reboot|
 |highPriority|boolean|whether the notification is displayed in high priority (wake up the screen, etc)|
 |status|string or null|additional information about the status of the toast|
+
+</details>
 
 #### `makeXML(option?: obj): string`
 
