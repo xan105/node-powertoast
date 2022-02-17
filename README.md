@@ -249,7 +249,7 @@ Previous version(s) are CommonJS (CJS) with an ESM wrapper.
   <img src="https://github.com/xan105/node-powertoast/raw/master/screenshot/header.png">
   </p>
 
-  Display a prominently image within the toast banner and inside the Action Center if there is enough room. <br/>
+  Display a prominently image within the toast banner and inside the notification center if there is enough room. <br/>
   Image dimensions are 364x180 pixels at 100% scaling.
   If the image is too big it will be cut from the bottom.
   
@@ -261,7 +261,7 @@ Previous version(s) are CommonJS (CJS) with an ESM wrapper.
   <img src="https://github.com/xan105/node-powertoast/raw/master/screenshot/footer.png">
   </p>
 
-  A full-width inline-image that appears at the bottom of the toast and inside the Action Center if there is enough room.
+  A full-width inline-image that appears at the bottom of the toast and inside the notification center if there is enough room.
   Image will be resized to fit inside the toast.
   
   Otherwise same restrictions as mentionned in the `icon` option.
@@ -272,7 +272,7 @@ Previous version(s) are CommonJS (CJS) with an ESM wrapper.
 
 - **hide** : boolean | ≥ Win10
   
-  True to suppress the popup message and places the toast notification **silently** into the action center. **Default** to false.<br/>
+  True to suppress the popup message and places the toast notification **silently** into the notification center. **Default** to false.<br/>
   Using `silent: true` is redundant in this case.
   
 - **audio** : string | ≥ Win8.x
@@ -440,8 +440,8 @@ toast({
 <img src="https://github.com/xan105/node-powertoast/raw/master/screenshot/btn-icon.png">
 </p>
   
-  You can add additional context menu actions (Anniversary Update) to the existing context menu that appears when the user right clicks your toast from within Action Center by using `contextMenu: true`.<br />
-This menu only appears when right clicked from Action Center. It does not appear when right clicking a toast popup banner.
+  You can add additional context menu actions (Anniversary Update) to the existing context menu that appears when the user right clicks your toast from within notification center by using `contextMenu: true`.<br />
+This menu only appears when right clicked from notification center. It does not appear when right clicking a toast popup banner.
 Anniversary Update and up, on older version these additional context menu actions will simply appear as normal buttons on your toast.
 Additional context menu items contribute to the total limit of 5 buttons on a toast.
 
@@ -478,7 +478,7 @@ Additional context menu items contribute to the total limit of 5 buttons on a to
   |ApplicationHidden|1|App explicitly hid the toast notification by calling the ToastNotifier.hide method|
   |TimedOut|2|Toast had been shown for the maximum allowed time and was faded out|
   
-  💡 When using a win32 appID (AUMID) and you aren't using the _onClick_ option and you didn't override the default _activationType_ for it then in order to get the `onActivated` callback to trigger **from the action center**. You'll need to set up a CLSID (_COM interface_) for said appID. In innosetup this can be done with `AppUserModelToastActivatorCLSID`. Please refer to your framework, installer, setup, etc...
+  💡 When using a win32 appID (AUMID) and you aren't using the _onClick_ option and you didn't override the default _activationType_ for it then in order to get the `onActivated` callback to trigger **from the notification center**. You'll need to set up a CLSID (_COM interface_) for said appID. In innosetup this can be done with `AppUserModelToastActivatorCLSID`. Please refer to your framework, installer, setup, etc...
 
   ⚠️ When using PowerShell ≥ 7.1 usage is as above with the following changes:
   
@@ -571,7 +571,7 @@ toast({
 
    You can replace a notification by sending a new toast with the same uniqueID. <br/>
    This is useful when using a progress bar or correcting/updating the information on a toast. <br/>
-   And you don't want to end up with a flood of similar toasts in the Action Center. <br/> 
+   And you don't want to end up with a flood of similar toasts in the notification center. <br/> 
    
    However this is not really suitable for information that frequently changes in a short period of time (like a download progress for example)
    or subtle changes to your toast content, like changing 50% to 65%.
@@ -586,12 +586,12 @@ toast({
   
 - **group** : { id : string, title : string } | ≥ Win10 (Creators Update)
 
-    You can group notifications under a common header within Action Center<br/>
+    You can group notifications under a common header within notification center<br/>
 ```
   {
     id: use the same header id string to unify them under the header,
     title: title of the header, title can be different and will be shown above the toast.
-           title from the most recent notification within a group is used in Action Center, 
+           title from the most recent notification within a group is used in notification center, 
            if that notification gets removed, then the title falls back 
            to the next most recent notification. 
   }
@@ -606,9 +606,9 @@ toast({
   Unix epoch time in seconds.<br/>
   Current time by **default** if not specified.<br/>
   
-  By default, the timestamp visible within Action Center is set to the time that the notification was sent.<br/>
+  By default, the timestamp visible within notification center is set to the time that the notification was sent.<br/>
   You can optionally override the timestamp with your own custom date and time, so that the timestamp represents the time the message/information/content was actually created, rather than the time that the notification was sent.<br/>
-  This also ensures that your notifications appear in the correct order within Action Center (which are sorted by time). Microsoft recommends that most apps specify a custom timestamp.<br/>
+  This also ensures that your notifications appear in the correct order within notification center (which are sorted by time). Microsoft recommends that most apps specify a custom timestamp.<br/>
   But you can safely omit this option.
 
 </details>
@@ -621,9 +621,9 @@ True if the peerDependencies for WinRT were successfully loaded; false otherwise
 
 #### `remove(appID: string, uniqueID?: string | string[]): Promise<void>`
 
-Remove programmatically notification(s) from the Action Center (≥ Win10).
+Remove programmatically notification(s) from the notification center (≥ Win10).
 
-If using only appID then it removes every notification for said appID in the action center.<br/>
+If using only appID then it removes every notification for said appID in the notification center.<br/>
 If you provide an optional uniqueID _as a string_ then it removes that specific notification for the given appID.
 
 If you want to use the tag and group (label) properties of a toast to target a notification then use uniqueID _as an array_ as `[tag, groupLabel]`.<br/>
@@ -636,7 +636,7 @@ groupLabel can not be omitted so `[tag, null]` isn't valid.
 #### `getHistory(appID: string, verbose?: boolean): Promise<obj[]>`
 
 Get notification history for the given appID (≥ Win10).<br/>
-Contrary to what the _'history'_ might suggest it just list the current notification(s) for the given appID in the action center.<br/>
+Contrary to what the _'history'_ might suggest it just list the current notification(s) for the given appID in the notification center.<br/>
 Once a notification is cleared from it it's gone.
 
 <details>
@@ -655,7 +655,7 @@ If verbose is true then the following properties are added:
 |remoteID|string or null|id to correlate this notification with another one generated on another device|
 |suppressPopup|boolean|whether toast's pop-up UI is displayed on the user's screen|
 |mirroringAllowed|boolean|whether notification is allowed to be displayed on multiple devices|
-|expiresOnReboot|boolean|whether toast will remain in the Action Center after a reboot|
+|expiresOnReboot|boolean|whether toast will remain in the notification center after a reboot|
 |highPriority|boolean|whether the notification is displayed in high priority (wake up the screen, etc)|
 |status|string or null|additional information about the status of the toast|
 
@@ -725,9 +725,9 @@ Common Issues
   If you are loading a remote img resource via http/https it will significantly impact the delay if it hasn't been cached yet by Windows.<br />
   The first time you are using this with PowerShell ≥ 7.1; It has to download assemblies (such as WinRT types).
 
-- Notification(s) don't stay in the Action center
+- Notification(s) don't stay in the notification center
 
-  When using a Win32 appID a notification will remove itself from the Action center when the app gets focus.<br/>
+  When using a Win32 appID a notification will remove itself from the notification center when the app gets focus.<br/>
   You can change this behavior in the Win10 settings panel for notification (not globally but per application).<br/>
   💡 This can also be done programmatically by setting the DWORD regkey `ShowInActionCenter` to `1` in `HKCU:\\SOFTWARE\Microsoft\Windows\CurrentVersion\Notifications\Settings` for your appID.
   
