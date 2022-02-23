@@ -1,6 +1,6 @@
 {
   "name": "powertoast",
-  "version": "2.1.2",
+  "version": "2.1.3",
   "description": "Windows toast notification using PowerShell or WinRT (Windows 8, 10, 11).",
   "type": "module",
   "exports": "./lib/index.js",
@@ -62,7 +62,7 @@
   },
   "dependencies": {
     "@xan105/error": "^1.1.1",
-    "@xan105/fs": "^2.0.2",
-    "@xan105/is": "^2.1.2"
+    "@xan105/fs": "^2.0.3",
+    "@xan105/is": "^2.2.0"
   }
 }
