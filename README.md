@@ -70,7 +70,9 @@ const { Notification } = require('electron');
 Installation
 ============
 
-`npm install powertoast`
+```
+npm install powertoast
+```
 
 ### Optional packages
 
@@ -82,9 +84,13 @@ But as per the author's instruction it should be considered experimental.
 <summary>@nodert-win10-rs4 (recommended)</summary>
 
  + [NodeRT windows.data.xml.dom](https://www.npmjs.com/package/@nodert-win10-rs4/windows.data.xml.dom)<br />
- `npm install @nodert-win10-rs4/windows.data.xml.dom`
+ ```
+ npm install @nodert-win10-rs4/windows.data.xml.dom
+ ```
  + [NodeRT windows.ui.notifications](https://www.npmjs.com/package/@nodert-win10-rs4/windows.ui.notifications)<br /> 
- `npm install @nodert-win10-rs4/windows.ui.notifications`
+ ```
+ npm install @nodert-win10-rs4/windows.ui.notifications
+ ```
  
  _Prerequisite: C/C++ build tools (vs20**15**/20**17**) and Python 3.x (node-gyp) / Windows 10 SDK **10.0.17134.0** (1803 Redstone 4)_<br/>
 _⚠️ SDK and build tools version are important here. This will most likely fail to compile otherwise._
@@ -95,9 +101,13 @@ _⚠️ SDK and build tools version are important here. This will most likely fa
 <summary>@nodert-win10-20h1 (experimental)</summary>
 
  + [NodeRT windows.data.xml.dom](https://www.npmjs.com/package/@nodert-win10-20h1/windows.data.xml.dom)<br />
- `npm install @nodert-win10-20h1/windows.data.xml.dom`
+ ```
+ npm install @nodert-win10-20h1/windows.data.xml.dom
+ ```
  + [NodeRT windows.ui.notifications](https://www.npmjs.com/package/@nodert-win10-20h1/windows.ui.notifications)<br /> 
- `npm install @nodert-win10-20h1/windows.ui.notifications`
+ ```
+ npm install @nodert-win10-20h1/windows.ui.notifications
+ ```
  
  _Prerequisite: C/C++ build tools (vs20**19**/20**22**) and Python 3.x (node-gyp) / Windows 10 SDK **10.0.19041.0** (2004)_<br/>
 _⚠️ SDK and build tools version are important here. This will most likely fail to compile otherwise._
