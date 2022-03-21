@@ -11,7 +11,7 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-    if: startsWith(github.event.head_commit.message, 'v')
+    if: github.event_name == 'workflow_dispatch' || startsWith(github.event.head_commit.message, 'v')
     steps:
       - uses: actions/checkout@v2
       - uses: actions/setup-node@v2
