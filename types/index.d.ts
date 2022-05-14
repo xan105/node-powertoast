@@ -52,7 +52,7 @@ declare interface IOption {
 }
 
 export default function (option?: IOption): Promise<void>;
-export isWinRTAvailable: boolean;
+export const isWinRTAvailable: boolean;
 
 declare interface IToastProperties {
   expirationTime: string,

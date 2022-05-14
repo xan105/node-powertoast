@@ -625,7 +625,7 @@ toast({
 
 ## Named export
 
-#### `boolean isWinRTAvailable`
+#### `isWinRTAvailable: boolean`
 
 True if the peerDependencies for WinRT were successfully loaded; false otherwise.
 
