@@ -1,25 +1,26 @@
 {
-    "env": {
-        "node": true,
-        "commonjs": false,
-        "es6": true,
-        "es2017": true,
-        "es2020": true,
-        "es2021": true
-    },
-    "extends": "eslint:recommended",
-    "globals": {
-        "Atomics": "readonly",
-        "SharedArrayBuffer": "readonly"
-    },
-    "parserOptions": {
-        "ecmaVersion": 13,
-        "sourceType": "module"
-    },
-    "rules": {
-      "no-alert": "warn",
-      "no-eval": "error",
-      "require-await": "warn",
-      "no-useless-escape": "warn"
-    }
+  "env": {
+    "node": true,
+    "commonjs": false,
+    "es6": true,
+    "es2017": true,
+    "es2020": true,
+    "es2021": true,
+    "es2022": true
+  },
+  "extends": "eslint:recommended",
+  "globals": {
+    "Atomics": "readonly",
+    "SharedArrayBuffer": "readonly"
+  },
+  "parserOptions": {
+    "ecmaVersion": 13,
+    "sourceType": "module"
+  },
+  "rules": {
+    "no-alert": "warn",
+    "no-eval": "error",
+    "require-await": "warn",
+    "no-useless-escape": "warn"
+  }
 }
