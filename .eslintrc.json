@@ -22,5 +22,13 @@
     "no-eval": "error",
     "require-await": "warn",
     "no-useless-escape": "warn"
-  }
+  },
+  "overrides": [
+    {
+      "files": ["*.d.ts"],
+      "extends": ["plugin:@typescript-eslint/recommended"],
+      "parser": "@typescript-eslint/parser",
+      "plugins": ["@typescript-eslint"]
+    }
+  ]
 }

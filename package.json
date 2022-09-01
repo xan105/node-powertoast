@@ -4,7 +4,7 @@
   "description": "Windows toast notification using PowerShell or WinRT (Windows 8, 10, 11).",
   "type": "module",
   "exports": {
-    ".": { 
+    ".": {
       "types": "./types/index.d.ts",
       "default": "./lib/index.js"
     }
@@ -15,7 +15,7 @@
     "npm": ">=8.1.4"
   },
   "scripts": {
-    "lint": "npx eslint --ignore-path .gitignore \"./**/*.{js,mjs}\""
+    "lint": "npx eslint \"./lib/**/*.{js,mjs}\" \"./types/**/*.d.ts\""
   },
   "keywords": [
     "toast",
@@ -40,6 +40,20 @@
     "url": "https://github.com/xan105/node-powertoast/issues"
   },
   "homepage": "https://github.com/xan105/node-powertoast#readme",
+  "funding": [
+    {
+      "type": "github",
+      "url": "https://github.com/sponsors/xan105"
+    },
+    {
+      "type": "paypal",
+      "url": "https://www.paypal.me/xan105"
+    },
+    {
+      "type": "patreon",
+      "url": "https://www.patreon.com/xan105"
+    }
+  ],
   "peerDependencies": {
     "@nodert-win10-20h1/windows.data.xml.dom": "^0.1.0",
     "@nodert-win10-20h1/windows.ui.notifications": "^0.1.0",
@@ -63,11 +77,14 @@
   "devDependencies": {
     "@nodert-win10-20h1/windows.data.xml.dom": "^0.1.0",
     "@nodert-win10-20h1/windows.ui.notifications": "^0.1.0",
-    "eslint": "^8.20.0"
+    "@typescript-eslint/eslint-plugin": "^5.33.0",
+    "@typescript-eslint/parser": "^5.33.0",
+    "eslint": "^8.22.0"
   },
   "dependencies": {
-    "@xan105/error": "^1.3.3",
+    "@xan105/error": "^1.4.2",
     "@xan105/fs": "^2.0.5",
-    "@xan105/is": "^2.5.2"
+    "@xan105/is": "^2.6.0",
+    "emittery": "^0.12.1"
   }
 }

@@ -3,10 +3,18 @@ About
 
 Windows toast notification using PowerShell or WinRT (Windows 8, 10, 11).<br />
 
-Doesn't use any native module. Everything is done through PowerShell but you can use native WinRT API instead by **optionally** installing [NodeRT](https://github.com/NodeRT/NodeRT) relative package (see [installation](#Installation))
+Everything is done through PowerShell (no native module) but you can use the native WinRT API instead by **optionally** installing [NodeRT](https://github.com/NodeRT/NodeRT) relative package (see [installation](#Installation))
 
 Using NodeRT is a bit faster as you don't have to wait for the PowerShell VM to start and you'll be able to subscribe to the onActivated/onDismissed callback.<br />
 _NB: Callbacks are now also available with PowerShell ≥ 7.1._
+
+💡 You can also use this lib to easily build a [toastXml string](https://docs.microsoft.com/en-us/uwp/schemas/tiles/toastschema/schema-root).
+
+**Electron**
+
+Powertoast was made for Node.js first but it also works in Electron with either PowerShell or WinRT(NodeRT).<br />
+If you prefer to use the new [Electron native API](https://www.electronjs.org/fr/docs/latest/api/notification#new-notificationoptions) directly.
+You can easily build a toastXml string for it as mentionned above.
 
 Example
 =======
@@ -15,34 +23,22 @@ Example
 </p>
 
 ```js 
-import toast from 'powertoast';
+import { Toast } from "powertoast";
 
-//Sending a simple notification
-toast({
+const toast = new Toast({
   title: "NPM",
   message: "Installed.",
   icon: "https://static.npmjs.com/7a7ffabbd910fc60161bc04f2cee4160.png"
-}).catch((err) => { 
-  console.error(err);
-});
-
-//Callback
-toast({
-  title: "NPM",
-  message: "Installed.",
-  icon: "https://static.npmjs.com/7a7ffabbd910fc60161bc04f2cee4160.png",
-  callback: { 
-   onActivated: ()=>{ console.log("click") },
-   onDismissed: (reason)=>{ console.log(reason) }
-  }
 })
+.on("activated", ([event])=>{ console.log("click") })
+.on("dismissed", ([reason])=>{ console.log(reason) })
+.notify() //Promise
 .catch((err) => { 
   console.error(err);
 });
-```
 
-Powertoast was made for Node.js first but it can work as well with Electron (PowerShell or WinRT/NodeRT).<br />
-Alternatively if you prefer to use [Electron native API](https://www.electronjs.org/fr/docs/latest/api/notification#new-notificationoptions) you can build a toastXml string instead:
+
+Build a toastXml string for [Electron native API](https://www.electronjs.org/fr/docs/latest/api/notification#new-notificationoptions):
 
 ```js
 "use strict";
@@ -52,11 +48,12 @@ const { Notification } = require('electron');
   const { makeXML } = await import('powertoast'); //Load ESM
   
   const options = {
-    title: "foo",
-    message: "bar",
+    title: "First partner",
+    message: "Every journey begins with a choice",
     button: [
-      { text: "red", onClick: "electron:red" },
-      { text: "blue", onClick: "electron:blue" }
+      { text: "Bulbasaur", onClick: "electron:green" },
+      { text: "Charmander", onClick: "electron:red" },
+      { text: "Squirtle", onClick: "electron:blue" }
     ]
   };
 
@@ -79,6 +76,8 @@ npm install powertoast
 The recommended NodeRT scope is the official [@nodert-win10-rs4](https://github.com/NodeRT/NodeRT) but unofficial [@nodert-win10-20h1](https://github.com/MaySoMusician/NodeRT) is also supported.
 `@nodert-win10-20h1` is _"easier"_ to compile nowadays as it supports vs2019 and targets a more up to date Windows 10 SDK.
 But as per the author's instruction it should be considered experimental.
+
+⚠️ Electron ≥ 14 : NodeRT should be loaded in the main process [NodeRT#158](https://github.com/NodeRT/NodeRT/issues/158)
 
 <details>
 <summary>@nodert-win10-rs4 (recommended)</summary>
@@ -112,11 +111,7 @@ _⚠️ SDK and build tools version are important here. This will most likely fa
  _Prerequisite: C/C++ build tools (vs20**19**/20**22**) and Python 3.x (node-gyp) / Windows 10 SDK **10.0.19041.0** (2004)_<br/>
 _⚠️ SDK and build tools version are important here. This will most likely fail to compile otherwise._
 
- 💡 node-gyp ≥ v8.4.0 supports vs2022 (_included in npm ≥ 8.1.4_)
-
 </details>
-
-⚠️ Electron ≥ 14 : NodeRT should be loaded in the main process [NodeRT#158](https://github.com/NodeRT/NodeRT/issues/158)
 
 API
 ===
@@ -128,7 +123,11 @@ Previous version(s) are CommonJS (CJS) with an ESM wrapper.
 
 #### `(option?: obj): Promise<void>`
 
-⚠️ Windows 8/8.1 have very basic notification compared to Windows 10/11, some options will be ignored.
+Send a toast notification.
+
+**Parameters**
+
+⚠️ Windows 8/8.1 have very basic notification compared to Windows 10/11, most options will be ignored.
 
 <details>
 <summary>⚙️ Options</summary>
@@ -162,7 +161,7 @@ Previous version(s) are CommonJS (CJS) with an ESM wrapper.
   
   Win32 appID (_red_) is whatever string you want.<br />
   UWP appID (_green_) is a string with a very specific set of rules.<br />
-  Some features / behaviors are limited to UWP appID only because Microsoft™.
+  Some features / behaviors are limited to UWP appID only _because Microsoft™_.
   
   Your framework, installer, setup, etc... should have method(s) to create / use one for you.<br />
   Eg: Innosetup has the parameter `AppUserModelID` in the `[Icons]` section, Electron has the method `app.setAppUserModelId()`.<br />
@@ -174,22 +173,6 @@ Previous version(s) are CommonJS (CJS) with an ESM wrapper.
   toast({
     appID: "Microsoft.XboxApp_8wekyb3d8bbwe!Microsoft.XboxApp", //Xbox App (UWP)
     appID: "com.squirrel.GitHubDesktop.GitHubDesktop", //GitHub Desktop (win32)
-    title: "Hello",
-    message: "world"
-  }).catch(err => console.error(err));
-```
-
-  Example with a **dev** electron app : (_Dont forget to add a non-pinned shortcut to your start menu in this case._)
-
-  <p align="center">
-  <img src="https://github.com/xan105/node-powertoast/raw/master/screenshot/electron.png">
-  </p>
-
-```js  
-  import toast from 'powertoast';
-
-  toast({
-    appID: "D:\\dev\\hello_world\\node_modules\\electron\\dist\\electron.exe", //app.setAppUserModelId(process.execPath) 
     title: "Hello",
     message: "world"
   }).catch(err => console.error(err));
@@ -224,7 +207,7 @@ Previous version(s) are CommonJS (CJS) with an ESM wrapper.
       appID: "com.squirrel.GitHubDesktop.GitHubDesktop",
       title: "Github",
       message: "Someone commented your issue",
-      icon: "D:\\Desktop\\25231.png",
+      icon: "D:\\Desktop\\github.png",
       attribution: "Via Web"
     }).catch(err => console.error(err));
 ```
@@ -300,12 +283,12 @@ Previous version(s) are CommonJS (CJS) with an ESM wrapper.
   //Registry
   Windows Registry Editor Version 5.00
 
-  [HKEY_CURRENT_USER\AppEvents\Schemes\Apps\.Default\**YOUR_SOUND_ID**]
+  [HKEY_CURRENT_USER\AppEvents\Schemes\Apps\.Default\mysound]
 
-  [HKEY_CURRENT_USER\AppEvents\Schemes\Apps\.Default\**YOUR_SOUND_ID**\.Current]
+  [HKEY_CURRENT_USER\AppEvents\Schemes\Apps\.Default\mysound\.Current]
   @="path_to_your_sound_file.wav"
 
-  [HKEY_CURRENT_USER\AppEvents\Schemes\Apps\.Default\**YOUR_SOUND_ID**\.Default]
+  [HKEY_CURRENT_USER\AppEvents\Schemes\Apps\.Default\mysound\.Default]
   @="path_to_your_sound_file.wav"
   
   //js
@@ -315,7 +298,7 @@ Previous version(s) are CommonJS (CJS) with an ESM wrapper.
     appID: "com.squirrel.GitHubDesktop.GitHubDesktop",
     title: "Github",
     message: "Someone commented your issue",
-    audio: "ms-winsoundevent:**YOUR_SOUND_ID**"
+    audio: "ms-winsoundevent:mysound"
   }).catch(err => console.error(err));
 ```
   
@@ -399,7 +382,7 @@ Previous version(s) are CommonJS (CJS) with an ESM wrapper.
   |foreground|launch corresponding appID|
   |background|launch corresponding background task (assuming you set everything up)|
   |protocol|activation protocol (URI scheme)|
-  |system| undocumented but used by Notification Visualizer|
+  |system| system call such as alarm (snooze/dismiss), also used by Notification Visualizer|
   
   Default is `protocol` as due to the scope of this lib this is what you'll most likely need and when using callback without _onClick_ option it defaults to `background` as a _workaround_ for the `onActivated` callback to trigger in this case (this is for your own convenience).
   
@@ -515,7 +498,7 @@ Additional context menu items contribute to the total limit of 5 buttons on a to
   
 - **scenario** : string | ≥ Win10
 
-  "default", "alarm", "reminder", "incomingCall"<br />
+  "default", "alarm", "reminder", "incomingCall", "urgent"<br />
   **Default** to ... well, 'default'.
 
   The scenario adjusts a few behaviors:
@@ -524,6 +507,8 @@ Additional context menu items contribute to the total limit of 5 buttons on a to
     _Microsoft doesn't recommend to use this just for keeping your notification persistent on screen_.
   + **Alarm**: In addition to the reminder behaviors, alarms will additionally loop audio with a default alarm sound.
   + **IncomingCall**: Same behaviors as alarms except they use ringtone audio and their buttons are styled differently (displayed full screen on Windows Mobile devices).
+  + **Urgent** (≥ Win11): High priority toast that can break through Focus Assist (Do not Disturb) unless explicitly disallowed in the notifications settings.
+  
   <br />
   ⚠️ When using Reminder or Alarm, you must provide at least one button on your toast notification.<br /> 
   Otherwise, the toast will be treated as a normal toast.
