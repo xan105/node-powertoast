@@ -82,7 +82,7 @@
     "eslint": "^8.22.0"
   },
   "dependencies": {
-    "@xan105/error": "^1.4.2",
+    "@xan105/error": "^1.4.3",
     "@xan105/fs": "^2.0.5",
     "@xan105/is": "^2.6.0",
     "emittery": "^0.12.1"
