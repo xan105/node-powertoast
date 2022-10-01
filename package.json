@@ -58,26 +58,74 @@
     }
   ],
   "peerDependencies": {
+    "@nodert-win10/windows.data.xml.dom" : "^0.2.96",
+    "@nodert-win10/windows.ui.notifications" : "^0.2.96",
+    "@nodert-win10-au/windows.data.xml.dom": "^0.4.4",
+    "@nodert-win10-au/windows.ui.notifications": "^0.4.4",
+    "@nodert-win10-cu/windows.data.xml.dom": "^0.4.4",
+    "@nodert-win10-cu/windows.ui.notifications": "^0.4.4",
+    "@nodert-win10-rs3/windows.data.xml.dom": "^0.4.4",
+    "@nodert-win10-rs3/windows.ui.notifications": "^0.4.4",
     "@nodert-win10-rs4/windows.data.xml.dom": "^0.4.4",
     "@nodert-win10-rs4/windows.ui.notifications": "^0.4.4",
+    "@nodert-win10-19h1/windows.data.xml.dom": "^0.1.6",
+    "@nodert-win10-19h1/windows.ui.notifications": "^0.1.6",
     "@nodert-win10-20h1/windows.data.xml.dom": "^0.1.0",
     "@nodert-win10-20h1/windows.ui.notifications": "^0.1.0",
+    "@nodert-win10-21h1/windows.data.xml.dom": "^0.1.6",
+    "@nodert-win10-21h1/windows.ui.notifications": "^0.1.6",
     "@nodert-win11/windows.data.xml.dom": "^0.1.6",
     "@nodert-win11/windows.ui.notifications": "^0.1.6",
     "@nodert-win11-22h2/windows.data.xml.dom": "^0.1.6",
     "@nodert-win11-22h2/windows.ui.notifications": "^0.1.6"
   },
   "peerDependenciesMeta": {
+    "@nodert-win10/windows.data.xml.dom": {
+      "optional": true
+    },
+    "@nodert-win10/windows.ui.notifications": {
+      "optional": true
+    },
+    "@nodert-win10-au/windows.data.xml.dom": {
+      "optional": true
+    },
+    "@nodert-win10-au/windows.ui.notifications": {
+      "optional": true
+    },
+    "@nodert-win10-cu/windows.data.xml.dom": {
+      "optional": true
+    },
+    "@nodert-win10-cu/windows.ui.notifications": {
+      "optional": true
+    },
+    "@nodert-win10-rs3/windows.data.xml.dom": {
+      "optional": true
+    },
+    "@nodert-win10-rs3/windows.ui.notifications": {
+      "optional": true
+    },
     "@nodert-win10-rs4/windows.data.xml.dom": {
       "optional": true
     },
     "@nodert-win10-rs4/windows.ui.notifications": {
       "optional": true
     },
+    "@nodert-win10-19h1/windows.data.xml.dom": {
+      "optional": true
+    },
+    "@nodert-win10-19h1/windows.ui.notifications": {
+      "optional": true
+    },
     "@nodert-win10-20h1/windows.data.xml.dom": {
       "optional": true
     },
     "@nodert-win10-20h1/windows.ui.notifications": {
+      "optional": true
+    },
+    "@nodert-win10-21h1/windows.data.xml.dom": {
+      "optional": true
+    },
+    "@nodert-win10-21h1/windows.ui.notifications": {
       "optional": true
     },
     "@nodert-win11/windows.data.xml.dom": {
