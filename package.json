@@ -15,7 +15,10 @@
     "npm": ">=8.1.4"
   },
   "scripts": {
-    "lint": "npx eslint \"./lib/**/*.{js,mjs}\" \"./types/**/*.d.ts\""
+    "lint": "eslint \"./lib/**/*.{js,mjs}\" \"./types/**/*.d.ts\"",
+    "test": "tap \"./test/**/*.js\" --no-coverage --no-coverage-report",
+    "check": "tsc --noemit --checkjs",
+    "declare": "tsc --declaration --emitDeclarationOnly --outDir \"./types\""
   },
   "keywords": [
     "toast",
@@ -55,10 +58,14 @@
     }
   ],
   "peerDependencies": {
+    "@nodert-win10-rs4/windows.data.xml.dom": "^0.4.4",
+    "@nodert-win10-rs4/windows.ui.notifications": "^0.4.4",
     "@nodert-win10-20h1/windows.data.xml.dom": "^0.1.0",
     "@nodert-win10-20h1/windows.ui.notifications": "^0.1.0",
-    "@nodert-win10-rs4/windows.data.xml.dom": "^0.4.4",
-    "@nodert-win10-rs4/windows.ui.notifications": "^0.4.4"
+    "@nodert-win11/windows.data.xml.dom": "^0.1.6",
+    "@nodert-win11/windows.ui.notifications": "^0.1.6",
+    "@nodert-win11-22h2/windows.data.xml.dom": "^0.1.6",
+    "@nodert-win11-22h2/windows.ui.notifications": "^0.1.6"
   },
   "peerDependenciesMeta": {
     "@nodert-win10-rs4/windows.data.xml.dom": {
@@ -72,19 +79,33 @@
     },
     "@nodert-win10-20h1/windows.ui.notifications": {
       "optional": true
+    },
+    "@nodert-win11/windows.data.xml.dom": {
+      "optional": true
+    },
+    "@nodert-win11/windows.ui.notifications": {
+      "optional": true
+    },
+    "@nodert-win11-22h2/windows.data.xml.dom": {
+      "optional": true
+    },
+    "@nodert-win11-22h2/windows.ui.notifications": {
+      "optional": true
     }
   },
   "devDependencies": {
     "@nodert-win10-20h1/windows.data.xml.dom": "^0.1.0",
     "@nodert-win10-20h1/windows.ui.notifications": "^0.1.0",
-    "@typescript-eslint/eslint-plugin": "^5.33.0",
-    "@typescript-eslint/parser": "^5.33.0",
-    "eslint": "^8.22.0"
+    "@types/node": "^18.7.23",
+    "@typescript-eslint/eslint-plugin": "^5.38.1",
+    "@typescript-eslint/parser": "^5.38.1",
+    "eslint": "^8.22.0",
+    "tap": "^16.3.0",
+    "typescript": "^4.7.4"
   },
   "dependencies": {
     "@xan105/error": "^1.4.3",
     "@xan105/fs": "^2.1.0",
-    "@xan105/is": "^2.7.0",
-    "emittery": "^0.12.1"
+    "@xan105/is": "^2.7.0"
   }
 }

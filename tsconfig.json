@@ -1,0 +1,12 @@
+{
+  "compilerOptions": {
+    "module": "node16",
+    "allowJs": true,
+    "strict": true,
+    "noImplicitAny": false
+  },
+  "exclude":[
+    "node_modules",
+    "test"
+  ]
+}
