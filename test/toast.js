@@ -11,10 +11,25 @@ toast({
   cropIcon: true,
   attribution: "Achievement",
   timeStamp: "1568710924",
+  input:[
+    { id: "textBox", placeholder: "Type a reply", title: "I'm a title"}
+  ],
+  select:[
+    {
+      id: "pkmn",
+      defaultID: "blue",
+      title: "Choose wisely", 
+      items:[
+        { id: "red", text: "Salameche" },
+        { id: "blue", text: "Carapuce" },
+        { id: "green", text: "Bulbizarre" }
+      ]
+    }
+  ],
   button: [
-    { text: "1", onClick: "bingmaps:?q=sushi" },
+    { text: "send", onClick: "bingmaps:?q=sushi", id: "textBox" },
     { text: "2", onClick: "bingmaps:?q=sushi", contextMenu: true },
-    { text: "3", onClick: "bingmaps:?q=sushi" },
+    { text: "choose pkmn", onClick: "bingmaps:?q=sushi", id: "pkmn" },
     { text: "4", onClick: "bingmaps:?q=sushi" },
     { text: "5", onClick: "bingmaps:?q=sushi" },
     { text: "6", onClick: "bingmaps:?q=sushi" },
@@ -26,7 +41,7 @@ toast({
     footer: "down",
     percent: 0,
   },
-  uniqueID: "id0",
+  //uniqueID: "id0",
   group: {
     id: "id1",
     title: "group",
@@ -34,11 +49,11 @@ toast({
   headerImg: "../screenshot/example.png",
   callback: {
     keepalive: 9,
-    onActivated: () => {
-      console.log("activated");
+    onActivated: (e) => {
+      console.log("activated", e);
     },
     onDismissed: (reason) => {
-      console.log(reason);
+      console.log("dismissed", reason);
     },
   },
 })
