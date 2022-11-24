@@ -1,23 +1,26 @@
 About
 =====
 
-Windows toast notification using PowerShell or WinRT (Windows 8, 10, 11).<br />
+Windows toast notification using PowerShell or WinRT and toastXml string builder.<br />
 
-Everything is done through PowerShell (no native module) but you can use the native WinRT API instead by **optionally** installing [NodeRT](https://github.com/NodeRT/NodeRT) relative package (see [installation](#Installation))
+Doesn't use any native module. Everything is done through PowerShell but you can use native WinRT API bindings instead by **optionally** installing [NodeRT](https://github.com/NodeRT/NodeRT) relative packages (see [installation](#Installation) for more details).
 
-Using NodeRT is a bit faster as you don't have to wait for the PowerShell VM to start and you'll be able to subscribe to the onActivated/onDismissed callback.<br />
-_NB: Callbacks are now also available with PowerShell ≥ 7.1._
-
-💡 You can also use this lib to easily build a [toastXml string](https://docs.microsoft.com/en-us/uwp/schemas/tiles/toastschema/schema-root).
+Please note that when using PowerShell some features such as click events and user input requires Powershell ≥ 7.1 (pwsh) also known as PowerShell Core.<br />
+Using WinRT (NodeRT) is a bit faster as you don't have to wait for the PowerShell VM to start.
 
 **Electron**
 
-Powertoast was made for Node.js first but it also works in Electron with either PowerShell or WinRT(NodeRT).<br />
-If you prefer to use the new [Electron native API](https://www.electronjs.org/fr/docs/latest/api/notification#new-notificationoptions) directly.
-You can easily build a toastXml string for it as mentionned above.
+Powertoast was made for Node.js first but it also works in Electron with either PowerShell or WinRT (NodeRT).<br />
+If you prefer to use the new [Electron native API](https://www.electronjs.org/fr/docs/latest/api/notification#new-notificationoptions) directly. 
+You can easily build a [toastXml string](https://docs.microsoft.com/en-us/uwp/schemas/tiles/toastschema/schema-root) for it.
 
 Example
 =======
+
+💡 Windows toast notification have a tons of options so for more detailed examples including electron please check out _INSERT LINK_
+
+### A simple toast
+
 <p align="center">
 <img src="https://github.com/xan105/node-powertoast/raw/master/screenshot/example.png">
 </p>
@@ -25,31 +28,42 @@ Example
 ```js 
 import { Toast } from "powertoast";
 
+//Create a toast
 const toast = new Toast({
   title: "NPM",
   message: "Installed.",
   icon: "https://static.npmjs.com/7a7ffabbd910fc60161bc04f2cee4160.png"
 })
-.on("activated", ([event])=>{ console.log("click") })
-.on("dismissed", ([reason])=>{ console.log(reason) })
-.notify() //Promise
+
+//Events (optional)
+toast.on("activated", (argument, input) => { 
+  // Where argument and input are the data from an interactive toast
+  console.log("click");
+});
+toast.on("dismissed", (reason) => { console.log(reason) });
+
+toast.show() //Promise
+.then(()=>{
+  console.log("Sent");
+})
 .catch((err) => { 
   console.error(err);
 });
+```
 
-
-Build a toastXml string for [Electron native API](https://www.electronjs.org/fr/docs/latest/api/notification#new-notificationoptions):
+### Build a toastXml string for [Electron native API](https://www.electronjs.org/fr/docs/latest/api/notification#new-notificationoptions):
 
 ```js
 "use strict";
-const { Notification } = require('electron');
+const { Notification } = require("electron");
 
 (async()=>{
-  const { makeXML } = await import('powertoast'); //Load ESM
+  const { makeXML } = await import("powertoast"); //Load ESM
   
   const options = {
     title: "First partner",
     message: "Every journey begins with a choice",
+    //Buttons using protocol activation
     button: [
       { text: "Bulbasaur", onClick: "electron:green" },
       { text: "Charmander", onClick: "electron:red" },
@@ -73,45 +87,51 @@ npm install powertoast
 
 ### Optional packages
 
-The recommended NodeRT scope is the official [@nodert-win10-rs4](https://github.com/NodeRT/NodeRT) but unofficial [@nodert-win10-20h1](https://github.com/MaySoMusician/NodeRT) is also supported.
-`@nodert-win10-20h1` is _"easier"_ to compile nowadays as it supports vs2019 and targets a more up to date Windows 10 SDK.
-But as per the author's instruction it should be considered experimental.
+The recommended NodeRT scope is the latest official [@nodert-win10-rs4](https://github.com/NodeRT/NodeRT) but all NodeRT scopes including unofficial made by the community like [@nodert-win10-20h1](https://github.com/MaySoMusician/NodeRT) are supported. The Windows SDK version they target is implied in their name. NodeRT scopes made by the community should be considered experimental as per the author's instruction.
 
-⚠️ Electron ≥ 14 : NodeRT should be loaded in the main process [NodeRT#158](https://github.com/NodeRT/NodeRT/issues/158)
+NodeRT modules required:
 
-<details>
-<summary>@nodert-win10-rs4 (recommended)</summary>
+- windows.data.xml.dom
+- windows.ui.notifications
 
- + [NodeRT windows.data.xml.dom](https://www.npmjs.com/package/@nodert-win10-rs4/windows.data.xml.dom)<br />
- ```
- npm install @nodert-win10-rs4/windows.data.xml.dom
- ```
- + [NodeRT windows.ui.notifications](https://www.npmjs.com/package/@nodert-win10-rs4/windows.ui.notifications)<br /> 
- ```
- npm install @nodert-win10-rs4/windows.ui.notifications
- ```
- 
- _Prerequisite: C/C++ build tools (vs20**15**/20**17**) and Python 3.x (node-gyp) / Windows 10 SDK **10.0.17134.0** (1803 Redstone 4)_<br/>
-_⚠️ SDK and build tools version are important here. This will most likely fail to compile otherwise._
+Optional: for user input (text box and dropdown selection list) you will also need:
 
-</details>
+- windows.ui.notifications (> nodert-win10-rs4 (1803) since it's available on win10 ≥ 1903)
+- windows.foundation
+- windows.foundation.collections
 
-<details>
-<summary>@nodert-win10-20h1 (experimental)</summary>
+Example using `@nodert-win10-rs4`
 
- + [NodeRT windows.data.xml.dom](https://www.npmjs.com/package/@nodert-win10-20h1/windows.data.xml.dom)<br />
- ```
- npm install @nodert-win10-20h1/windows.data.xml.dom
- ```
- + [NodeRT windows.ui.notifications](https://www.npmjs.com/package/@nodert-win10-20h1/windows.ui.notifications)<br /> 
- ```
- npm install @nodert-win10-20h1/windows.ui.notifications
- ```
- 
- _Prerequisite: C/C++ build tools (vs20**19**/20**22**) and Python 3.x (node-gyp) / Windows 10 SDK **10.0.19041.0** (2004)_<br/>
-_⚠️ SDK and build tools version are important here. This will most likely fail to compile otherwise._
+```
+npm install @nodert-win10-rs4/windows.data.xml.dom @nodert-win10-rs4/windows.ui.notifications
+```
 
-</details>
+_Prerequisite: C/C++ build tools and Python 3.x (node-gyp) / Windows 10 SDK **10.0.17134.0** (1803 Redstone 4)_<br/>
+
+Mixing NodeRT modules from different scopes is supported (priority to the most recent SDK) but should be treated with caution.
+
+```
+npm install @nodert-win10-rs4/windows.data.xml.dom @nodert-win10-20h1/windows.ui.notifications
+```
+
+💡 If you have trouble compiling NodeRT native addons. They are available precompiled through the `@xan105/nodert` package.
+
+Example using `@xan105/nodert` (prebuild)
+
+```
+npm i @xan105/nodert --modules="windows.ui.notifications, windows.data.xml.dom"
+
+//User input
+npm i @xan105/nodert --modules="windows.ui.notifications, windows.data.xml.dom, windows.foundation, windows.foundation.collections"
+```
+
+💡 NB: For Electron add the `--electron` flag to target Electron's ABI
+
+```
+npm i @xan105/nodert --electron --modules="windows.ui.notifications, windows.data.xml.dom"
+```
+
+⚠️ NB: Electron ≥ 14 : NodeRT should be loaded in the main process [NodeRT#158](https://github.com/NodeRT/NodeRT/issues/158)
 
 API
 ===

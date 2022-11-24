@@ -1,7 +1,7 @@
 {
   "name": "powertoast",
   "version": "2.1.5",
-  "description": "Windows toast notification using PowerShell or WinRT (Windows 8, 10, 11).",
+  "description": "Windows toast notification using PowerShell or WinRT and toastXml string builder.",
   "type": "module",
   "exports": {
     ".": {
@@ -27,7 +27,8 @@
     "notification center",
     "powershell",
     "winRT",
-    "toastXml"
+    "toastXml",
+    "electron"
   ],
   "author": {
     "name": "Anthony Beaumont",
@@ -58,8 +59,12 @@
     }
   ],
   "peerDependencies": {
-    "@nodert-win10/windows.data.xml.dom" : "^0.2.96",
-    "@nodert-win10/windows.ui.notifications" : "^0.2.96",
+    "@nodert-win10-19h1/windows.data.xml.dom": "^0.1.6",
+    "@nodert-win10-19h1/windows.ui.notifications": "^0.1.6",
+    "@nodert-win10-20h1/windows.data.xml.dom": "^0.1.0",
+    "@nodert-win10-20h1/windows.ui.notifications": "^0.1.0",
+    "@nodert-win10-21h1/windows.data.xml.dom": "^0.1.6",
+    "@nodert-win10-21h1/windows.ui.notifications": "^0.1.6",
     "@nodert-win10-au/windows.data.xml.dom": "^0.4.4",
     "@nodert-win10-au/windows.ui.notifications": "^0.4.4",
     "@nodert-win10-cu/windows.data.xml.dom": "^0.4.4",
@@ -68,18 +73,18 @@
     "@nodert-win10-rs3/windows.ui.notifications": "^0.4.4",
     "@nodert-win10-rs4/windows.data.xml.dom": "^0.4.4",
     "@nodert-win10-rs4/windows.ui.notifications": "^0.4.4",
-    "@nodert-win10-19h1/windows.data.xml.dom": "^0.1.6",
-    "@nodert-win10-19h1/windows.ui.notifications": "^0.1.6",
-    "@nodert-win10-20h1/windows.data.xml.dom": "^0.1.0",
-    "@nodert-win10-20h1/windows.ui.notifications": "^0.1.0",
-    "@nodert-win10-21h1/windows.data.xml.dom": "^0.1.6",
-    "@nodert-win10-21h1/windows.ui.notifications": "^0.1.6",
+    "@nodert-win10/windows.data.xml.dom": "^0.2.96",
+    "@nodert-win10/windows.ui.notifications": "^0.2.96",
+    "@nodert-win11-22h2/windows.data.xml.dom": "^0.1.6",
+    "@nodert-win11-22h2/windows.ui.notifications": "^0.1.6",
     "@nodert-win11/windows.data.xml.dom": "^0.1.6",
     "@nodert-win11/windows.ui.notifications": "^0.1.6",
-    "@nodert-win11-22h2/windows.data.xml.dom": "^0.1.6",
-    "@nodert-win11-22h2/windows.ui.notifications": "^0.1.6"
+    "@xan105/nodert": "^1.0.3"
   },
   "peerDependenciesMeta": {
+    "@xan105/nodert": {
+      "optional": true
+    },
     "@nodert-win10/windows.data.xml.dom": {
       "optional": true
     },
@@ -143,10 +148,12 @@
   },
   "devDependencies": {
     "@nodert-win10-20h1/windows.data.xml.dom": "^0.1.0",
+    "@nodert-win10-20h1/windows.foundation.collections": "^0.1.0",
     "@nodert-win10-20h1/windows.ui.notifications": "^0.1.0",
     "@types/node": "^18.7.23",
     "@typescript-eslint/eslint-plugin": "^5.38.1",
     "@typescript-eslint/parser": "^5.38.1",
+    "@xan105/nodert": "^1.0.3",
     "eslint": "^8.22.0",
     "tap": "^16.3.0",
     "typescript": "^4.7.4"
