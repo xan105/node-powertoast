@@ -12,12 +12,15 @@ jobs:
   build:
     runs-on: ubuntu-latest
     if: github.event_name == 'workflow_dispatch' || startsWith(github.event.head_commit.message, 'v')
+    permissions:
+      contents: read
+      id-token: write
     steps:
-      - uses: actions/checkout@v2
-      - uses: actions/setup-node@v2
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
         with:
-          node-version: '16.x'
+          node-version: '18.x'
           registry-url: 'https://registry.npmjs.org'
-      - run: npm publish --access public
+      - run: npm publish --provenance --access public
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
