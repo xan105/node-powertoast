@@ -4,6 +4,7 @@ console.info("Default transport: " + `${isWinRTAvailable ? "WinRT" : "Powershell
 
 toast({
   disableWinRT: false,
+  usePowerShellCore: true,
   appID: "Microsoft.XboxApp_8wekyb3d8bbwe!Microsoft.XboxApp",
   title: "Dummy",
   message: "Hello World",
@@ -17,8 +18,8 @@ toast({
   select:[
     {
       id: "pkmn",
-      defaultID: "blue",
-      title: "Choose wisely", 
+      title: "Choose wisely",
+      //defaultID: "blue",  //a default value will make it sticky, because it's like user already input something
       items:[
         { id: "red", text: "Salameche" },
         { id: "blue", text: "Carapuce" },
@@ -48,9 +49,9 @@ toast({
   },
   headerImg: "../screenshot/example.png",
   callback: {
-    keepalive: 9,
-    onActivated: (e) => {
-      console.log("activated", e);
+    keepalive: 10,
+    onActivated: (args, value) => {
+      console.log("activated", args, value);
     },
     onDismissed: (reason) => {
       console.log("dismissed", reason);

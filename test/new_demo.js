@@ -8,6 +8,7 @@ const toast = new Toast({
   cropIcon: true,
   attribution: "Achievement",
   timeStamp: "1568710924",
+  scenario: "urgent",
   button: [
     { text: "1", onClick: "bingmaps:?q=sushi" },
     { text: "2", onClick: "bingmaps:?q=sushi", contextMenu: true },
@@ -25,29 +26,40 @@ const toast = new Toast({
   },
   heroImg: "../screenshot/example.png",
   activationType: "background",
-  loopAudio: false
-})
-.once("activated", (event)=>{ 
+  loopAudio: false,
+  input: [
+   {
+    id: "input0",
+    text: "Ping?",
+    placeholder: "ping?"
+   } 
+  ]
+});
+
+toast.on("activated", (event, input)=>{ 
   setImmediate(() => {
     console.log("activated:", event);
+    console.log("user input: ", input)
   });
 })
-.once("dismissed", (reason)=>{ 
+.on("dismissed", (reason)=>{ 
   setImmediate(() => {
     console.log("dismissed:", reason);
   });
-})
-.notify({
-  disableWinRT: true,
+});
+
+console.log("fire");
+toast.show({
+  disableWinRT: false,
   disablePowershellCore: false,
   keepalive: 10
+}).then(()=>{
+  console.log("ok");
 })
-.then(() => {
-  console.log("done");
-})
-.catch((err) => { 
-  console.error(err);
-});
+
+/*setTimeout(()=>{
+  toast.clear();
+}, 7 * 1000);*/
 
 //real auto test:
 //parse xml and verify also if valid xml
