@@ -110,7 +110,7 @@
     "@nodert-win11/windows.foundation": "^0.1.6",
     "@nodert-win11/windows.foundation.collections": "^0.1.6",
     "@nodert-win11/windows.ui.notifications": "^0.1.6",
-    "@xan105/nodert": "^1.1.16"
+    "@xan105/nodert": "^2.0.0"
   },
   "peerDependenciesMeta": {
     "@xan105/nodert": {
@@ -245,7 +245,7 @@
     "@types/node": "^20.11.17",
     "@typescript-eslint/eslint-plugin": "^6.21.0",
     "@typescript-eslint/parser": "^6.21.0",
-    "@xan105/nodert": "^1.1.16",
+    "@xan105/nodert": "^2.0.0",
     "eslint": "^8.56.0",
     "typescript": "^5.3.3"
   },
