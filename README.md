@@ -17,8 +17,6 @@ You can easily build a [toastXml string](https://docs.microsoft.com/en-us/uwp/sc
 Example
 =======
 
-💡 Windows toast notification have a tons of options so for more detailed examples including electron please check out _INSERT LINK_
-
 ### A simple toast
 
 <p align="center">
@@ -54,28 +52,24 @@ toast.show() //Promise
 ### Build a toastXml string for [Electron native API](https://www.electronjs.org/fr/docs/latest/api/notification#new-notificationoptions):
 
 ```js
-"use strict";
-const { Notification } = require("electron");
-
-(async()=>{
-  const { makeXML } = await import("powertoast"); //Load ESM
+//Main process
+import { Notification } from "electron";
+import { asXmlString } from "powertoast";
   
-  const options = {
-    title: "First partner",
-    message: "Every journey begins with a choice",
-    //Buttons using protocol activation
-    button: [
-      { text: "Bulbasaur", onClick: "electron:green" },
-      { text: "Charmander", onClick: "electron:red" },
-      { text: "Squirtle", onClick: "electron:blue" }
-    ]
-  };
+const options = {
+  title: "First partner",
+  message: "Every journey begins with a choice",
+  //Buttons using protocol activation
+  button: [
+    { text: "Bulbasaur", onClick: "electron:green" },
+    { text: "Charmander", onClick: "electron:red" },
+    { text: "Squirtle", onClick: "electron:blue" }
+  ]
+};
 
-  const toastXmlString = makeXML(options);
-  const toast = new Notification({toastXml: toastXmlString});
-  toast.show();
-
-})().catch(console.error);
+const xmlString = asXmlString(options);
+const toast = new Notification({ toastXml: xmlString });
+toast.show();
 ```
 
 Installation
@@ -85,47 +79,45 @@ Installation
 npm install powertoast
 ```
 
-### Optional packages
+### Optional NodeRT packages
 
-The recommended NodeRT scope is the latest official [@nodert-win10-rs4](https://github.com/NodeRT/NodeRT) but all NodeRT scopes including unofficial made by the community like [@nodert-win10-20h1](https://github.com/MaySoMusician/NodeRT) are supported. The Windows SDK version they target is implied in their name. NodeRT scopes made by the community should be considered experimental as per the author's instruction.
+All NodeRT scopes up to the latest official [@nodert-win10-rs4](https://github.com/NodeRT/NodeRT) and unofficial made by the community up to [@nodert-win11-22h2](https://github.com/demosjarco/NodeRT) are supported. The Windows SDK version they target is implied in their name.
 
-NodeRT modules required:
+💡 Mixing NodeRT modules from different scopes is supported (priority to the most recent SDK) but should be treated with caution.
 
-- windows.data.xml.dom
-- windows.ui.notifications
+NodeRT modules required for toast notification:
 
-Optional: for user input (text box and dropdown selection list) you will also need:
+- `windows.data.xml.dom`
+- `windows.ui.notifications`
 
-- windows.ui.notifications (> nodert-win10-rs4 (1803) since it's available on win10 ≥ 1903)
-- windows.foundation
-- windows.foundation.collections
+For user input (text box and dropdown selection list) you will also need:
 
-Example using `@nodert-win10-rs4`
+- `windows.ui.notifications` (> nodert-win10-rs4 (1803) since it's available on win10 ≥ 1903)
+- `windows.foundation`
+- `windows.foundation.collections`
 
-```
-npm install @nodert-win10-rs4/windows.data.xml.dom @nodert-win10-rs4/windows.ui.notifications
-```
-
-_Prerequisite: C/C++ build tools and Python 3.x (node-gyp) / Windows 10 SDK **10.0.17134.0** (1803 Redstone 4)_<br/>
-
-Mixing NodeRT modules from different scopes is supported (priority to the most recent SDK) but should be treated with caution.
+💡 If you have trouble compiling NodeRT native addons. They are available precompiled through the [@xan105/nodert](https://github.com/xan105/node-nodeRT) package.
 
 ```
-npm install @nodert-win10-rs4/windows.data.xml.dom @nodert-win10-20h1/windows.ui.notifications
-```
-
-💡 If you have trouble compiling NodeRT native addons. They are available precompiled through the `@xan105/nodert` package.
-
-Example using `@xan105/nodert` (prebuild)
-
-```
-npm i @xan105/nodert --modules="windows.ui.notifications, windows.data.xml.dom"
-
-//User input
 npm i @xan105/nodert --modules="windows.ui.notifications, windows.data.xml.dom, windows.foundation, windows.foundation.collections"
 ```
 
-💡 NB: For Electron add the `--electron` flag to target Electron's ABI
+Note that you can also add a list of modules in your package.json file under the `_nodert/modules` path:
+
+```json
+"_nodert" : {
+  "modules" : [
+    "windows.data.xml.dom",
+    "windows.ui.notifications"
+  ]
+},
+```
+
+Please see [@xan105/nodert](https://github.com/xan105/node-nodeRT#install) for more details.
+
+#### Electron
+
+For Electron add the `--electron` flag to target Electron's ABI
 
 ```
 npm i @xan105/nodert --electron --modules="windows.ui.notifications, windows.data.xml.dom"
@@ -136,40 +128,34 @@ npm i @xan105/nodert --electron --modules="windows.ui.notifications, windows.dat
 API
 ===
 
-⚠️ This module is only available as an ECMAScript module (ESM) starting with version 2.0.0.<br />
+⚠️ This module is only available as an ECMAScript module (ESM) starting with version `2.0.0`.<br />
 Previous version(s) are CommonJS (CJS) with an ESM wrapper.
 
-## Default export
+ℹ️ Windows 8/8.1 support was removed in `3.x`
 
-#### `(option?: obj): Promise<void>`
+## Named export
 
-Send a toast notification.
+### Toast(option?: object): Class
 
-**Parameters**
+_extends 📖 [EventEmitter](https://nodejs.org/docs/latest-v20.x/api/events.html#class-eventemitter)_
 
-⚠️ Windows 8/8.1 have very basic notification compared to Windows 10/11, most options will be ignored.
+Create a toast notification.
+
+#### Constructor
+
+`(option?: object)`
+
+ℹ️ There is a ton of options for toast notification (long text warning 😅)
 
 <details>
-<summary>⚙️ Options</summary>
+<summary>⚙️ Options:</summary>
 
-- **disableWinRT** : boolean | ≥ Win8.x
+- `appID?: string` (Microsoft.WindowsStore_8wekyb3d8bbwe!App)
 
-  If you have installed the optional NodeRT native module but for whatever reason(s) you want to use PowerShell instead.<br />
-  Then set this to true. **Default** to false.
-  
-- **usePowerShellCore** : boolean | ≥ Win8.x
-
-  Use `pwsh` (PowerShell Core) instead of `powershell` (PowerShell Desktop / Windows Embedded).<br />
-  _Needless to say PowerShell (core) needs to be installed and its path added to your env var for this to work._<br />
-  **Default** to false.
-
-- **appID** : string | ≥ Win8.x
-
-  Your [Application User Model ID](https://docs.microsoft.com/fr-fr/windows/desktop/shell/appids) a.k.a. AUMID.
-  
-  **Default** to Microsoft Store (UWP) so you can see how it works if not specified.
-  
   ⚠️ An invalid appID will result in the notification not being displayed !
+
+  Your [Application User Model ID](https://docs.microsoft.com/fr-fr/windows/desktop/shell/appids) a.k.a. AUMID.<br />
+  Defaults to Microsoft Store (UWP) so you can see how it works if not specified.
   
   You can view all installed appID via the PowerShell command `Get-StartApps`.<br />
   AppIDs can be classified into 2 categories: Win32 appID and UWP appID.<br />
@@ -188,116 +174,117 @@ Send a toast notification.
   💡 It basically boils down to creating a .lnk shortcut in the `StartMenu` folder with the AUMID property set and some registry.<br />
   
 ```js  
-  import toast from 'powertoast';
+  import { Toast } from "powertoast";
 
-  toast({
+  const toast = new Toast({
     appID: "Microsoft.XboxApp_8wekyb3d8bbwe!Microsoft.XboxApp", //Xbox App (UWP)
     appID: "com.squirrel.GitHubDesktop.GitHubDesktop", //GitHub Desktop (win32)
     title: "Hello",
     message: "world"
-  }).catch(err => console.error(err));
+  });
+  
+  toast.show()
+  .catch(console.error);
 ```
 
-- **title** : string | ≥ Win8.x
+- `title?: string` (None)
   
   The title of your notification.
+  
+  ℹ️ Since the Windows 10 Anniversary Update the default and maximum is up to 2 lines of text.
 
-- **message** : string | ≥ Win8.x
+- `message?: string` (None)
 
   The content message of your notification.
   You can use "\n" to create a new line for the forthcoming text.
   
-  Since the Windows 10 Anniversary Update the default and maximum is up to 2 lines of text for the title, and up to 4 lines (combined) for the message.
-
-- **attribution** : string | ≥ Win10 (Anniversary Update)
+  ℹ️ Since the Windows 10 Anniversary Update the default and maximum is up to 4 lines (combined) for the message.
+  
+- `attribution?: string` (None) | ≥ Win10 (Anniversary Update)
 
   Reference the source of your content. This text is always displayed at the bottom of your notification, along with your app's identity or the notification's timestamp.
 
   On older versions of Windows that don't support attribution text, the text will simply be displayed as another text element (assuming you don't already have the maximum of 3 text elements).
   
- <p align="center">
-<img src="https://github.com/xan105/node-powertoast/raw/master/screenshot/attribution.png">
+<p align="center">
+  <img src="https://github.com/xan105/node-powertoast/raw/master/screenshot/attribution.png">
 </p>
   
 ```js
-    
-    import toast from 'powertoast';
+  import { Toast } from "powertoast";
 
-    toast({
+  const toast = new Toast({
       appID: "com.squirrel.GitHubDesktop.GitHubDesktop",
       title: "Github",
       message: "Someone commented your issue",
       icon: "D:\\Desktop\\github.png",
       attribution: "Via Web"
-    }).catch(err => console.error(err));
+  });
+  
+  toast.show()
+  .catch(console.error);
 ```
 
-- **icon** : string | ≥ Win8.x
+- `icon?: string` (None)
 
-  The URI of the image source, using one of these protocol handlers:
+  The url or file path of the image source: `.png` and `.jpeg` are supported (48x48 pixels at 100% scaling).
   
-  - file:/// (_eg: `"D:\\Desktop\\test.jpg"`_)
-  - http(s)://
-
-  .png and .jpeg are supported (48x48 pixels at 100% scaling).
-
   ⚠️ Remote web images over http(s) are **only available when using an UWP appID**.<br/>
+  💡 A workaround is to download yourself the image and pass the file path instead of an url.
+  
   There are limits on the file size of each individual image.<br/>
   3 MB on normal connections and 1 MB on metered connections.<br/>
   Before Fall Creators Update, images were always limited to 200 KB.<br/>
 
   If an image exceeds the file size, or fails to download, or times out, or is an unvalid format the image will be dropped and the rest of the notification will be displayed.
+
+- `cropIcon?: boolean` (false)
+
+  Set this to `true` to _"circle-crop"_ the above icon. Otherwise, the icon is square.
   
-  💡 A workaround is to download yourself the image and pass the img filepath instead of an URL.
-
-- **cropIcon** : boolean | ≥ Win10
-
-  You can use this to 'circle-crop' your image (true). Otherwise, the image is square (false).
-  
-  **default** to false.
-
-- **headerImg** : string | ≥ Win10 (Anniversary Update)
-
-  <p align="center">
-  <img src="https://github.com/xan105/node-powertoast/raw/master/screenshot/header.png">
-  </p>
+- `heroImg?: string` (None) | ≥ Win10 (Anniversary Update)
 
   Display a prominently image within the toast banner and inside the notification center if there is enough room. <br/>
   Image dimensions are 364x180 pixels at 100% scaling.
   If the image is too big it will be cut from the bottom.
   
-  Otherwise same restrictions as mentionned in the `icon` option.
-
-- **footerImg** : string | ≥ Win10
-
   <p align="center">
-  <img src="https://github.com/xan105/node-powertoast/raw/master/screenshot/footer.png">
+    <img src="https://github.com/xan105/node-powertoast/raw/master/screenshot/header.png">
   </p>
+  
+  ℹ️ This has the same restrictions as mentionned in the `icon` option.
+  
+- `inlineImg?: string` (None)
 
   A full-width inline-image that appears at the bottom of the toast and inside the notification center if there is enough room.
   Image will be resized to fit inside the toast.
   
-  Otherwise same restrictions as mentionned in the `icon` option.
+  <p align="center">
+    <img src="https://github.com/xan105/node-powertoast/raw/master/screenshot/footer.png">
+  </p>
+  
+  ℹ️ This has the same restrictions as mentionned in the `icon` option.
+  
+- `audio?: string` (None)
 
-- **silent** : boolean | ≥ Win8.x
+  The audio source to play when the toast is shown to the user instead of the default system notification sound.<br/>
+  Unfortunately you **can not** use a file path with this ! You are limited to the Windows sound schema available in your system.<br/>
+  
+```js
+  import { Toast } from "powertoast";
 
-  True to mute the sound; false to allow the toast notification sound to play. **Default** to false.
-
-- **hide** : boolean | ≥ Win10
+  const toast = new Toast({
+    appID: "com.squirrel.GitHubDesktop.GitHubDesktop",
+    title: "Github",
+    message: "Someone commented your issue",
+    audio: "ms-winsoundevent:Notification.Default"
+  });
   
-  True to suppress the popup message and places the toast notification **silently** into the notification center. **Default** to false.<br/>
-  Using `silent: true` is redundant in this case.
+  toast.show()
+  .catch(console.error);
+```
   
-- **audio** : string | ≥ Win8.x
-
-  The audio source to play when the toast is shown to the user.<br/>
-  You **can't** use file:/// with this ! You are limited to the Windows sound schema available in your system.<br/>
-  
-  example: ms-winsoundevent:Notification.Default
-  
-  💡 But you can create your own Windows sound schema with the registry and use it for your toast:
-  
-  File must be a .wav, by default Windows sounds are located in `%WINDIR%\media`
+  💡 A workaround is to create your own Windows sound schema with the registry and use it for your toast:
   
 ```
   //Registry
@@ -310,105 +297,230 @@ Send a toast notification.
 
   [HKEY_CURRENT_USER\AppEvents\Schemes\Apps\.Default\mysound\.Default]
   @="path_to_your_sound_file.wav"
-  
-  //js
-  import toast from 'powertoast';
-
-  toast({
-    appID: "com.squirrel.GitHubDesktop.GitHubDesktop",
-    title: "Github",
-    message: "Someone commented your issue",
-    audio: "ms-winsoundevent:mysound"
-  }).catch(err => console.error(err));
 ```
-  
-- **longTime** : boolean | ≥ Win8.x
 
-  Increase the time the toast should show up for.<br />
-  **Default** to false.
-  
-  Most of the time "short" (default) is the most appropriate, and Microsoft recommends not using "long".<br />
-  This is only here for specific scenarios and app compatibility (Windows 8).
-  
-  Long is around ~ 25sec<br />
-  Short is the user defined value (_Windows settings > Ease of Access > Display > Show notification for ..._)
-  
-  Or registry: `HKCU\Control Panel\Accessibility` -> `MessageDuration`::DWORD (Not recommended to directly modify registry value)
-  
-  User value default to 5sec; <br/>
-  Available: 5, 7, 15, 30, 1min, 5min
+ℹ️ File must be `.wav` format and by default Windows sounds are located in `%WINDIR%\media`
 
-- **onClick** : string | ≥ Win10
+- `loopAudio?: boolean` (false)
+
+  Set to `true` to loop audio while the notification is being shown.
+
+- `silent?: boolean` (false)
+
+  Set to `true` to mute the sound; `false` to allow the toast notification sound to play.
+  
+- `hide?: boolean` (false)
+  
+  Set to `true` to suppress the popup message and places the toast notification **silently** into the notification center.
+  
+  ℹ️ NB: Using `silent: true` is redundant in this case.
+  
+- `onClick?: string` (None)
 
   Protocol to launch when the user click on the toast.<br />
-  If none (**default**) click will just dismiss the notification.<br />
+  If none (default) click will just dismiss the notification.
 
-  ⚠️ Protocol type action is recommended (see activationType below) ~~as there's no way of receiving feedback from the user's choice via PowerShell~~.<br />
-  💡 If you are using PowerShell ≥ 7.1 or NodeRT native module and you want to execute some js code when the user click on the toast or when the toast is dismissed then please see the callback option section down below.<br />
-  
+  💡 When using PowerShell ≥ 7.1 or NodeRT an event will be emitted when the user click on the toast or when the toast is dismissed.<br />
+
   Example of protocol type action button to open up Windows 10's maps app with a pre-populated search field set to "sushi":
   
 ```js
-  import toast from 'powertoast';
+  import { Toast } from "powertoast";
 
-  toast({
+  const toast = new Toast({
     message: "Sushi",
     onClick: "bingmaps:?q=sushi"
-  }).catch(err => console.error(err));
+  });
+  
+  toast.on("activated", (event) => {
+    console.log("clicked");
+    console.log(event) //"bingmaps:?q=sushi"
+  })
+  .on("dismissed", (reason) => {
+    console.log("dismissed:", reason);
+  });
+  
+  toast.show()
+  .catch(console.error);
 ```
 
   You can also redirect to an http/https resource :
   
 ```js
-  import toast from 'powertoast';
+  import { Toast } from "powertoast";
 
-  toast({
+  const toast = new Toast({
     message: "Google It",
     onClick: "https://www.google.com"
-  }).catch(err => console.error(err));
+  });
+
+  toast.show()
+  .catch(console.error);
 ```
 
-  💡 You can create your own protocol: [create your own URI scheme](https://msdn.microsoft.com/en-us/windows/desktop/aa767914).<br/>
-  And even send args back to say an electron app:<br/>
-  In electron just make your app a single instance with `app.requestSingleInstanceLock()`<br/>
-  Then use the second-instance event to parse the new args.
+  💡 You can create your own protocol for your application: [create your own URI scheme](https://msdn.microsoft.com/en-us/windows/desktop/aa767914) (msdn).
   
-  Let's say we created an electron: URI scheme;
-  Let's send a notification:
-```js
-  toast({
-    message: "custom URI",
-    onClick: "electron:helloworld"
-  }).catch(err => console.error(err));
-  ```
-  In electron:
-  ```js
-  if (app.requestSingleInstanceLock() !== true) { app.quit(); }
-  app.on('second-instance', (event, argv, cwd) => {  
-    
-    console.log(argv);
-    //[...,"electron:helloworld"]
+  Here is an example on how to handle your own protocol in Electron:
+  
+  Consider the following notification:
 
-  }) 
+```js
+  import { Toast } from "powertoast";
+  
+  const toast = new Toast({
+    message: "custom URI",
+    onClick: "electronApp:helloworld"
+  });
+
+  toast.show()
+  .catch(console.error);
+``
+  
+  In Electron main process, make your app a single instance with `app.requestSingleInstanceLock()` and use the second-instance event to parse the new argument(s).
+  
+```js
+  if (app.requestSingleInstanceLock() !== true) app.exit();
+  app.on("second-instance", (event, argv, cwd) => {  
+    console.log(argv);
+    //[...,"electronApp:helloworld"]
+  });
 ```
 
-- **activationType** : string | ≥ Win10
+- `activationType?: string` (protocol|background)
 
-  This option allows you to override the activation type of the _onClick_ option.<br/>
-  Use this only if you know what you are doing 🙃.<br/>
+  ⚠ **Use this only if you know what you are doing** 🙃.<br/>
 
+  This option allows you to override the activation type of the `onClick` option.<br/>
+  
   |activation|description|
   |----------|-----------|
+  |protocol|activation protocol (URI scheme)|
   |foreground|launch corresponding appID|
   |background|launch corresponding background task (assuming you set everything up)|
-  |protocol|activation protocol (URI scheme)|
   |system| system call such as alarm (snooze/dismiss), also used by Notification Visualizer|
   
-  Default is `protocol` as due to the scope of this lib this is what you'll most likely need and when using callback without _onClick_ option it defaults to `background` as a _workaround_ for the `onActivated` callback to trigger in this case (this is for your own convenience).
+  The default is `protocol` type activation when `onClick` is set, otherwise `background`.
   
-  💡 When using a win32 appID (AUMID) with foreground and background type.<br/>
+  `Protocol` is recommended as there's no way of receiving feedback from the user's choice via PowerShell (< 7.1).
+  
+  ℹ️ When listening to events (PowerShell ≥ 7.1  / NodeRT) and `onClick` is not set, it defaults to `background` as a _workaround_ for the `activated` event to trigger in this case (this is for your own convenience).
+  
+  💡 When using a Win32 appID (AUMID) with foreground and background type.<br/>
   If you wish to get any argument back or a valid toast activation: you will need an installed and registered COM server (CLSID).<br/>
   In innosetup this can be done with `AppUserModelToastActivatorCLSID`. Please refer to your framework, installer, setup, etc...
+  
+- `activationPfn?: string` (None)
+
+  Set the target PFN if you are using `protocol` type activation, so that regardless of whether multiple apps are registered to handle the same protocol URI, your desired app will always be launched.
+  
+
+ 
+  
+
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+- `scenario?: string` (default)
+
+  The scenario adjusts a few behaviors:
+
+  + `reminder` 
+    The notification will stay on screen until the user dismisses it or takes action (Sticky notification).<br />
+    ℹ️ Microsoft doesn't recommend to use this just for keeping your notification persistent on screen.<br />
+    ⚠️ When using `reminder` you must provide at least one button on your toast notification. Otherwise, the toast will be treated as a normal toast.
+    
+  + `alarm` 
+    In addition to the reminder behaviors, alarms will additionally loop audio with a default alarm sound.<br />
+    ⚠️ When using `alarm` you must provide at least one button on your toast notification. Otherwise, the toast will be treated as a normal toast.
+    
+  + `incomingCall` 
+    Same behaviors as alarms except it uses ringtone audio and the buttons are styled differently (displayed fullscreen on Windows Mobile devices).
+    
+  + `urgent` (≥ Win11) 
+    High priority toast that can break through Focus Assist (Do not Disturb) unless explicitly disallowed in the notifications settings.
+
+- `longTime?: boolean` (false) | _Deprecated_
+
+  Set it to `true` to increase the time the toast should show up for.
+  
+  Most of the time "short" (false) is the most appropriate, and Microsoft recommends not using "long" (true).<br />
+  This is only here for specific scenarios and app compatibility with Windows 8.
+  
+  ℹ️ "Long" is around ~ 25sec and "Short" is the user defined value in `Windows settings > Ease of Access > Display > Show notification for ...`
+  which is available in the registry at `HKCU\Control Panel\Accessibility` -> `MessageDuration`::DWORD (Not recommended to directly modify registry value).
+  
+  User value default to 5sec; <br/>
+  Available: 5sec, 7sec, 15sec, 30sec, 1min, 5min
+
+</details>
+
+#### Events
+
+- 
+
+#### Methods
+
+- `show(option?: object): Promise<void>`
+
+Show toast notification.
+
+**⚙️ Options**
+
+- `disableWinRT?: boolean` (false)
+
+If you have installed the optional NodeRT native module(s) but for whatever reason(s) you want to use PowerShell instead set this to `true`.
+
+- `disablePowershellCore?: boolean` (false)
+
+By default when using PowerShell this module will first try to use `pwsh` (PowerShell Core), then `powershell` (PowerShell Desktop / Windows Embedded).
+Set this to `true` to skip `pwsh` and only use `powershell` which is included with Windows.
+
+ℹ️ PowerShell Core has some caveats that should be taken into consideration (hence the option to disable/skip it):
+
++ It's painfully slow to start
++ It needs to be installed and its path added to your env var
++ In order for PowerShell Core to use WinRT it will have to download WinRT assemblies trhough its package manager (done on first run)
+
+⚠️ Please note that some features such as click events and user input requires Powershell ≥ 7.1 (pwsh).<br />
+
+- `keepalive?: number` (6) seconds
+
+⚠️ This option is only for when listening for events !
+
+The maximum amount of time PowerShell will wait for events before exiting or how long to keep the event loop alive for NodeRT.
+
+PowerShell needs to be running to subscribe to the events and NodeRT registered event listener does not keep the event loop alive.
+The default value is `6` seconds as 5 seconds is the default notification duration but keep in mind some users might have change this value in their Windows settings.
+
+ℹ️ NB: When using NodeRT If you have something else maintaining the event loop then you can ignore this.
+
+**Returns**
+  
+✔️ Resolves as soon as the notification has been dispatched. Except when PowerShell needs to be running to subscribe to events in which case the promise will resolve only afterwards.
+❌ Rejects on error.
+
+- `clear(): Promise<void>`
+
+
+/* old */
+
+#### `(option?: obj): Promise<void>`
+
+Send a toast notification.
+
+**Parameters**
+
+
+<details>
+<summary>⚙️ Options</summary>
+
 
 - **button** : [{ text : string, onClick : string, activationType?: string, contextMenu ?: boolean, icon ?: string }] | ≥ Win10
 
@@ -516,22 +628,7 @@ Additional context menu items contribute to the total limit of 5 buttons on a to
   .catch(err => console.error(err));
 ```
   
-- **scenario** : string | ≥ Win10
 
-  "default", "alarm", "reminder", "incomingCall", "urgent"<br />
-  **Default** to ... well, 'default'.
-
-  The scenario adjusts a few behaviors:
-
-  + **Reminder**: The notification will stay on screen until the user dismisses it or takes action (Sticky notification).
-    _Microsoft doesn't recommend to use this just for keeping your notification persistent on screen_.
-  + **Alarm**: In addition to the reminder behaviors, alarms will additionally loop audio with a default alarm sound.
-  + **IncomingCall**: Same behaviors as alarms except they use ringtone audio and their buttons are styled differently (displayed full screen on Windows Mobile devices).
-  + **Urgent** (≥ Win11): High priority toast that can break through Focus Assist (Do not Disturb) unless explicitly disallowed in the notifications settings.
-  
-  <br />
-  ⚠️ When using Reminder or Alarm, you must provide at least one button on your toast notification.<br /> 
-  Otherwise, the toast will be treated as a normal toast.
   
 - **progress** : { header ?: string, percent ?: number | null, custom ?: string, footer ?: string } | Win8.x and ≥ Win10 (Creators Update)
 
