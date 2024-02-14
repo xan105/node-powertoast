@@ -54,7 +54,7 @@ toast.show() //Promise
 ```js
 //Main process
 import { Notification } from "electron";
-import { asXmlString } from "powertoast";
+import { toXmlString } from "powertoast";
   
 const options = {
   title: "First partner",
@@ -67,7 +67,7 @@ const options = {
   ]
 };
 
-const xmlString = asXmlString(options);
+const xmlString = toXmlString(options);
 const toast = new Notification({ toastXml: xmlString });
 toast.show();
 ```
@@ -152,10 +152,10 @@ Create a toast notification.
 
 - `appID?: string` (Microsoft.WindowsStore_8wekyb3d8bbwe!App)
 
-  ⚠️ An invalid appID will result in the notification not being displayed !
-
   Your [Application User Model ID](https://docs.microsoft.com/fr-fr/windows/desktop/shell/appids) a.k.a. AUMID.<br />
+  
   Defaults to Microsoft Store (UWP) so you can see how it works if not specified.
+  ⚠️ An invalid appID will result in the notification not being displayed !
   
   You can view all installed appID via the PowerShell command `Get-StartApps`.<br />
   AppIDs can be classified into 2 categories: Win32 appID and UWP appID.<br />
@@ -169,7 +169,7 @@ Create a toast notification.
   UWP appID (_green_) is a string with a very specific set of rules.<br />
   Some features / behaviors are limited to UWP appID only _because Microsoft™_.
   
-  Your framework, installer, setup, etc... should have method(s) to create / use one for you.<br />
+  For Win32 apps your framework, installer, setup, etc... should have method(s) to create / use one for you.<br />
   Eg: Innosetup has the parameter `AppUserModelID` in the `[Icons]` section, Electron has the method `app.setAppUserModelId()`.<br />
   💡 It basically boils down to creating a .lnk shortcut in the `StartMenu` folder with the AUMID property set and some registry.<br />
   
@@ -315,12 +315,48 @@ Create a toast notification.
   
   ℹ️ NB: Using `silent: true` is redundant in this case.
   
-- `onClick?: string` (None)
+- `activation?: string | object`
 
-  Protocol to launch when the user click on the toast.<br />
+  This option controls the behavior of the toast when the user click on it.
+  
+```ts
+{
+  type?: string,
+  launch?: string,
+  pfn?: string
+}
+```
+
+  💡If `activation` is a `string`, then it specifies the `launch` property.
+  
+  + `type?: string` (protocol | background)
+  
+  ⚠ **Change this option only if you know what you are doing** 🙃.<br/>
+
+  |activation|description|
+  |----------|-----------|
+  |protocol|activation protocol (URI scheme)|
+  |background|launch corresponding background task (assuming you set everything up)|
+  |foreground|launch the corresponding appID|
+  |system| system call such as alarm (snooze/dismiss), also used by Notification Visualizer|
+    
+  The default is `protocol` type activation when `launch` is set, otherwise `background`.
+  
+  `Protocol` is **recommended** as there's no way of receiving feedback from the user's choice via PowerShell (< 7.1).
+  
+  ℹ️ When listening to events (PowerShell ≥ 7.1  / NodeRT) and `launch` is not set, it defaults to `background` as a _workaround_ for the `activated` event to trigger in _most_ cases (this is for your own convenience).
+  
+  ⚠ When using a Win32 appID (AUMID) with foreground and background type.<br/>
+  If you wish to get any argument back from the `launch` option and/or get a valid toast activation ("activated" event): you will need an installed and registered COM server (CLSID).<br/>
+  For example in innosetup this can be done with `AppUserModelToastActivatorCLSID`. Please refer to your framework, installer, setup, etc...
+  
+  + `launch?: string` (None)
+  
+  Protocol to launch (URI scheme) or argument to pass when the user click on the toast.<br />
   If none (default) click will just dismiss the notification.
 
-  💡 When using PowerShell ≥ 7.1 or NodeRT an event will be emitted when the user click on the toast or when the toast is dismissed.<br />
+  ℹ️ When using PowerShell ≥ 7.1 or NodeRT an event will be emitted when the user click on the toast ("activated" event) or when the toast is dismissed.<br />
+  There are various reasons that can prevent the "activated" event to trigger. See `type` above.
 
   Example of protocol type action button to open up Windows 10's maps app with a pre-populated search field set to "sushi":
   
@@ -329,7 +365,7 @@ Create a toast notification.
 
   const toast = new Toast({
     message: "Sushi",
-    onClick: "bingmaps:?q=sushi"
+    activation: "bingmaps:?q=sushi"
   });
   
   toast.on("activated", (event) => {
@@ -351,7 +387,7 @@ Create a toast notification.
 
   const toast = new Toast({
     message: "Google It",
-    onClick: "https://www.google.com"
+    activation: "https://www.google.com"
   });
 
   toast.show()
@@ -374,7 +410,7 @@ Create a toast notification.
 
   toast.show()
   .catch(console.error);
-``
+```
   
   In Electron main process, make your app a single instance with `app.requestSingleInstanceLock()` and use the second-instance event to parse the new argument(s).
   
@@ -386,39 +422,117 @@ Create a toast notification.
   });
 ```
 
-- `activationType?: string` (protocol|background)
 
-  ⚠ **Use this only if you know what you are doing** 🙃.<br/>
+  + `pfn?: string` (None)
 
-  This option allows you to override the activation type of the `onClick` option.<br/>
+    Set the target PFN if you are using `protocol` type activation, so that regardless of whether multiple apps are registered to handle the same protocol URI, your desired app will always be launched.
   
-  |activation|description|
-  |----------|-----------|
-  |protocol|activation protocol (URI scheme)|
-  |foreground|launch corresponding appID|
-  |background|launch corresponding background task (assuming you set everything up)|
-  |system| system call such as alarm (snooze/dismiss), also used by Notification Visualizer|
-  
-  The default is `protocol` type activation when `onClick` is set, otherwise `background`.
-  
-  `Protocol` is recommended as there's no way of receiving feedback from the user's choice via PowerShell (< 7.1).
-  
-  ℹ️ When listening to events (PowerShell ≥ 7.1  / NodeRT) and `onClick` is not set, it defaults to `background` as a _workaround_ for the `activated` event to trigger in this case (this is for your own convenience).
-  
-  💡 When using a Win32 appID (AUMID) with foreground and background type.<br/>
-  If you wish to get any argument back or a valid toast activation: you will need an installed and registered COM server (CLSID).<br/>
-  In innosetup this can be done with `AppUserModelToastActivatorCLSID`. Please refer to your framework, installer, setup, etc...
-  
-- `activationPfn?: string` (None)
+- `button?: object[]` (None)
 
-  Set the target PFN if you are using `protocol` type activation, so that regardless of whether multiple apps are registered to handle the same protocol URI, your desired app will always be launched.
+  Array of buttons to add to your toast. You can only have up to 5 buttons. After the 5th they will be ignored.
   
+  A button is represented as the following object:
+  
+```ts
+{
+  text?: string,
+  activation?: string | {
+    type?: string,
+    launch?: string,
+    pfn?: string,
+    behavior?: string,
+  },
+  icon?: string,
+  contextMenu?: string,
+  tooltip?: string,
+  style?: string,
+  id?: string
+}
+```
+  
+  + `text?: string` (None)
+  
+    The text of your button if any.
 
+  + `activation?: string | object`
+  
+    💡Same as the toast `activation` option above; But with an additional option:
+    
+    - `behavior?:string` (None) | ≥ Win10 (Fall Creators Update)
+    
+      Set it to `pendingUpdate` to create multi-step interactions in your toast notifications. For example you can create a series of toasts where the subsequent toasts depend on responses from the previous toasts. 
+    
+      ⚠️ The button `activation.type` must be set to `background` to use `pendingUpdate`
+
+  + `icon?: string` (None)
+
+    You can add icons to your buttons.<br />
+    These icons are white transparent 16x16 pixel images at 100% scaling, and should have no padding included in the image itself.<br />
+    In order to transforms the style of your buttons into "icon buttons" you have to provide icons for **ALL** of your buttons in the notification.
+  
+    <p align="center">
+      <img src="https://github.com/xan105/node-powertoast/raw/master/screenshot/btn-icon.png">
+    </p>
+
+  + `contextMenu?: boolean` (false) | ≥ Win10 (Anniversary Update)
+  
+    Transform the button into an additional context menu action to the existing context menu that appears when the user right click a toast notification within the notification center.
+    
+    ℹ️ This menu only appears when right clicked from the notification center. It does not appear when right clicking a toast popup banner. On older version these additional context menu actions will simply appear as normal buttons on your toast. Additional context menu items contribute to the total limit of 5 buttons on a toast.
+  
+  + `tooltip?: string` (None) | ≥ Win11
+  
+    Add a tooltip to your button if it has no content (text).
+    
+    ℹ️ Windows Narrator will read the content if present, otherwise the tooltip.
+  
+  + `style?: string` (None) | ≥ Win11
+
+    Change the background color of a button. Use `success` for green and `critical` for red.
+
+  + `id?: string` (None)
+  
+    An optional unique identifier for your button to map it to a corresponding user input such as textbox or selection (More on that in the corresponding option section below).
+
+
+<p align="center">
+  <img src="https://github.com/xan105/node-powertoast/raw/master/screenshot/button.png">
+</p>
+  
+```js
+  import { Toast } from "powertoast";
+
+  const toast = new Toast({
+    title: "Browser",
+    message: "Choose your favorite",
+    button: [
+      { 
+        text: "Firefox", 
+        activation:"https://www.mozilla.org/en/firefox/new/" 
+      },
+      { 
+        text: "Chrome", 
+        activation:"https://www.google.com/chrome/" 
+      }
+    ]
+  });
+  
+  toast.on("activated", (event) => {
+    console.log("clicked");
+    console.log(url: event)
+  })
+  .on("dismissed", (reason) => {
+    console.log("dismissed:", reason);
+  });
+  
+  toast.show()
+  .catch(console.error);
+```
  
   
 
   
-  
+
   
   
   
@@ -454,10 +568,9 @@ Create a toast notification.
   This is only here for specific scenarios and app compatibility with Windows 8.
   
   ℹ️ "Long" is around ~ 25sec and "Short" is the user defined value in `Windows settings > Ease of Access > Display > Show notification for ...`
-  which is available in the registry at `HKCU\Control Panel\Accessibility` -> `MessageDuration`::DWORD (Not recommended to directly modify registry value).
+  which is available in the registry at `HKCU\Control Panel\Accessibility` -> `MessageDuration`::DWORD (Not recommended to directly modify said registry value).
   
-  User value default to 5sec; <br/>
-  Available: 5sec, 7sec, 15sec, 30sec, 1min, 5min
+  Available: 5sec (default), 7sec, 15sec, 30sec, 1min, 5min
 
 </details>
 
@@ -522,53 +635,14 @@ Send a toast notification.
 <summary>⚙️ Options</summary>
 
 
-- **button** : [{ text : string, onClick : string, activationType?: string, contextMenu ?: boolean, icon ?: string }] | ≥ Win10
 
-  Array of buttons to add to your toast. You can only have up to 5 buttons.<br/>
-  After the 5th they will be ignored.
   
-```js
-  [
-    {
-      text: "", 
-      onClick: "", //Protocol to launch (see previous onClick section)
-      activationType: "protocol", //Optional onClick activation type override (see previous activationType section; always defaults to protocol)
-      icon: "", //Optional icon path
-      contextMenu: true //Optional placement to context menu (≥ Win10 Anniversary Update)
-    },
-    ...
-  ]
-```
   
-<p align="center">
-<img src="https://github.com/xan105/node-powertoast/raw/master/screenshot/button.png">
-</p>
   
-```js
-import toast from 'powertoast';
 
-toast({
-  title: "Browser",
-  message: "Choose your favorite",
-  button: [
-    {text: "Firefox", onClick:"https://www.mozilla.org/en/firefox/new/"},
-    {text: "Chrome", onClick:"https://www.google.com/chrome/"}
-  ]
-}).catch(err => console.error(err));
-```
+
   
-  You can add icons to your buttons.<br />
-  These icons are white transparent 16x16 pixel images at 100% scaling, and should have no padding included in the image itself.<br />
-  In order to transforms the style of your buttons into icon buttons you have to provide icons for **ALL** of your buttons in the notification.
-  
-<p align="center">
-<img src="https://github.com/xan105/node-powertoast/raw/master/screenshot/btn-icon.png">
-</p>
-  
-  You can add additional context menu actions (Anniversary Update) to the existing context menu that appears when the user right clicks your toast from within notification center by using `contextMenu: true`.<br />
-This menu only appears when right clicked from notification center. It does not appear when right clicking a toast popup banner.
-Anniversary Update and up, on older version these additional context menu actions will simply appear as normal buttons on your toast.
-Additional context menu items contribute to the total limit of 5 buttons on a toast.
+
 
 - **callback** : { keepalive ?: number, onActivated?() : void, onDismissed?() : void } | ≥ Win10 (⚠️ WinRT / PowerShell ≥ 7.1 only) 
 
