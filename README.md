@@ -34,8 +34,8 @@ const toast = new Toast({
 })
 
 //Events (optional)
-toast.on("activated", (argument, input) => { 
-  // Where argument and input are the data from an interactive toast
+toast.on("activated", (event, input) => { 
+  // Where event and input are the data from an interactive toast
   console.log("click");
 });
 toast.on("dismissed", (reason) => { console.log(reason) });
@@ -59,11 +59,28 @@ import { toXmlString } from "powertoast";
 const options = {
   title: "First partner",
   message: "Every journey begins with a choice",
-  //Buttons using protocol activation
   button: [
-    { text: "Bulbasaur", onClick: "electron:green" },
-    { text: "Charmander", onClick: "electron:red" },
-    { text: "Squirtle", onClick: "electron:blue" }
+    { 
+      text: "Bulbasaur", 
+      activation: {
+        launch: "myapp:green",
+        type: "protocol"
+      }
+    },
+    { 
+      text: "Charmander", 
+      activation: {
+        launch: "myapp:red",
+        type: "protocol"
+      }
+    },
+    { 
+      text: "Squirtle", 
+      activation: {
+        launch: "myapp:blue",
+        type: "protocol"
+      } 
+    }
   ]
 };
 
@@ -150,35 +167,32 @@ Create a toast notification.
 <details>
 <summary>⚙️ Options:</summary>
 
-- `appID?: string` (Microsoft.WindowsStore_8wekyb3d8bbwe!App)
+- `aumid?: string` (Microsoft.WindowsStore_8wekyb3d8bbwe!App)
 
   Your [Application User Model ID](https://docs.microsoft.com/fr-fr/windows/desktop/shell/appids) a.k.a. AUMID.<br />
-  
-  Defaults to Microsoft Store (UWP) so you can see how it works if not specified.
-  ⚠️ An invalid appID will result in the notification not being displayed !
-  
-  You can view all installed appID via the PowerShell command `Get-StartApps`.<br />
-  AppIDs can be classified into 2 categories: Win32 appID and UWP appID.<br />
+  You can view all installed AUMID via the PowerShell command `Get-StartApps`.<br />
+  AUMIDs can be classified into 2 categories: Win32 and UWP.<br />
   
   <p align="center">
-  <img src="https://github.com/xan105/node-powertoast/raw/master/screenshot/aumid.png"><br />
-  <em>xan105/node-Get-StartApps isValidAUMID()</em>
+    <img src="https://github.com/xan105/node-powertoast/raw/master/screenshot/aumid.png"><br />
+    <em>xan105/node-Get-StartApps isValidAUMID()</em>
   </p>
   
-  Win32 appID (_red_) is whatever string you want.<br />
-  UWP appID (_green_) is a string with a very specific set of rules.<br />
-  Some features / behaviors are limited to UWP appID only _because Microsoft™_.
+  Some features / behaviors are limited to UWP AUMID only, _because Microsoft™_.<br />
+  Defaults to Microsoft Store (UWP) if not specified, so you can see how it works.
   
   For Win32 apps your framework, installer, setup, etc... should have method(s) to create / use one for you.<br />
   Eg: Innosetup has the parameter `AppUserModelID` in the `[Icons]` section, Electron has the method `app.setAppUserModelId()`.<br />
   💡 It basically boils down to creating a .lnk shortcut in the `StartMenu` folder with the AUMID property set and some registry.<br />
   
+  ⚠️ On previous version of Windows, an invalid AUMID would result in the notification not being displayed !
+  
 ```js  
   import { Toast } from "powertoast";
 
   const toast = new Toast({
-    appID: "Microsoft.XboxApp_8wekyb3d8bbwe!Microsoft.XboxApp", //Xbox App (UWP)
-    appID: "com.squirrel.GitHubDesktop.GitHubDesktop", //GitHub Desktop (win32)
+    aumid: "Microsoft.XboxApp_8wekyb3d8bbwe!Microsoft.XboxApp", //Xbox App (UWP)
+    aumid: "com.squirrel.GitHubDesktop.GitHubDesktop", //GitHub Desktop (win32)
     title: "Hello",
     message: "world"
   });
@@ -214,7 +228,7 @@ Create a toast notification.
   import { Toast } from "powertoast";
 
   const toast = new Toast({
-      appID: "com.squirrel.GitHubDesktop.GitHubDesktop",
+      aumid: "com.squirrel.GitHubDesktop.GitHubDesktop",
       title: "Github",
       message: "Someone commented your issue",
       icon: "D:\\Desktop\\github.png",
@@ -229,7 +243,7 @@ Create a toast notification.
 
   The url or file path of the image source: `.png` and `.jpeg` are supported (48x48 pixels at 100% scaling).
   
-  ⚠️ Remote web images over http(s) are **only available when using an UWP appID**.<br/>
+  ⚠️ Remote web images over http(s) are **only available when using an UWP AUMID**.<br/>
   💡 A workaround is to download yourself the image and pass the file path instead of an url.
   
   There are limits on the file size of each individual image.<br/>
@@ -274,7 +288,7 @@ Create a toast notification.
   import { Toast } from "powertoast";
 
   const toast = new Toast({
-    appID: "com.squirrel.GitHubDesktop.GitHubDesktop",
+    aumid: "com.squirrel.GitHubDesktop.GitHubDesktop",
     title: "Github",
     message: "Someone commented your issue",
     audio: "ms-winsoundevent:Notification.Default"
@@ -331,13 +345,11 @@ Create a toast notification.
   
   + `type?: string` (protocol | background)
   
-  ⚠ **Change this option only if you know what you are doing** 🙃.<br/>
-
   |activation|description|
   |----------|-----------|
   |protocol|activation protocol (URI scheme)|
   |background|launch corresponding background task (assuming you set everything up)|
-  |foreground|launch the corresponding appID|
+  |foreground|launch the corresponding AUMID|
   |system| system call such as alarm (snooze/dismiss), also used by Notification Visualizer|
     
   The default is `protocol` type activation when `launch` is set, otherwise `background`.
@@ -346,7 +358,7 @@ Create a toast notification.
   
   ℹ️ When listening to events (PowerShell ≥ 7.1  / NodeRT) and `launch` is not set, it defaults to `background` as a _workaround_ for the `activated` event to trigger in _most_ cases (this is for your own convenience).
   
-  ⚠ When using a Win32 appID (AUMID) with foreground and background type.<br/>
+  ⚠ When using a Win32 AUMID with foreground and background type.<br/>
   If you wish to get any argument back from the `launch` option and/or get a valid toast activation ("activated" event): you will need an installed and registered COM server (CLSID).<br/>
   For example in innosetup this can be done with `AppUserModelToastActivatorCLSID`. Please refer to your framework, installer, setup, etc...
   
@@ -492,7 +504,7 @@ Create a toast notification.
 
   + `id?: string` (None)
   
-    An optional unique identifier for your button to map it to a corresponding user input such as textbox or selection (More on that in the corresponding option section below).
+    Reference the id of an input field such as a text box or selection to map it to this button.
 
 
 <p align="center">
@@ -530,15 +542,56 @@ Create a toast notification.
 ```
  
   
+- `input?: object[]` (None)
 
-  
+Input is a text box where user can input some data, eg: a quick reply text box.
 
+ℹ️ Inputs are only visible when the notification is expanded.
+
+```ts
+{
+  id: string,
+  title?: string,
+  placeholder?: string,
+  value?: string
+}
+```
+
++ `id: string`
+
+  The id of the input. You can use this value to map it to a button. 
   
+  For example, to enable a quick reply text box add a text input and a button, and reference the id of the text input field so that the button is displayed next to the input field.
+
++ `title?: string` (None)
+
+  Text shown above the text box.
+
++ `placeholder?: string` (None)
   
+  A short hint displayed in the input field before the user enters a value to describe the expected value.
   
++ `value?: string`  (None)
   
+  Set a default value. The default value is shown inside the textbox.
   
+- `select?: object[]` (None)
+
+  In addition to text boxes, you can also use a selection menu.
   
+```ts
+{
+  id: string,
+  title?: string,
+  items: [
+    {
+      id: string,
+      text: string,
+      default?: boolean
+    }
+  ]
+}
+```
   
   
 - `scenario?: string` (default)
@@ -872,13 +925,14 @@ const toast = new Notification({toastXml: toastXmlString});
 toast.show();
 ```
 
-Microsoft doc
-=============
+📖 Microsoft doc
+=================
 
 📖 [Microsoft Toast API](https://docs.microsoft.com/en-us/windows/uwp/design/shell/tiles-and-notifications/adaptive-interactive-toasts).<br />
 📖 [Toast content XML schema](https://docs.microsoft.com/en-us/windows/uwp/design/shell/tiles-and-notifications/toast-xml-schema).<br />
 📖 [ToastNotificationHistory class](https://docs.microsoft.com/en-us/uwp/api/Windows.UI.Notifications.ToastNotificationHistory).<br />
 📖 [ToastNotification properties](https://docs.microsoft.com/en-us/uwp/api/windows.ui.notifications.toastnotification#properties).<br />
+📖 [send-local-toast-other-apps](https://github.com/MicrosoftDocs/windows-dev-docs/blob/docs/hub/apps/design/shell/tiles-and-notifications/send-local-toast-other-apps.md).<br />
 
 Common Issues
 =============
