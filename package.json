@@ -12,7 +12,8 @@
   "types": "./types/index.d.ts",
   "files": [
     "/lib",
-    "/types"
+    "/types",
+    "/TOAST.md"
   ],
   "engines": {
     "node": ">=20.11.0"
