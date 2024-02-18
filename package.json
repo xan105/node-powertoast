@@ -1,21 +1,27 @@
 {
   "name": "powertoast",
   "version": "2.1.5",
-  "description": "Windows toast notification using PowerShell or WinRT (Windows 8, 10, 11).",
+  "description": "Windows toast notification and toastXml string builder.",
   "type": "module",
   "exports": {
-    ".": { 
+    ".": {
       "types": "./types/index.d.ts",
       "default": "./lib/index.js"
     }
   },
   "types": "./types/index.d.ts",
+  "files": [
+    "/lib",
+    "/types",
+    "/TOAST.md"
+  ],
   "engines": {
-    "node": ">=16.0.0",
-    "npm": ">=8.1.4"
+    "node": ">=20.11.0"
   },
   "scripts": {
-    "lint": "npx eslint --ignore-path .gitignore \"./**/*.{js,mjs}\""
+    "lint": "eslint \"./lib/**/*.{js,mjs}\" \"./types/**/*.d.ts\"",
+    "check": "tsc --noemit --checkjs",
+    "declare": "tsc --declaration --emitDeclarationOnly --outDir \"./types\""
   },
   "keywords": [
     "toast",
@@ -23,8 +29,10 @@
     "windows",
     "notification center",
     "powershell",
+    "nodeRT",
     "winRT",
-    "toastXml"
+    "toastXml",
+    "electron"
   ],
   "author": {
     "name": "Anthony Beaumont",
@@ -40,17 +48,145 @@
     "url": "https://github.com/xan105/node-powertoast/issues"
   },
   "homepage": "https://github.com/xan105/node-powertoast#readme",
+  "funding": [
+    {
+      "type": "github",
+      "url": "https://github.com/sponsors/xan105"
+    },
+    {
+      "type": "paypal",
+      "url": "https://www.paypal.me/xan105"
+    },
+    {
+      "type": "patreon",
+      "url": "https://www.patreon.com/xan105"
+    }
+  ],
+  "_nodert": {
+    "modules": [
+      "windows.data.xml.dom",
+      "windows.ui.notifications",
+      "windows.foundation",
+      "windows.foundation.collections"
+    ]
+  },
   "peerDependencies": {
+    "@nodert-win10-19h1/windows.data.xml.dom": "^0.1.6",
+    "@nodert-win10-19h1/windows.foundation": "^0.1.6",
+    "@nodert-win10-19h1/windows.foundation.collections": "^0.1.6",
+    "@nodert-win10-19h1/windows.ui.notifications": "^0.1.6",
     "@nodert-win10-20h1/windows.data.xml.dom": "^0.1.0",
+    "@nodert-win10-20h1/windows.foundation": "^0.1.0",
+    "@nodert-win10-20h1/windows.foundation.collections": "^0.1.0",
     "@nodert-win10-20h1/windows.ui.notifications": "^0.1.0",
+    "@nodert-win10-21h1/windows.data.xml.dom": "^0.1.6",
+    "@nodert-win10-21h1/windows.foundation": "^0.1.6",
+    "@nodert-win10-21h1/windows.foundation.collections": "^0.1.6",
+    "@nodert-win10-21h1/windows.ui.notifications": "^0.1.6",
+    "@nodert-win10-au/windows.data.xml.dom": "^0.4.4",
+    "@nodert-win10-au/windows.foundation": "^0.4.4",
+    "@nodert-win10-au/windows.foundation.collections": "^0.4.4",
+    "@nodert-win10-au/windows.ui.notifications": "^0.4.4",
+    "@nodert-win10-cu/windows.data.xml.dom": "^0.4.4",
+    "@nodert-win10-cu/windows.foundation": "^0.4.4",
+    "@nodert-win10-cu/windows.foundation.collections": "^0.4.4",
+    "@nodert-win10-cu/windows.ui.notifications": "^0.4.4",
+    "@nodert-win10-rs3/windows.data.xml.dom": "^0.4.4",
+    "@nodert-win10-rs3/windows.foundation": "^0.4.4",
+    "@nodert-win10-rs3/windows.foundation.collections": "^0.4.4",
+    "@nodert-win10-rs3/windows.ui.notifications": "^0.4.4",
     "@nodert-win10-rs4/windows.data.xml.dom": "^0.4.4",
-    "@nodert-win10-rs4/windows.ui.notifications": "^0.4.4"
+    "@nodert-win10-rs4/windows.foundation": "^0.4.4",
+    "@nodert-win10-rs4/windows.foundation.collections": "^0.4.4",
+    "@nodert-win10-rs4/windows.ui.notifications": "^0.4.4",
+    "@nodert-win10/windows.data.xml.dom": "^0.2.96",
+    "@nodert-win10/windows.foundation": "^0.2.96",
+    "@nodert-win10/windows.foundation.collections": "^0.2.96",
+    "@nodert-win10/windows.ui.notifications": "^0.2.96",
+    "@nodert-win11-22h2/windows.data.xml.dom": "^0.1.6",
+    "@nodert-win11-22h2/windows.foundation": "^0.1.6",
+    "@nodert-win11-22h2/windows.foundation.collections": "^0.1.6",
+    "@nodert-win11-22h2/windows.ui.notifications": "^0.1.6",
+    "@nodert-win11/windows.data.xml.dom": "^0.1.6",
+    "@nodert-win11/windows.foundation": "^0.1.6",
+    "@nodert-win11/windows.foundation.collections": "^0.1.6",
+    "@nodert-win11/windows.ui.notifications": "^0.1.6",
+    "@xan105/nodert": "^2.0.0"
   },
   "peerDependenciesMeta": {
+    "@xan105/nodert": {
+      "optional": true
+    },
+    "@nodert-win10/windows.data.xml.dom": {
+      "optional": true
+    },
+    "@nodert-win10/windows.ui.notifications": {
+      "optional": true
+    },
+    "@nodert-win10/windows.foundation": {
+      "optional": true
+    },
+    "@nodert-win10/windows.foundation.collections": {
+      "optional": true
+    },
+    "@nodert-win10-au/windows.data.xml.dom": {
+      "optional": true
+    },
+    "@nodert-win10-au/windows.ui.notifications": {
+      "optional": true
+    },
+    "@nodert-win10-au/windows.foundation": {
+      "optional": true
+    },
+    "@nodert-win10-au/windows.foundation.collections": {
+      "optional": true
+    },
+    "@nodert-win10-cu/windows.data.xml.dom": {
+      "optional": true
+    },
+    "@nodert-win10-cu/windows.ui.notifications": {
+      "optional": true
+    },
+    "@nodert-win10-cu/windows.foundation": {
+      "optional": true
+    },
+    "@nodert-win10-cu/windows.foundation.collections": {
+      "optional": true
+    },
+    "@nodert-win10-rs3/windows.data.xml.dom": {
+      "optional": true
+    },
+    "@nodert-win10-rs3/windows.ui.notifications": {
+      "optional": true
+    },
+    "@nodert-win10-rs3/windows.foundation": {
+      "optional": true
+    },
+    "@nodert-win10-rs3/windows.foundation.collections": {
+      "optional": true
+    },
     "@nodert-win10-rs4/windows.data.xml.dom": {
       "optional": true
     },
     "@nodert-win10-rs4/windows.ui.notifications": {
+      "optional": true
+    },
+    "@nodert-win10-rs4/windows.foundation": {
+      "optional": true
+    },
+    "@nodert-win10-rs4/windows.foundation.collections": {
+      "optional": true
+    },
+    "@nodert-win10-19h1/windows.data.xml.dom": {
+      "optional": true
+    },
+    "@nodert-win10-19h1/windows.ui.notifications": {
+      "optional": true
+    },
+    "@nodert-win10-19h1/windows.foundation": {
+      "optional": true
+    },
+    "@nodert-win10-19h1/windows.foundation.collections": {
       "optional": true
     },
     "@nodert-win10-20h1/windows.data.xml.dom": {
@@ -58,16 +194,65 @@
     },
     "@nodert-win10-20h1/windows.ui.notifications": {
       "optional": true
+    },
+    "@nodert-win10-20h1/windows.foundation": {
+      "optional": true
+    },
+    "@nodert-win10-20h1/windows.foundation.collections": {
+      "optional": true
+    },
+    "@nodert-win10-21h1/windows.data.xml.dom": {
+      "optional": true
+    },
+    "@nodert-win10-21h1/windows.ui.notifications": {
+      "optional": true
+    },
+    "@nodert-win10-21h1/windows.foundation": {
+      "optional": true
+    },
+    "@nodert-win10-21h1/windows.foundation.collections": {
+      "optional": true
+    },
+    "@nodert-win11/windows.data.xml.dom": {
+      "optional": true
+    },
+    "@nodert-win11/windows.ui.notifications": {
+      "optional": true
+    },
+    "@nodert-win11/windows.foundation": {
+      "optional": true
+    },
+    "@nodert-win11/windows.foundation.collections": {
+      "optional": true
+    },
+    "@nodert-win11-22h2/windows.data.xml.dom": {
+      "optional": true
+    },
+    "@nodert-win11-22h2/windows.ui.notifications": {
+      "optional": true
+    },
+    "@nodert-win11-22h2/windows.foundation": {
+      "optional": true
+    },
+    "@nodert-win11-22h2/windows.foundation.collections": {
+      "optional": true
     }
   },
   "devDependencies": {
-    "@nodert-win10-20h1/windows.data.xml.dom": "^0.1.0",
-    "@nodert-win10-20h1/windows.ui.notifications": "^0.1.0",
-    "eslint": "^8.20.0"
+    "@nodert-win10-rs4/windows.foundation": "^0.4.4",
+    "@nodert-win11-22h2/windows.data.xml.dom": "^0.1.6",
+    "@nodert-win11-22h2/windows.foundation.collections": "^0.1.6",
+    "@nodert-win11-22h2/windows.ui.notifications": "^0.1.6",
+    "@types/node": "^20.11.17",
+    "@typescript-eslint/eslint-plugin": "^6.21.0",
+    "@typescript-eslint/parser": "^6.21.0",
+    "@xan105/nodert": "^2.0.0",
+    "eslint": "^8.56.0",
+    "typescript": "^5.3.3"
   },
   "dependencies": {
-    "@xan105/error": "^1.3.3",
-    "@xan105/fs": "^2.0.5",
-    "@xan105/is": "^2.5.2"
+    "@xan105/error": "^1.7.0",
+    "@xan105/fs": "^2.2.1",
+    "@xan105/is": "^2.9.3"
   }
 }
