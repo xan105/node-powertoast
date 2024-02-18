@@ -1,4 +1,6 @@
-import { Toast } from "../lib/toast.js";
+import { Toast, isWinRTAvailable } from "../lib/toast.js";
+
+console.info("Default transport: " + `${isWinRTAvailable ? "WinRT" : "Powershell"}`);
 
 const toast = new Toast({
   appID: "Microsoft.XboxGamingOverlay_8wekyb3d8bbwe!App",
@@ -7,17 +9,20 @@ const toast = new Toast({
   icon: "https://steamcdn-a.akamaihd.net/steamcommunity/public/images/apps/480/winner.jpg",
   cropIcon: true,
   attribution: "Achievement",
-  timeStamp: "1568710924",
+  time: "1568710924",
   scenario: "urgent",
+  activation: {
+    launch: "hello:world",
+    type: "protocol"
+  },
   button: [
-    { text: "1", onClick: "bingmaps:?q=sushi" },
-    { text: "2", onClick: "bingmaps:?q=sushi", contextMenu: true },
-    { text: "3", onClick: "bingmaps:?q=sushi" },
-    { text: "4", onClick: "bingmaps:?q=sushi" },
-    { text: "5", onClick: "bingmaps:?q=sushi" },
-    { text: "6", onClick: "bingmaps:?q=sushi" },
+    { text: "", activation: "bingmaps:?q=sushi" },
+    { text: "2", activation: "bingmaps:?q=sushi", contextMenu: true },
+    { text: "3", activation: "bingmaps:?q=sushi" },
+    { text: "4", activation: "bingmaps:?q=sushi" },
+    { text: "5", activation: "bingmaps:?q=sushi" },
+    { text: "6", activation: "bingmaps:?q=sushi" },
   ],
-  silent: false,
   audio: "ms-winsoundevent:Notification.Achievement",
   uniqueID: "id0",
   group: {
@@ -25,8 +30,6 @@ const toast = new Toast({
     title: "group",
   },
   heroImg: "../screenshot/example.png",
-  activationType: "background",
-  loopAudio: false,
   input: [
    {
     id: "input0",
@@ -48,18 +51,10 @@ toast.on("activated", (event, input)=>{
   });
 });
 
-console.log("fire");
 toast.show({
   disableWinRT: false,
-  disablePowershellCore: false,
+  disablePowershellCore: true,
   keepalive: 10
 }).then(()=>{
-  console.log("ok");
-})
-
-/*setTimeout(()=>{
-  toast.clear();
-}, 7 * 1000);*/
-
-//real auto test:
-//parse xml and verify also if valid xml
+  console.log("Sent...");
+}).catch(console.error);

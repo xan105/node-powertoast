@@ -1,4 +1,4 @@
-import { Toast } from "../lib/toast.js";
+import { Toast } from "../lib/index.js";
 
 const toast = new Toast({
   title: "Downloading your weekly playlist...",
@@ -8,13 +8,6 @@ const toast = new Toast({
     valueOverride: "15/26 songs",
     status: "Downloading..."
   }
-});
-  
-toast.on("activated", () => {
-  console.log("clicked!");
-})
-.on("dismissed", (reason) => {
-  console.log("dismissed:", reason);
 });
   
 toast.show({ keepalive: 15 })

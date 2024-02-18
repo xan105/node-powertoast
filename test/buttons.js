@@ -1,4 +1,4 @@
-import { Toast } from "../lib/toast.js";
+import { Toast } from "../lib/index.js";
 
 const toast = new Toast({
   title: "Browser",
