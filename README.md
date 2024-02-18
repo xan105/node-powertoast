@@ -79,7 +79,7 @@ npm install powertoast
 ```
 
 <details>
-<summary>**Optional NodeRT packages**</summary>
+<summary>Optional NodeRT packages</summary>
 
   <br />
   All NodeRT scopes up to the latest official [@nodert-win10-rs4](https://github.com/NodeRT/NodeRT) and unofficial made by the community up to [@nodert-win11-22h2](https://github.com/demosjarco/NodeRT) are supported. The Windows SDK version they target is implied in their name.
@@ -139,7 +139,7 @@ Previous version(s) are CommonJS (CJS) with an ESM wrapper.
 
 ## Named export
 
-### Toast(option?: object): Class
+### `Toast(option?: object): Class`
 
 Create a toast notification.
 
@@ -179,11 +179,11 @@ _extends 📖 [EventEmitter](https://nodejs.org/docs/latest-v20.x/api/events.htm
 
   **⚙️ Options**
 
-  + ⚙️ `disableWinRT?: boolean` (false)
+  +  `disableWinRT?: boolean` (false)
 
   If you have installed the optional NodeRT native module(s) but for whatever reason(s) you want to use PowerShell instead set this to `true`.
 
-  + ⚙️ `disablePowershellCore?: boolean` (false)
+  + `disablePowershellCore?: boolean` (false)
 
   By default when using PowerShell this module will first try to use `pwsh` (PowerShell Core), then `powershell` (PowerShell Desktop / Windows Embedded).
   Set this to `true` to skip `pwsh` and only use `powershell` which is included with Windows.
@@ -192,11 +192,11 @@ _extends 📖 [EventEmitter](https://nodejs.org/docs/latest-v20.x/api/events.htm
 
     - It's painfully slow to start
     - It needs to be installed and its path added to your env var
-    - In order for PowerShell Core to use WinRT it will have to download WinRT assemblies trhough its package manager (done on first run)
+    - In order for PowerShell Core to use WinRT it will have to download WinRT assemblies through its package manager (done on first run)
 
   ⚠️ Please note that some features such as click events and user input requires Powershell ≥ 7.1 (pwsh).<br />
 
-  + ⚙️ `keepalive?: number` (6) seconds
+  + `keepalive?: number` (6) seconds
 
   ⚠️ This option is only for when listening for events !
 
@@ -209,7 +209,10 @@ _extends 📖 [EventEmitter](https://nodejs.org/docs/latest-v20.x/api/events.htm
 
   **Returns**
     
-  ✔️ Resolves as soon as the notification has been dispatched. Except when PowerShell needs to be running to subscribe to events in which case the promise will resolve only afterwards.
+  ✔️ Resolves as soon as the notification has been dispatched.<br />
+     Except when PowerShell needs to be running to subscribe to events in which case the promise will resolve only afterwards.
+  
+  
   ❌ Rejects on error.
 
 - `clear(): Promise<void>`
@@ -251,6 +254,7 @@ List the current notification(s) for the given `aumid` in the notification cente
 <details>
 <summary>Return an array of object with the following properties:</summary>
 
+<br />
 |name|type|description|
 |----|----|-----------|
 |expirationTime|string|time after which a toast should not be displayed (eg: "01/08/2021 20:53:23 +07:00")|
