@@ -1,4 +1,4 @@
 import { getHistory } from "../lib/index.js";
 
-const appID = "Microsoft.XboxApp_8wekyb3d8bbwe!Microsoft.XboxApp";
-console.log( await getHistory(appID) );
+const appID = "Microsoft.XboxGamingOverlay_8wekyb3d8bbwe!App";
+console.log( await getHistory(appID, true) );

@@ -1,6 +1,6 @@
 {
   "name": "powertoast",
-  "version": "2.1.5",
+  "version": "3.0.0",
   "description": "Windows toast notification and toastXml string builder.",
   "type": "module",
   "exports": {

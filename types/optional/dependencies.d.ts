@@ -1,1 +1,1 @@
-export const nodert: object;
+export const nodert: object | null;
