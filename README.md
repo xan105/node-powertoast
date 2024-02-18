@@ -1,7 +1,7 @@
 About
 =====
 
-Windows toast notification using PowerShell or WinRT and toastXml string builder.<br />
+Windows toast notification and toastXml string builder.<br />
 
 Doesn't use any native module. Everything is done through PowerShell but you can use native WinRT API bindings instead by **optionally** installing [NodeRT](https://github.com/NodeRT/NodeRT) relative packages (see [installation](#Installation) for more details).
 
@@ -60,27 +60,9 @@ const options = {
   title: "First partner",
   message: "Every journey begins with a choice",
   button: [
-    { 
-      text: "Bulbasaur", 
-      activation: {
-        launch: "myapp:green",
-        type: "protocol"
-      }
-    },
-    { 
-      text: "Charmander", 
-      activation: {
-        launch: "myapp:red",
-        type: "protocol"
-      }
-    },
-    { 
-      text: "Squirtle", 
-      activation: {
-        launch: "myapp:blue",
-        type: "protocol"
-      } 
-    }
+    { text: "Bulbasaur", activation: "myapp:green" },
+    { text: "Charmander", activation: "myapp:red" },
+    { text: "Squirtle", activation: "myapp:blue" }
   ]
 };
 
@@ -96,51 +78,56 @@ Installation
 npm install powertoast
 ```
 
-### Optional NodeRT packages
+<details>
+<summary>**Optional NodeRT packages**</summary>
 
-All NodeRT scopes up to the latest official [@nodert-win10-rs4](https://github.com/NodeRT/NodeRT) and unofficial made by the community up to [@nodert-win11-22h2](https://github.com/demosjarco/NodeRT) are supported. The Windows SDK version they target is implied in their name.
+  <br />
+  All NodeRT scopes up to the latest official [@nodert-win10-rs4](https://github.com/NodeRT/NodeRT) and unofficial made by the community up to [@nodert-win11-22h2](https://github.com/demosjarco/NodeRT) are supported. The Windows SDK version they target is implied in their name.
 
-💡 Mixing NodeRT modules from different scopes is supported (priority to the most recent SDK) but should be treated with caution.
+  💡 Mixing NodeRT modules from different scopes is supported (priority to the most recent SDK) but should be treated with caution.
 
-NodeRT modules required for toast notification:
+  NodeRT modules required for toast notification:
 
-- `windows.data.xml.dom`
-- `windows.ui.notifications`
+  - `windows.data.xml.dom`
+  - `windows.ui.notifications`
 
-For user input (text box and dropdown selection list) you will also need:
+  For user input (text box and dropdown selection list) you will also need:
 
-- `windows.ui.notifications` (> nodert-win10-rs4 (1803) since it's available on win10 ≥ 1903)
-- `windows.foundation`
-- `windows.foundation.collections`
+  - `windows.ui.notifications` (> nodert-win10-rs4 (1803) since it's available on win10 ≥ 1903)
+  - `windows.foundation`
+  - `windows.foundation.collections`
 
-💡 If you have trouble compiling NodeRT native addons. They are available precompiled through the [@xan105/nodert](https://github.com/xan105/node-nodeRT) package.
+  💡 If you have trouble compiling NodeRT native addons.<br />
+  They are available precompiled through the [@xan105/nodert](https://github.com/xan105/node-nodeRT) package.
 
-```
-npm i @xan105/nodert --modules="windows.ui.notifications, windows.data.xml.dom, windows.foundation, windows.foundation.collections"
-```
+  ```
+  npm i @xan105/nodert --modules="windows.ui.notifications, windows.data.xml.dom, windows.foundation, windows.foundation.collections"
+  ```
 
-Note that you can also add a list of modules in your package.json file under the `_nodert/modules` path:
+  Note that you can also add a list of modules in your package.json file under the `_nodert/modules` path:
 
-```json
-"_nodert" : {
-  "modules" : [
-    "windows.data.xml.dom",
-    "windows.ui.notifications"
-  ]
-},
-```
+  ```json
+  "_nodert" : {
+    "modules" : [
+      "windows.data.xml.dom",
+      "windows.ui.notifications"
+    ]
+  },
+  ```
 
-Please see [@xan105/nodert](https://github.com/xan105/node-nodeRT#install) for more details.
+  Please see [@xan105/nodert](https://github.com/xan105/node-nodeRT#install) for more details.
 
-#### Electron
+  **Electron**
 
-For Electron add the `--electron` flag to target Electron's ABI
+  For Electron add the `--electron` flag to target Electron's ABI
 
-```
-npm i @xan105/nodert --electron --modules="windows.ui.notifications, windows.data.xml.dom"
-```
+  ```
+  npm i @xan105/nodert --electron --modules="windows.ui.notifications, windows.data.xml.dom"
+  ```
 
-⚠️ NB: Electron ≥ 14 : NodeRT should be loaded in the main process [NodeRT#158](https://github.com/NodeRT/NodeRT/issues/158)
+  ⚠️ Electron ≥ 14 : NodeRT should be loaded in the main process [NodeRT#158](https://github.com/NodeRT/NodeRT/issues/158)
+
+</details>
 
 API
 ===
@@ -154,9 +141,9 @@ Previous version(s) are CommonJS (CJS) with an ESM wrapper.
 
 ### Toast(option?: object): Class
 
-_extends 📖 [EventEmitter](https://nodejs.org/docs/latest-v20.x/api/events.html#class-eventemitter)_
-
 Create a toast notification.
+
+_extends 📖 [EventEmitter](https://nodejs.org/docs/latest-v20.x/api/events.html#class-eventemitter)_
 
 #### Constructor
 
@@ -188,49 +175,62 @@ Create a toast notification.
 
 - `show(option?: object): Promise<void>`
 
-Show toast notification.
+  Show toast notification.
 
-**⚙️ Options**
+  **⚙️ Options**
 
-- `disableWinRT?: boolean` (false)
+  + ⚙️ `disableWinRT?: boolean` (false)
 
-If you have installed the optional NodeRT native module(s) but for whatever reason(s) you want to use PowerShell instead set this to `true`.
+  If you have installed the optional NodeRT native module(s) but for whatever reason(s) you want to use PowerShell instead set this to `true`.
 
-- `disablePowershellCore?: boolean` (false)
+  + ⚙️ `disablePowershellCore?: boolean` (false)
 
-By default when using PowerShell this module will first try to use `pwsh` (PowerShell Core), then `powershell` (PowerShell Desktop / Windows Embedded).
-Set this to `true` to skip `pwsh` and only use `powershell` which is included with Windows.
+  By default when using PowerShell this module will first try to use `pwsh` (PowerShell Core), then `powershell` (PowerShell Desktop / Windows Embedded).
+  Set this to `true` to skip `pwsh` and only use `powershell` which is included with Windows.
 
-ℹ️ PowerShell Core has some caveats that should be taken into consideration (hence the option to disable/skip it):
+  ℹ️ PowerShell Core has some caveats that should be taken into consideration (hence the option to disable/skip it):
 
-+ It's painfully slow to start
-+ It needs to be installed and its path added to your env var
-+ In order for PowerShell Core to use WinRT it will have to download WinRT assemblies trhough its package manager (done on first run)
+    - It's painfully slow to start
+    - It needs to be installed and its path added to your env var
+    - In order for PowerShell Core to use WinRT it will have to download WinRT assemblies trhough its package manager (done on first run)
 
-⚠️ Please note that some features such as click events and user input requires Powershell ≥ 7.1 (pwsh).<br />
+  ⚠️ Please note that some features such as click events and user input requires Powershell ≥ 7.1 (pwsh).<br />
 
-- `keepalive?: number` (6) seconds
+  + ⚙️ `keepalive?: number` (6) seconds
 
-⚠️ This option is only for when listening for events !
+  ⚠️ This option is only for when listening for events !
 
-The maximum amount of time PowerShell will wait for events before exiting or how long to keep the event loop alive for NodeRT.
+  The maximum amount of time PowerShell will wait for events before exiting or how long to keep the event loop alive for NodeRT.
 
-PowerShell needs to be running to subscribe to the events and NodeRT registered event listener does not keep the event loop alive.
-The default value is `6` seconds as 5 seconds is the default notification duration but keep in mind some users might have change this value in their Windows settings.
+  PowerShell needs to be running to subscribe to the events and NodeRT registered event listener does not keep the event loop alive.
+  The default value is `6` seconds as 5 seconds is the default notification duration but keep in mind some users might have change this value in their Windows settings.
 
-ℹ️ NB: When using NodeRT If you have something else maintaining the event loop then you can ignore this.
+  ℹ️ NB: When using NodeRT If you have something else maintaining the event loop then you can ignore this.
 
-**Returns**
-  
-✔️ Resolves as soon as the notification has been dispatched. Except when PowerShell needs to be running to subscribe to events in which case the promise will resolve only afterwards.
-❌ Rejects on error.
+  **Returns**
+    
+  ✔️ Resolves as soon as the notification has been dispatched. Except when PowerShell needs to be running to subscribe to events in which case the promise will resolve only afterwards.
+  ❌ Rejects on error.
 
 - `clear(): Promise<void>`
 
   Remove the notification from the notification center and all event listeners.
+  
+### `toXmlString(option?: object): string`
 
+Expose the toastXML string builder used by the Toast class for debugging purposes or for example if you want to use it with [Electron native API](https://www.electronjs.org/fr/docs/latest/api/notification#new-notificationoptions).
 
-### `isWinRTAvailable: boolean`
+Please see the `Toast` class constructor for the relevant options.
+
+ℹ️ The following options have no effect when just building a Toast XmlString:
+
+- aumid
+- uniqueID
+- hide
+- sequenceNumber
+- expiration
+
+### `const isWinRTAvailable: boolean`
 
 True if the peerDependencies for WinRT were successfully loaded; false otherwise.
 
@@ -269,20 +269,6 @@ If `verbose` (false) is set to `true` then the following properties are added:
 |status|string or null|additional information about the status of the toast|
 
 </details>
-
-### `toXmlString(option?: object): string`
-
-Expose the toastXML string builder used by the Toast class for debugging purposes or for example if you want to use it with [Electron native API](https://www.electronjs.org/fr/docs/latest/api/notification#new-notificationoptions).
-
-Please see the `Toast` class constructor for the relevant options.
-
-ℹ️ The following options have no effect when just building a Toast XmlString:
-
-- aumid
-- uniqueID
-- hide
-- sequenceNumber
-- expiration
 
 📖 Microsoft doc
 =================
