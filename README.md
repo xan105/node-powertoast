@@ -82,6 +82,7 @@ npm install powertoast
 <summary>Optional NodeRT packages</summary>
 
   <br />
+  
   All NodeRT scopes up to the latest official [@nodert-win10-rs4](https://github.com/NodeRT/NodeRT) and unofficial made by the community up to [@nodert-win11-22h2](https://github.com/demosjarco/NodeRT) are supported. The Windows SDK version they target is implied in their name.
 
   💡 Mixing NodeRT modules from different scopes is supported (priority to the most recent SDK) but should be treated with caution.
@@ -173,6 +174,10 @@ _extends 📖 [EventEmitter](https://nodejs.org/docs/latest-v20.x/api/events.htm
   
 #### Methods
 
+- `clear(): Promise<void>`
+
+  Remove the notification from the notification center and all event listeners.
+
 - `show(option?: object): Promise<void>`
 
   Show toast notification.
@@ -209,15 +214,9 @@ _extends 📖 [EventEmitter](https://nodejs.org/docs/latest-v20.x/api/events.htm
 
   **Returns**
     
-  ✔️ Resolves as soon as the notification has been dispatched.<br />
-     Except when PowerShell needs to be running to subscribe to events in which case the promise will resolve only afterwards.
-  
+  ✔️ Resolves as soon as the notification has been dispatched. Except when PowerShell needs to be running to subscribe to events in which case the promise will resolve only afterwards.
   
   ❌ Rejects on error.
-
-- `clear(): Promise<void>`
-
-  Remove the notification from the notification center and all event listeners.
   
 ### `toXmlString(option?: object): string`
 
@@ -245,7 +244,8 @@ If using only `aumid` then it removes every notification for said aumid in the n
 If you provide an optional `uniqueID` (string) then it removes that specific notification for the given aumid.
 
 ℹ️ This library `uniqueID` option actually sets both tag and groupLabel to the same value for convenience.
-If you want to use the tag and groupLabel properties of a toast to target a notification then use `uniqueID` (array) as `[ groupLabel: string, tag?: string ]`.
+If you want to use the tag and groupLabel properties of a toast to target a notification then use<br />
+`uniqueID` (array) as `[ groupLabel: string, tag?: string ]`.
 
 ### `getHistory(aumid: string, verbose?: boolean): Promise<object[]>`
 
@@ -255,6 +255,7 @@ List the current notification(s) for the given `aumid` in the notification cente
 <summary>Return an array of object with the following properties:</summary>
 
 <br />
+
 |name|type|description|
 |----|----|-----------|
 |expirationTime|string|time after which a toast should not be displayed (eg: "01/08/2021 20:53:23 +07:00")|
