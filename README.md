@@ -184,7 +184,7 @@ _extends 📖 [EventEmitter](https://nodejs.org/docs/latest-v20.x/api/events.htm
 
   **⚙️ Options**
 
-  +  `disableWinRT?: boolean` (false)
+  + `disableWinRT?: boolean` (false)
 
     If you have installed the optional NodeRT native module(s) but for whatever reason(s) you want to use PowerShell instead set this to `true`.
 
