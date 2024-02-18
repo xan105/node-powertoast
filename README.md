@@ -186,37 +186,38 @@ _extends 📖 [EventEmitter](https://nodejs.org/docs/latest-v20.x/api/events.htm
 
   +  `disableWinRT?: boolean` (false)
 
-  If you have installed the optional NodeRT native module(s) but for whatever reason(s) you want to use PowerShell instead set this to `true`.
+    If you have installed the optional NodeRT native module(s) but for whatever reason(s) you want to use PowerShell instead set this to `true`.
 
   + `disablePowershellCore?: boolean` (false)
 
-  By default when using PowerShell this module will first try to use `pwsh` (PowerShell Core), then `powershell` (PowerShell Desktop / Windows Embedded).
-  Set this to `true` to skip `pwsh` and only use `powershell` which is included with Windows.
+    By default when using PowerShell this module will first try to use `pwsh` (PowerShell Core), then `powershell` (PowerShell Desktop / Windows Embedded).
+    Set this to `true` to skip `pwsh` and only use `powershell` which is included with Windows.
 
-  ℹ️ PowerShell Core has some caveats hence the option to disable/skip it:
+    ℹ️ PowerShell Core has some caveats hence the option to disable/skip it:
 
-      - It's painfully slow to start
-      - It needs to be installed and its path added to your env var
-      - In order for PowerShell Core to use WinRT it will have to download WinRT assemblies through its package manager (done on first run)
+      - It's painfully slow to start.
+      - It needs to be installed and its path added to your env var.
+      - In order for PowerShell Core to use WinRT it will have to download WinRT assemblies 
+        through its package manager (done on first run).
 
-  ⚠️ Please note that some features such as click events and user input requires Powershell ≥ 7.1 (pwsh).<br />
+    ⚠️ Please note that some features such as click events and user input requires Powershell ≥ 7.1 (pwsh).<br />
 
   + `keepalive?: number` (6) seconds
 
-  ⚠️ This option is only for when listening for events !
+    ⚠️ This option is only for when listening for events !
 
-  The maximum amount of time PowerShell will wait for events before exiting or how long to keep the event loop alive for NodeRT.
+    The maximum amount of time PowerShell will wait for events before exiting or how long to keep the event loop alive for NodeRT.
 
-  PowerShell needs to be running to subscribe to the events and NodeRT registered event listener does not keep the event loop alive.
-  The default value is `6` seconds as 5 seconds is the default notification duration but keep in mind some users might have change this value in their Windows settings.
+    PowerShell needs to be running to subscribe to the events and NodeRT registered event listener does not keep the event loop alive.
+    The default value is `6` seconds as 5 seconds is the default notification duration but keep in mind some users might have change this value in their Windows settings.
 
-  ℹ️ NB: When using NodeRT If you have something else maintaining the event loop then you can ignore this.
+    ℹ️ NB: When using NodeRT If you have something else maintaining the event loop then you can ignore this.
 
   **Returns**
     
-  ✔️ Resolves as soon as the notification has been dispatched. Except when PowerShell needs to be running to subscribe to events in which case the promise will resolve only afterwards.
-  
-  ❌ Rejects on error.
+    ✔️ Resolves as soon as the notification has been dispatched. Except when PowerShell needs to be running to subscribe to events in which case the promise will resolve only afterwards.
+    
+    ❌ Rejects on error.
   
 ### `toXmlString(option?: object): string`
 
@@ -243,7 +244,7 @@ Remove programmatically notification(s) from the notification center.
 If using only `aumid` then it removes every notification for said aumid in the notification center.<br/>
 If you provide an optional `uniqueID` (string) then it removes that specific notification for the given aumid.
 
-ℹ️ This library `uniqueID` option actually sets both tag and groupLabel to the same value for convenience.
+ℹ️ This library `uniqueID` option actually sets both tag and groupLabel to the same value for convenience.<br />
 If you want to use the tag and groupLabel properties of a toast to target a notification then use<br />
 `uniqueID` (array) as `[ groupLabel: string, tag?: string ]`.
 
