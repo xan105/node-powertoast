@@ -1,7 +1,7 @@
 {
   "name": "powertoast",
   "version": "2.1.5",
-  "description": "Windows toast notification using PowerShell or WinRT and toastXml string builder.",
+  "description": "Windows toast notification and toastXml string builder.",
   "type": "module",
   "exports": {
     ".": {

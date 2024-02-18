@@ -193,11 +193,11 @@ _extends 📖 [EventEmitter](https://nodejs.org/docs/latest-v20.x/api/events.htm
   By default when using PowerShell this module will first try to use `pwsh` (PowerShell Core), then `powershell` (PowerShell Desktop / Windows Embedded).
   Set this to `true` to skip `pwsh` and only use `powershell` which is included with Windows.
 
-  ℹ️ PowerShell Core has some caveats that should be taken into consideration (hence the option to disable/skip it):
+  ℹ️ PowerShell Core has some caveats hence the option to disable/skip it:
 
-    - It's painfully slow to start
-    - It needs to be installed and its path added to your env var
-    - In order for PowerShell Core to use WinRT it will have to download WinRT assemblies through its package manager (done on first run)
+      - It's painfully slow to start
+      - It needs to be installed and its path added to your env var
+      - In order for PowerShell Core to use WinRT it will have to download WinRT assemblies through its package manager (done on first run)
 
   ⚠️ Please note that some features such as click events and user input requires Powershell ≥ 7.1 (pwsh).<br />
 
