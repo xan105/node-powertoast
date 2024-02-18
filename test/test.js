@@ -58,3 +58,8 @@ toast.show({
 }).then(()=>{
   console.log("Sent...");
 }).catch(console.error);
+
+setTimeout(()=>{
+  toast.clear();
+  console.log("removed");
+}, 15 * 1000);
