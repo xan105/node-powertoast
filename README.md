@@ -150,7 +150,7 @@ _extends 📖 [EventEmitter](https://nodejs.org/docs/latest-v20.x/api/events.htm
 
 `(option?: object)`
 
-ℹ️ Because there is a ton of options for toast notification, they are in [./TOAST.md](TOAST.md).
+ℹ️ Because there is a ton of options for toast notification, they are in [TOAST.md](./TOAST.md).
 
 #### Events
 
